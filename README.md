@@ -1,8 +1,8 @@
 # pressR <img src="man/figures/logo.png" align="right" height="139" alt="pressR logo" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/r-heller/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/pressR/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/r-heller/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-heller/pressR?branch=main)
+[![R-CMD-check](https://github.com/cttir/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cttir/pressR/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/cttir/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/cttir/pressR?branch=main)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
@@ -16,7 +16,7 @@ interactive Shiny application for data exploration.
 
 ```r
 # install.packages("pak")
-pak::pak("r-heller/pressR")
+pak::pak("cttir/pressR")
 ```
 
 ## Quick example
@@ -58,6 +58,19 @@ pr_calc_regional(trial)
 * `vignette("getting-started", package = "pressR")`
 * `vignette("saddle-pressure-analysis", package = "pressR")`
 * `vignette("foot-pressure-analysis", package = "pressR")`
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large language model tooling for
+narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting,
+scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were [Chat AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/),
+the LLM service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B, Apache-2.0)** run locally via
+[Ollama](https://ollama.com/) and the `ollamar` R package — local inference only, with no data sent to
+third parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses, interpretations, and conclusions are the
+author's own. No LLM-generated text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.
 
 ## License
 
