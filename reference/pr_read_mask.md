@@ -18,16 +18,15 @@ pr_read_mask(path, layout = NULL, name = "imported", verbose = TRUE)
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object. Required if the mask dimensions must be validated against a
   specific layout; otherwise, the mask is returned as-is.
 
 - name:
 
   Character. Name for the resulting
-  [pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-  object. Default `"imported"`.
+  [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) object.
+  Default `"imported"`.
 
 - verbose:
 
@@ -35,8 +34,8 @@ pr_read_mask(path, layout = NULL, name = "imported", verbose = TRUE)
 
 ## Value
 
-A [pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-object (if a layout is supplied) or a logical matrix.
+A [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) object
+(if a layout is supplied) or a logical matrix.
 
 ## Examples
 

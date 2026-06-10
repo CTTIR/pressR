@@ -5,7 +5,7 @@
 library(pressR)
 ```
 
-## What pressR does
+### What pressR does
 
 **pressR** parses, analyzes, and visualizes pressure distribution data
 from capacitive sensor systems. It provides:
@@ -18,7 +18,7 @@ from capacitive sensor systems. It provides:
 - `ggplot2`-based visualization and composite reports,
 - An interactive Shiny application for data exploration.
 
-## Load a layout
+### Load a layout
 
 Every trial is tied to a `pr_layout` object that describes the sensor
 geometry. For example, a 99-sensor in-shoe pressure insole:
@@ -41,9 +41,9 @@ print(layout)
 #> "metatarsal_4_5", "hallux", and "lesser_toes"
 ```
 
-## Generate a synthetic example trial
+### Generate a synthetic example trial
 
-[`pr_example_trial()`](https://r-heller.github.io/pressR/reference/pr_example_trial.md)
+[`pr_example_trial()`](https://cttir.github.io/pressR/reference/pr_example_trial.md)
 produces realistic synthetic data for each supported application. This
 is useful for quick demos, tests, and vignettes.
 
@@ -60,11 +60,11 @@ trial
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-05-04"
+#> • Date: "2026-06-10"
 #> • Condition: "walking"
 ```
 
-## Visualize
+### Visualize
 
 The default plot method draws a maximum-pressure picture (MPP):
 
@@ -86,9 +86,9 @@ pr_plot_force_time(trial, show_cycles = TRUE)
 ![Force vs time with gait cycles
 shaded](getting-started_files/figure-html/unnamed-chunk-5-1.png)
 
-## Summarize
+### Summarize
 
-[`pr_summary()`](https://r-heller.github.io/pressR/reference/pr_summary.md)
+[`pr_summary()`](https://cttir.github.io/pressR/reference/pr_summary.md)
 returns a single-row tibble containing the common biomechanical
 parameters:
 
@@ -104,7 +104,7 @@ pr_summary(trial)
 #> #   cop_range_ap <dbl>, cop_range_ml <dbl>
 ```
 
-## Regional analysis
+### Regional analysis
 
 With the insole layout’s default region masks you get one row per
 anatomical region:
@@ -124,7 +124,7 @@ pr_calc_regional(trial)
 #> 7 lesser_toes     190.  12.9      73.1         12       30.0
 ```
 
-## Export
+### Export
 
 Results can be exported as CSV:
 
@@ -134,9 +134,27 @@ tmp <- tempfile(fileext = ".csv")
 pr_export_csv(trial, tmp, what = "summary")
 ```
 
-## Launch the Shiny app
+### Launch the Shiny app
 
 ``` r
 
 pr_run_app(trial)
 ```
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were [Chat
+AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
+service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
+Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the
+`ollamar` R package — local inference only, with no data sent to third
+parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.

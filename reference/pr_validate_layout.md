@@ -1,7 +1,7 @@
 # Validate a Pressure Sensor Layout
 
 Checks internal consistency of a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 object.
 
 ## Usage
@@ -14,8 +14,7 @@ pr_validate_layout(layout)
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object.
 
 ## Value

@@ -4,9 +4,9 @@ Parses a CSV file containing force data from a portable force-sensing
 insole or similar device. These systems typically record a small number
 of force zones (not a full pressure matrix); this parser returns a
 simplified
-[pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
-where each "sensor" represents a force zone. Pressure values are
-reported in Newtons.
+[pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md) where
+each "sensor" represents a force zone. Pressure values are reported in
+Newtons.
 
 ## Usage
 
@@ -35,7 +35,7 @@ pr_read_forcesensor(path, force_cols = NULL, time_col = "time", verbose = TRUE)
 
 ## Value
 
-A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 object with a minimal single-row layout (one sensor per force zone).
 
 ## Examples

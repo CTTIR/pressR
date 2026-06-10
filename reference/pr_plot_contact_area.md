@@ -12,7 +12,7 @@ pr_plot_contact_area(trial, show_cycles = FALSE)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - show_cycles:

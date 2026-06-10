@@ -17,8 +17,7 @@ pr_read_auto(path, layout = NULL, verbose = TRUE)
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object. If `NULL`, inferred by the dispatched parser.
 
 - verbose:
@@ -27,9 +26,9 @@ pr_read_auto(path, layout = NULL, verbose = TRUE)
 
 ## Value
 
-A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 object (for `.asc` / `.txt` / `.csv`), or a logical mask matrix /
-[pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md) object
+[pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) object
 (for `.msa`/`.msr`/`.msp`).
 
 ## Examples

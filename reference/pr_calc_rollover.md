@@ -13,13 +13,13 @@ pr_calc_rollover(trial, cycles = NULL, n_points = 51L)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - cycles:
 
   Output of
-  [`pr_calc_gait_cycles()`](https://r-heller.github.io/pressR/reference/pr_calc_gait_cycles.md).
+  [`pr_calc_gait_cycles()`](https://cttir.github.io/pressR/reference/pr_calc_gait_cycles.md).
   If `NULL`, cycles are detected automatically.
 
 - n_points:

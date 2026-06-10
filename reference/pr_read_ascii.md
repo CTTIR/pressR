@@ -25,8 +25,7 @@ pr_read_ascii(
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object. If `NULL`, inferred from the header or sensor count.
 
 - sampling_hz:
@@ -49,7 +48,7 @@ pr_read_ascii(
 
 ## Value
 
-A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 object.
 
 ## Examples

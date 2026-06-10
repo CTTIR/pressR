@@ -1,7 +1,7 @@
 # Plot Pressure Heatmap with Region Overlay
 
 Convenience wrapper for
-[`pr_plot_heatmap()`](https://r-heller.github.io/pressR/reference/pr_plot_heatmap.md)
+[`pr_plot_heatmap()`](https://cttir.github.io/pressR/reference/pr_plot_heatmap.md)
 that always overlays region boundaries.
 
 ## Usage
@@ -22,14 +22,14 @@ pr_plot_heatmap_masked(
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - masks:
 
   Named list of
-  [pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-  objects or logical matrices. If `NULL`, uses layout regions.
+  [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects
+  or logical matrices. If `NULL`, uses layout regions.
 
 - frame:
 

@@ -20,8 +20,7 @@ pr_mask(mask_matrix, name, layout)
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object this mask applies to.
 
 ## Value

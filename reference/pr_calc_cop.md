@@ -13,7 +13,7 @@ pr_calc_cop(trial, threshold = 0)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - threshold:
@@ -22,7 +22,7 @@ pr_calc_cop(trial, threshold = 0)
 
 ## Value
 
-A [pr_cop](https://r-heller.github.io/pressR/reference/pr_cop.md) object
+A [pr_cop](https://cttir.github.io/pressR/reference/pr_cop.md) object
 containing x (mm), y (mm), time (s), and derived metrics.
 
 ## Examples

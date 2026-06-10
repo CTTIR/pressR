@@ -1,8 +1,8 @@
 # Get Seating Pressure Mat Layout
 
 Returns a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
-for seating pressure assessment. Uses a 32x32 grid (1024 sensors) with
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md) for
+seating pressure assessment. Uses a 32x32 grid (1024 sensors) with
 application-specific regions.
 
 ## Usage
@@ -19,5 +19,5 @@ pr_layout_seat(type = c("wheelchair", "car", "office"))
 
 ## Value
 
-A [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 object.

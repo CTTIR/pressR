@@ -2,7 +2,7 @@
 
 Construct a `pr_cop` object from x/y coordinates and time. Normally
 created by
-[`pr_calc_cop()`](https://r-heller.github.io/pressR/reference/pr_calc_cop.md)
+[`pr_calc_cop()`](https://cttir.github.io/pressR/reference/pr_calc_cop.md)
 rather than called directly.
 
 ## Usage

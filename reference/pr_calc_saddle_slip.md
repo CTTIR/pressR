@@ -13,13 +13,13 @@ pr_calc_saddle_slip(trial, masks = NULL, slip_threshold = 15)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - masks:
 
   Named list of region masks. If `NULL`, auto-generated via
-  [`pr_mask_symmetry()`](https://r-heller.github.io/pressR/reference/pr_mask_symmetry.md).
+  [`pr_mask_symmetry()`](https://cttir.github.io/pressR/reference/pr_mask_symmetry.md).
 
 - slip_threshold:
 

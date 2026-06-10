@@ -13,7 +13,7 @@ pr_calc_seat_hotspot(trial, threshold = 4.7, duration_s = 0)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   from a seating recording.
 
 - threshold:

@@ -12,7 +12,7 @@ pr_downsample(trial, factor = 2L)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - factor:
@@ -21,7 +21,7 @@ pr_downsample(trial, factor = 2L)
 
 ## Value
 
-A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 object with reduced frame count.
 
 ## Examples

@@ -12,7 +12,7 @@ pr_filter_time(trial, from = 0, to = Inf)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - from:
@@ -25,7 +25,7 @@ pr_filter_time(trial, from = 0, to = Inf)
 
 ## Value
 
-A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 containing only frames with `time` in `[from, to]`.
 
 ## Examples

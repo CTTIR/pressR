@@ -1,9 +1,9 @@
 # Get Default Region Masks for a Layout
 
 Returns a named list of
-[pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-objects built from the `regions` field of a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md).
+[pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects
+built from the `regions` field of a
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md).
 
 ## Usage
 
@@ -15,15 +15,14 @@ pr_mask_default(layout)
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object.
 
 ## Value
 
 Named list of
-[pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-objects (possibly empty).
+[pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects
+(possibly empty).
 
 ## Examples
 

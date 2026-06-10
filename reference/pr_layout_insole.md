@@ -1,7 +1,7 @@
 # Get In-Shoe Pressure Insole Layout
 
 Returns a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 representing a typical in-shoe pressure measurement insole. The insole
 contains 99 capacitive sensors arranged in an anatomically shaped grid.
 
@@ -20,7 +20,7 @@ pr_layout_insole(size = c("standard", "wide"))
 
 ## Value
 
-A [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 object with predefined foot region masks.
 
 ## Examples

@@ -1,7 +1,7 @@
 # Generate a Synthetic Pressure Trial
 
 Creates a
-[pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md) with
+[pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md) with
 realistic synthetic pressure data for demonstration, testing, and
 vignette purposes.
 
@@ -40,7 +40,7 @@ pr_example_trial(
 
 ## Value
 
-A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 object.
 
 ## Examples
@@ -57,6 +57,6 @@ print(trial)
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-05-04"
+#> • Date: "2026-06-10"
 #> • Condition: "walking"
 ```

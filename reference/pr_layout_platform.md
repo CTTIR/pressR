@@ -1,9 +1,9 @@
 # Get Pressure Platform Layout
 
 Returns a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
-for a barefoot pressure platform. Provides high-resolution plantar
-pressure distribution during static and dynamic conditions.
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md) for a
+barefoot pressure platform. Provides high-resolution plantar pressure
+distribution during static and dynamic conditions.
 
 ## Usage
 
@@ -20,9 +20,9 @@ pr_layout_platform(model = c("st", "xl", "cl"))
 
 ## Value
 
-A [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 object. Region masks are not predefined — use
-[`pr_mask_foot_auto()`](https://r-heller.github.io/pressR/reference/pr_mask_foot_auto.md)
+[`pr_mask_foot_auto()`](https://cttir.github.io/pressR/reference/pr_mask_foot_auto.md)
 to auto-segment footprints from the data.
 
 ## Examples

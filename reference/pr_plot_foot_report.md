@@ -13,7 +13,7 @@ pr_plot_foot_report(trial)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object from an insole or platform recording.
 
 ## Value

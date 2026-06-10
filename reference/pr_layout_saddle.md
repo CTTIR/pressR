@@ -1,8 +1,8 @@
 # Get Saddle Pressure Mat Layout
 
 Returns a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
-for saddle pressure measurement using a capacitive sensor mat. Includes
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md) for
+saddle pressure measurement using a capacitive sensor mat. Includes
 predefined region masks based on published research protocols.
 
 ## Usage
@@ -22,7 +22,7 @@ pr_layout_saddle(type = c("horse", "bicycle"))
 
 ## Value
 
-A [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 with application-specific region masks.
 
 ## Examples

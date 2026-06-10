@@ -8,16 +8,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/r-heller/pressR/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/cttir/pressR/blob/main/DESCRIPTION)
 
 Heller R (2026). *pressR: Pressure Distribution Analysis for Capacitive
 Sensor Systems*. R package version 0.1.0,
-<https://github.com/r-heller/pressR>.
+<https://github.com/cttir/pressR>.
 
     @Manual{,
       title = {pressR: Pressure Distribution Analysis for Capacitive Sensor Systems},
       author = {Raban Heller},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://github.com/r-heller/pressR},
+      url = {https://github.com/cttir/pressR},
     }

@@ -1,7 +1,7 @@
 # Plot a Sensor Layout
 
 Visualizes a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 showing active sensor positions and colored region masks (if any).
 
 ## Usage
@@ -15,8 +15,7 @@ plot(x, show_regions = TRUE, show_ids = FALSE, ...)
 
 - x:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object.
 
 - show_regions:

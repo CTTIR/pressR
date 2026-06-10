@@ -13,7 +13,7 @@ pr_calc_mean_pressure(trial, threshold = 0)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - threshold:

@@ -29,8 +29,7 @@ pr_read_csv(
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object. Required for wide format when the sensor count cannot be
   inferred.
 
@@ -49,7 +48,7 @@ pr_read_csv(
 
 ## Value
 
-A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 object.
 
 ## Examples

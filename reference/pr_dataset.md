@@ -1,8 +1,8 @@
 # Create a Pressure Dataset
 
 A `pr_dataset` is a collection of
-[pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
-objects with shared grouping metadata, intended for batch analysis.
+[pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md) objects
+with shared grouping metadata, intended for batch analysis.
 
 ## Usage
 
@@ -15,7 +15,7 @@ pr_dataset(trials, group_var = "condition", name = "dataset")
 - trials:
 
   A list of
-  [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   objects.
 
 - group_var:

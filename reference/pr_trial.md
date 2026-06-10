@@ -23,8 +23,7 @@ pr_trial(pressure, time, layout, metadata = list(), sampling_hz = NULL)
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object defining the sensor arrangement.
 
 - metadata:
@@ -54,6 +53,6 @@ print(trial)
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-05-04"
+#> • Date: "2026-06-10"
 #> • Condition: "walking"
 ```

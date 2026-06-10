@@ -18,15 +18,15 @@ pr_calc_regional(
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - masks:
 
   Named list of
-  [pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-  objects or logical matrices. If `NULL` (default), uses the layout's
-  default regions.
+  [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects
+  or logical matrices. If `NULL` (default), uses the layout's default
+  regions.
 
 - parameters:
 

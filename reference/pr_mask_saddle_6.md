@@ -15,17 +15,15 @@ pr_mask_saddle_6(layout)
 
 - layout:
 
-  A
-  [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+  A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
   object (typically one returned by
-  [`pr_layout_saddle()`](https://r-heller.github.io/pressR/reference/pr_layout_saddle.md)
+  [`pr_layout_saddle()`](https://cttir.github.io/pressR/reference/pr_layout_saddle.md)
   with `type = "horse"`).
 
 ## Value
 
 Named list of 6
-[pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-objects.
+[pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects.
 
 ## Examples
 

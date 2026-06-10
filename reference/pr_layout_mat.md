@@ -1,9 +1,9 @@
 # Get Generic Sensor Mat Layout
 
 Returns a
-[pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
-for a generic capacitive pressure sensor mat. These general-purpose
-sensor arrays are used in research, seating, sports, and ergonomics
+[pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md) for a
+generic capacitive pressure sensor mat. These general-purpose sensor
+arrays are used in research, seating, sports, and ergonomics
 applications.
 
 ## Usage
@@ -21,5 +21,5 @@ pr_layout_mat(size = c("16", "32"))
 
 ## Value
 
-A [pr_layout](https://r-heller.github.io/pressR/reference/pr_layout.md)
+A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 with no predefined regions.

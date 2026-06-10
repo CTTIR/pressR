@@ -13,7 +13,7 @@ pr_plot_regional_bar(regional_data, parameter = "mpp", thresholds = NULL)
 - regional_data:
 
   Output of
-  [`pr_calc_regional()`](https://r-heller.github.io/pressR/reference/pr_calc_regional.md).
+  [`pr_calc_regional()`](https://cttir.github.io/pressR/reference/pr_calc_regional.md).
 
 - parameter:
 

@@ -14,13 +14,13 @@ plot(x, ...)
 
 - x:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - ...:
 
   Passed to
-  [`pr_plot_heatmap()`](https://r-heller.github.io/pressR/reference/pr_plot_heatmap.md).
+  [`pr_plot_heatmap()`](https://cttir.github.io/pressR/reference/pr_plot_heatmap.md).
 
 ## Value
 

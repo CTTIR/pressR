@@ -15,7 +15,7 @@ pr_mask_foot_auto(trial, n_regions = 7L, threshold = 1)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object from a pressure platform recording.
 
 - n_regions:
@@ -31,5 +31,4 @@ pr_mask_foot_auto(trial, n_regions = 7L, threshold = 1)
 ## Value
 
 Named list of
-[pr_mask](https://r-heller.github.io/pressR/reference/pr_mask.md)
-objects.
+[pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects.

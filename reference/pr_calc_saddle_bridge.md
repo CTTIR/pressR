@@ -15,13 +15,13 @@ pr_calc_saddle_bridge(trial, masks = NULL, bridge_threshold = 0.5)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   from a horse saddle recording.
 
 - masks:
 
   Named list of 6 region masks (from
-  [`pr_mask_saddle_6()`](https://r-heller.github.io/pressR/reference/pr_mask_saddle_6.md)).
+  [`pr_mask_saddle_6()`](https://cttir.github.io/pressR/reference/pr_mask_saddle_6.md)).
   If `NULL`, generated from the trial's layout.
 
 - bridge_threshold:

@@ -13,13 +13,13 @@ pr_plot_saddle_report(trial, thresholds = NULL)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   from a saddle recording.
 
 - thresholds:
 
   A reference threshold tibble (typically from
-  [`pr_ref_saddle()`](https://r-heller.github.io/pressR/reference/pr_ref_saddle.md)).
+  [`pr_ref_saddle()`](https://cttir.github.io/pressR/reference/pr_ref_saddle.md)).
   If `NULL`, uses the von Peinen 2010 defaults.
 
 ## Value

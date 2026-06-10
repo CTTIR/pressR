@@ -12,7 +12,7 @@ pr_merge_trials(..., group_var = "condition")
 
 - ...:
 
-  [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   objects or lists of them.
 
 - group_var:
@@ -21,8 +21,7 @@ pr_merge_trials(..., group_var = "condition")
 
 ## Value
 
-A
-[pr_dataset](https://r-heller.github.io/pressR/reference/pr_dataset.md)
+A [pr_dataset](https://cttir.github.io/pressR/reference/pr_dataset.md)
 object.
 
 ## Examples

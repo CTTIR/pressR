@@ -12,7 +12,7 @@ pr_plot_cop(trial, show_layout = TRUE, color_by = c("time", "velocity"))
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - show_layout:

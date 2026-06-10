@@ -1,7 +1,7 @@
 # Batch Summary Across Multiple Trials
 
 Runs
-[`pr_summary()`](https://r-heller.github.io/pressR/reference/pr_summary.md)
+[`pr_summary()`](https://cttir.github.io/pressR/reference/pr_summary.md)
 on each trial in a dataset and row-binds the results, prepending trial
 metadata columns.
 
@@ -15,10 +15,9 @@ pr_batch_summary(dataset)
 
 - dataset:
 
-  A
-  [pr_dataset](https://r-heller.github.io/pressR/reference/pr_dataset.md)
+  A [pr_dataset](https://cttir.github.io/pressR/reference/pr_dataset.md)
   object or a list of
-  [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   objects.
 
 ## Value

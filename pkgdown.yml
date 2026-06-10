@@ -5,7 +5,7 @@ articles:
   foot-pressure-analysis: foot-pressure-analysis.html
   getting-started: getting-started.html
   saddle-pressure-analysis: saddle-pressure-analysis.html
-last_built: 2026-05-04T18:23Z
+last_built: 2026-06-10T11:17Z
 urls:
-  reference: https://r-heller.github.io/pressR/reference
-  article: https://r-heller.github.io/pressR/articles
+  reference: https://cttir.github.io/pressR/reference
+  article: https://cttir.github.io/pressR/articles

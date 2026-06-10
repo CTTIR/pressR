@@ -13,13 +13,13 @@ pr_plot_cop_butterfly(trial, cycles = NULL)
 
 - trial:
 
-  A [pr_trial](https://r-heller.github.io/pressR/reference/pr_trial.md)
+  A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object.
 
 - cycles:
 
   Output of
-  [`pr_calc_gait_cycles()`](https://r-heller.github.io/pressR/reference/pr_calc_gait_cycles.md).
+  [`pr_calc_gait_cycles()`](https://cttir.github.io/pressR/reference/pr_calc_gait_cycles.md).
   If `NULL`, auto-detected.
 
 ## Value
