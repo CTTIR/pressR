@@ -16,3 +16,4 @@
 ^\.gitignore$
 ^memory$
 ^MEMORY\.md$
+^_pkgdown\.yml$

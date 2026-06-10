@@ -48,3 +48,4 @@ Suggests:
     shinytest2,
     vdiffr
 VignetteBuilder: knitr
+Config/Needs/website: CTTIR/themakR
