@@ -1,8 +1,8 @@
 <svg width="500" height="580" viewBox="0 0 500 580" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bgpress" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1A2332"/>
-      <stop offset="100%" stop-color="#111820"/>
+      <stop offset="0%" stop-color="#0E2B6B"/>
+      <stop offset="100%" stop-color="#0E2B6B"/>
     </linearGradient>
     <clipPath id="hexp">
       <polygon points="250,30 455,145 455,375 250,490 45,375 45,145"/>
@@ -49,8 +49,8 @@
 
     <!-- Midfoot -->
     <rect x="180" y="348" width="34" height="34" rx="6" fill="#EF6C00" opacity="0.85"/>
-    <rect x="214" y="348" width="34" height="34" rx="6" fill="#00897B" opacity="0.7"/>
-    <rect x="292" y="349" width="34" height="34" rx="6" fill="#00897B" opacity="0.7"/>
+    <rect x="214" y="348" width="34" height="34" rx="6" fill="#1E40AF" opacity="0.7"/>
+    <rect x="292" y="349" width="34" height="34" rx="6" fill="#1E40AF" opacity="0.7"/>
     <rect x="326" y="350" width="34" height="34" rx="6" fill="#EF6C00" opacity="0.82"/>
 
     <!-- Heel approach -->
@@ -73,7 +73,7 @@
     <rect x="408" y="229" width="14" height="14" rx="3" fill="#FB8C00" opacity="0.85"/>
     <rect x="408" y="247" width="14" height="14" rx="3" fill="#FDD835" opacity="0.85"/>
     <rect x="408" y="265" width="14" height="14" rx="3" fill="#26C6DA" opacity="0.75"/>
-    <rect x="408" y="283" width="14" height="14" rx="3" fill="#00897B" opacity="0.75"/>
+    <rect x="408" y="283" width="14" height="14" rx="3" fill="#1E40AF" opacity="0.75"/>
     <rect x="408" y="301" width="14" height="14" rx="3" fill="#00695C" opacity="0.75"/>
     <text font-family="monospace" font-size="7" fill="#aaaaaa" opacity="0.7" x="426" y="185">high</text>
     <text font-family="monospace" font-size="7" fill="#aaaaaa" opacity="0.5" x="426" y="313">low</text>
@@ -104,23 +104,20 @@
              Q 272,152 258,152
              Q 244,150 238,157
              Q 235,150 230,148 Z"
-      fill="none" stroke="#00897B" stroke-width="1.2" opacity="0.2" stroke-dasharray="6 4"/>
+      fill="none" stroke="#1E40AF" stroke-width="1.2" opacity="0.2" stroke-dasharray="6 4"/>
 
     <!-- Sensor dots -->
-    <circle cx="112" cy="175" r="2" fill="#00897B" opacity="0.35"/>
-    <circle cx="112" cy="214" r="2" fill="#00897B" opacity="0.32"/>
-    <circle cx="112" cy="253" r="2" fill="#00897B" opacity="0.3"/>
-    <circle cx="112" cy="292" r="2" fill="#00897B" opacity="0.3"/>
+    <circle cx="112" cy="175" r="2" fill="#1E40AF" opacity="0.35"/>
+    <circle cx="112" cy="214" r="2" fill="#1E40AF" opacity="0.32"/>
+    <circle cx="112" cy="253" r="2" fill="#1E40AF" opacity="0.3"/>
+    <circle cx="112" cy="292" r="2" fill="#1E40AF" opacity="0.3"/>
 
   </g>
 
   <!-- Hex border -->
   <polygon points="250,30 455,145 455,375 250,490 45,375 45,145"
-    fill="none" stroke="#00897B" stroke-width="11" stroke-linejoin="round"/>
+    fill="none" stroke="#1E40AF" stroke-width="11" stroke-linejoin="round"/>
   <polygon points="250,44 441,153 441,367 250,476 59,367 59,153"
-    fill="none" stroke="#4DB6AC" stroke-width="1.5" stroke-linejoin="round" opacity="0.5"/>
-
-  <!-- Package name -->
-  <text font-family="monospace" font-weight="700" font-size="28"
-    fill="#80CBC4" text-anchor="middle" x="250" y="545" letter-spacing="1">pressR</text>
+    fill="none" stroke="#2E86AB" stroke-width="1.5" stroke-linejoin="round" opacity="0.5"/>
+  
 </svg>
