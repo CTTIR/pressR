@@ -8,6 +8,10 @@ inst/doc/
 _build.R
 DROPHERE/
 memory/
-MEMORY.md
 *.tar.gz
 *.Rcheck/
+*.tmp
+*.log
+*~
+*.bak
+*.orig
