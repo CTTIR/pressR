@@ -17,3 +17,4 @@
 ^memory$
 ^MEMORY\.md$
 ^_pkgdown\.yml$
+^_coverage$
