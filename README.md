@@ -17,7 +17,7 @@ in-shoe pressure measurement, saddle pressure mapping (equine and
 bicycle), seating assessment, and barefoot pedography, along with an
 interactive Shiny application for data exploration.
 
-## Installation 
+## Installation
 
 ```r
 # install.packages("pak")
