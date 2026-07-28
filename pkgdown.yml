@@ -1,11 +1,11 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   foot-pressure-analysis: foot-pressure-analysis.html
   getting-started: getting-started.html
   saddle-pressure-analysis: saddle-pressure-analysis.html
-last_built: 2026-06-22T12:25Z
+last_built: 2026-07-28T08:07Z
 urls:
   reference: https://cttir.github.io/pressR/reference
   article: https://cttir.github.io/pressR/articles
