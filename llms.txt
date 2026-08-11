@@ -1,5 +1,7 @@
 # pressR
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889954.svg)](https://doi.org/10.5281/zenodo.21889954)
+
 **pressR** parses, analyzes, and visualizes pressure distribution data
 from capacitive sensor systems. It ships with predefined layouts for
 in-shoe pressure measurement, saddle pressure mapping (equine and
@@ -77,6 +79,16 @@ was verified against its DOI, arXiv ID, or ISBN.
 ## License
 
 MIT
+
+## Citation
+
+If you use this software, please cite it as:
+
+> Heller, R. (2026). *pressR: Pressure distribution analysis for
+> capacitive sensor systems* (Version 0.1.0) \[Computer software\].
+> Zenodo. <https://doi.org/10.5281/zenodo.21889954>
+
+DOI: [10.5281/zenodo.21889954](https://doi.org/10.5281/zenodo.21889954)
 
 # Package index
 

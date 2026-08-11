@@ -53,6 +53,6 @@ print(trial)
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-07-28"
+#> • Date: "2026-08-11"
 #> • Condition: "walking"
 ```
