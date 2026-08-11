@@ -1,5 +1,7 @@
 # pressR <img src="man/figures/logo.png" align="right" height="139" alt="pressR logo" />
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889954.svg)](https://doi.org/10.5281/zenodo.21889954)
+
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
@@ -80,3 +82,11 @@ was verified against its DOI, arXiv ID, or ISBN.
 ## License
 
 MIT
+
+## Citation
+
+If you use this software, please cite it as:
+
+> Heller, R. (2026). *pressR: Pressure distribution analysis for capacitive sensor systems* (Version 0.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21889954
+
+DOI: [10.5281/zenodo.21889954](https://doi.org/10.5281/zenodo.21889954)
