@@ -1,0 +1,64 @@
+# API lock for a FROZEN package.
+#
+# This package underpins manuscripts written or in press. This workflow is the
+# only gate that BLOCKS here - every other quality gate in the CTTIR roadmap is
+# report-only for frozen packages, precisely so that no rule can pressure anyone
+# into editing a package a paper depends on.
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+name: api-lock
+
+permissions: read-all
+
+jobs:
+  api-lock:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      # Without NOT_CRAN, expect_snapshot() skips silently and the lock
+      # becomes a no-op that still reports green.
+      NOT_CRAN: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+          extra-repositories: https://cttir.r-universe.dev
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat, local::.
+          needs: check
+
+      - name: Run the API lock only
+        run: |
+          testthat::test_local(
+            path   = "tests/testthat",
+            filter = "api-lock",
+            reporter = testthat::MultiReporter$new(list(
+              testthat::ProgressReporter$new(),
+              testthat::CheckReporter$new()
+            ))
+          )
+        shell: Rscript {0}
+
+      - name: Explain a failure
+        if: failure()
+        run: |
+          echo "::error::The public API of this frozen package changed."
+          echo ""
+          echo "This package underpins manuscripts written or in press."
+          echo "A failure here means a signature, default, export or declared"
+          echo "dependency moved. The correct response is almost always to"
+          echo "revert the source change, NOT to accept the snapshot."
+          echo ""
+          echo "Adding a NEW export is the one additive change that is fine;"
+          echo "in that case existing snapshot lines must be untouched."
+          exit 1
