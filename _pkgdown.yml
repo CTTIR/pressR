@@ -118,6 +118,80 @@ reference:
       - pr_filter_time
       - pr_downsample
 
+  - title: "Cohort Ingest"
+    desc: >
+      Read a whole study into one object: a Pliance/Novel .asc reader that
+      honours the recorded time column and the device channel map, directory
+      batch reading, and filename-derived metadata.
+    contents:
+      - pr_read_pliance
+      - pr_read_dir
+      - pr_meta_from_filename
+  - title: "Device Channel Maps"
+    desc: >
+      Layouts built from an explicit channel-to-grid index map, for devices
+      whose channel order is not the grid's column-major order.
+    contents:
+      - pr_layout_from_index_map
+      - pr_layout_saddle_novel
+      - pr_channel_order
+  - title: "Cohort Handling"
+    desc: "Design tables, filtering as an assertion, and dataset validation."
+    contents:
+      - pr_design_table
+      - pr_dataset_filter
+      - pr_assert_cohort
+      - pr_validate_dataset
+  - title: "Frame Metrics (whole-grid)"
+    desc: >
+      Whole-grid counterparts to the loaded-cell family. See the details on
+      each for the denominator distinction.
+    contents:
+      - pr_frame_metrics
+      - pr_calc_mean_pressure_grid
+      - pr_calc_total_pressure
+      - pr_calc_loaded_count
+      - pr_calc_cop_grid
+      - pr_calc_pci
+      - pr_ref_pci
+  - title: "Per-Sensor Maps"
+    desc: "Time-averaged per-sensor statistics, feature matrices, and streaming cohort summaries."
+    contents:
+      - pr_sensor_map
+      - pr_profile_matrix
+      - pr_batch_frame_summary
+  - title: "Sensor Quality and Gradients"
+    contents:
+      - pr_sensor_quality
+      - pr_calc_gradient
+  - title: "Zones and Symmetry"
+    desc: >
+      Row-band masks with an explicit split, zone statistics on the
+      time-averaged map, and symmetry with a mirror-balance control.
+    contents:
+      - pr_mask_rowbands
+      - pr_calc_regional_map
+      - pr_calc_symmetry_map
+      - pr_mask_mirror_balance
+      - pr_symmetry_sensitivity
+      - pr_calc_cop_masked
+  - title: "Temporal Structure"
+    desc: >
+      Spectra and oscillation-based stride detection, for continuously loaded
+      sensors that never unload between contacts.
+    contents:
+      - pr_calc_spectrum
+      - pr_calc_dominant_freq
+      - pr_calc_stride_cycles
+      - pr_calc_phase_map
+      - pr_cop_shape
+  - title: "Provenance and Design Integrity"
+    contents:
+      - pr_lock_table
+      - pr_verify_lock
+      - pr_validate_summary
+      - pr_factor_contract
+      - pr_design_gaps
 articles:
   - title: "Getting Started"
     contents:
