@@ -101,14 +101,14 @@ those are not evidence that the data changed.</p>
 <span class="r-in"><span><span class="fu"><a href="pr_lock_table.html">pr_lock_table</a></span><span class="op">(</span><span class="va">design</span>, <span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">pr_verify_lock</span><span class="op">(</span><span class="va">design</span>, <span class="va">path</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Lock verified: <span style="color: #0000BB;">/tmp/RtmpnJ9Dph/file24f45c76d1dc.lock</span> matches `x` (3 rows x 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Lock verified: <span style="color: #0000BB;">/tmp/RtmpTa01Qx/file25636d03541b.lock</span> matches `x` (3 rows x 3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   columns, md5 <span style="color: #0000BB;">"1efdd17d"</span>).</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># One edited value: same shape, same names, different content.</span></span></span>
 <span class="r-in"><span><span class="va">edited</span> <span class="op">&lt;-</span> <span class="va">design</span></span></span>
 <span class="r-in"><span><span class="va">edited</span><span class="op">$</span><span class="va">n_frames</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">23431L</span></span></span>
 <span class="r-in"><span><span class="va">ok</span> <span class="op">&lt;-</span> <span class="fu">pr_verify_lock</span><span class="op">(</span><span class="va">edited</span>, <span class="va">path</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Lock mismatch for <span style="color: #0000BB;">/tmp/RtmpnJ9Dph/file24f45c76d1dc.lock</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Lock mismatch for <span style="color: #0000BB;">/tmp/RtmpTa01Qx/file25636d03541b.lock</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Content: same shape and names, different values (md5 1efdd17d -&gt; 76247d72).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Unchanged: <span style="color: #00BB00;">rows</span>, <span style="color: #00BB00;">columns</span>, and <span style="color: #00BB00;">types</span>.</span>
 <span class="r-in"><span><span class="va">ok</span></span></span>
