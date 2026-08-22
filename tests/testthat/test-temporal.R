@@ -252,13 +252,21 @@ test_that("pr_calc_stride_cycles numbers rejected intervals as gaps", {
 
   cycles <- pr_calc_stride_cycles(trial)
 
-  expect_false(3L %in% cycles$cycle)
-  expect_true(all(c(2L, 4L) %in% cycles$cycle))
-  expect_equal(max(diff(cycles$cycle)), 2L)
+  # Assert the INVARIANT, not which number is missing. Exactly which peak the
+  # detector lands on depends on floating-point detail in the moving-average
+  # and runmed edges, and it differs between macOS and Linux -- pinning the
+  # literal cycle number made this test platform-dependent.
+  expect_true(nrow(cycles) >= 2L)
+  expect_equal(max(diff(cycles$cycle)), 2L)          # exactly one hole
   expect_true(all(cycles$duration_s <= 3))
-  # The dropped interval spans the quiet stretch.
-  before <- cycles$end_idx[cycles$cycle == 2L]
-  after <- cycles$start_idx[cycles$cycle == 4L]
+
+  # The hole spans the quiet stretch, wherever it falls.
+  missing <- setdiff(seq(min(cycles$cycle), max(cycles$cycle)), cycles$cycle)
+  expect_length(missing, 1L)
+  before <- cycles$end_idx[cycles$cycle == missing - 1L]
+  after <- cycles$start_idx[cycles$cycle == missing + 1L]
+  expect_length(before, 1L)
+  expect_length(after, 1L)
   expect_gt((after - before) / fs, 3)
 
   # Every 1 s interval is too long for this ceiling, so nothing survives.
