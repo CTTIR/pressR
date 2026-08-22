@@ -656,6 +656,353 @@
 
         </dt>
         <dd>Downsample a Trial</dd>
+      </dl></div><div class="section level2">
+      <h2 id="cohort-ingest">Cohort Ingest<a class="anchor" aria-label="anchor" href="#cohort-ingest"></a></h2>
+
+      <div class="section-desc"><p>Read a whole study into one object: a Pliance/Novel .asc reader that honours the recorded time column and the device channel map, directory batch reading, and filename-derived metadata.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_read_pliance.html">pr_read_pliance()</a></code>
+
+        </dt>
+        <dd>Read a Novel/Pliance ASCII Export</dd>
+
+        <dt>
+
+          <code><a href="pr_read_dir.html">pr_read_dir()</a></code>
+
+        </dt>
+        <dd>Read a Directory of Pressure Exports</dd>
+
+        <dt>
+
+          <code><a href="pr_meta_from_filename.html">pr_meta_from_filename()</a></code>
+
+        </dt>
+        <dd>Split Metadata Fields Out of a File Name</dd>
+      </dl></div><div class="section level2">
+      <h2 id="device-channel-maps">Device Channel Maps<a class="anchor" aria-label="anchor" href="#device-channel-maps"></a></h2>
+
+      <div class="section-desc"><p>Layouts built from an explicit channel-to-grid index map, for devices whose channel order is not the grid’s column-major order.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_layout_from_index_map.html">pr_layout_from_index_map()</a></code>
+
+        </dt>
+        <dd>Build a Layout From an Explicit Channel Map</dd>
+
+        <dt>
+
+          <code><a href="pr_layout_saddle_novel.html">pr_layout_saddle_novel()</a></code>
+
+        </dt>
+        <dd>Novel/Pliance 16x16 Saddle Mat Layout</dd>
+
+        <dt>
+
+          <code><a href="pr_channel_order.html">pr_channel_order()</a></code>
+
+        </dt>
+        <dd>Raw Device Channel Order for a Layout</dd>
+      </dl></div><div class="section level2">
+      <h2 id="cohort-handling">Cohort Handling<a class="anchor" aria-label="anchor" href="#cohort-handling"></a></h2>
+
+      <div class="section-desc"><p>Design tables, filtering as an assertion, and dataset validation.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_design_table.html">pr_design_table()</a></code>
+
+        </dt>
+        <dd>Cohort Design Table</dd>
+
+        <dt>
+
+          <code><a href="pr_dataset_filter.html">pr_dataset_filter()</a></code>
+
+        </dt>
+        <dd>Filter a Dataset by Trial Metadata, With Count Assertions</dd>
+
+        <dt>
+
+          <code><a href="pr_assert_cohort.html">pr_assert_cohort()</a></code>
+
+        </dt>
+        <dd>Assert Cohort Size</dd>
+
+        <dt>
+
+          <code><a href="pr_validate_dataset.html">pr_validate_dataset()</a></code>
+
+        </dt>
+        <dd>Validate Cohort Homogeneity</dd>
+      </dl></div><div class="section level2">
+      <h2 id="frame-metrics-whole-grid-">Frame Metrics (whole-grid)<a class="anchor" aria-label="anchor" href="#frame-metrics-whole-grid-"></a></h2>
+
+      <div class="section-desc"><p>Whole-grid counterparts to the loaded-cell family. See the details on each for the denominator distinction.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_frame_metrics.html">pr_frame_metrics()</a></code>
+
+        </dt>
+        <dd>Per-Frame Metric Table</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_mean_pressure_grid.html">pr_calc_mean_pressure_grid()</a></code>
+
+        </dt>
+        <dd>Whole-Grid Mean Pressure Per Frame</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_total_pressure.html">pr_calc_total_pressure()</a></code>
+
+        </dt>
+        <dd>Total Pressure Per Frame</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_loaded_count.html">pr_calc_loaded_count()</a></code>
+
+        </dt>
+        <dd>Loaded Cell Count Per Frame</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_cop_grid.html">pr_calc_cop_grid()</a></code>
+
+        </dt>
+        <dd>Center of Pressure in Grid Index Units</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_pci.html">pr_calc_pci()</a></code>
+
+        </dt>
+        <dd>Peak/Mean Pressure Concentration Index</dd>
+
+        <dt>
+
+          <code><a href="pr_ref_pci.html">pr_ref_pci()</a></code>
+
+        </dt>
+        <dd>Pressure Concentration Index Interpretation Bands</dd>
+      </dl></div><div class="section level2">
+      <h2 id="per-sensor-maps">Per-Sensor Maps<a class="anchor" aria-label="anchor" href="#per-sensor-maps"></a></h2>
+
+      <div class="section-desc"><p>Time-averaged per-sensor statistics, feature matrices, and streaming cohort summaries.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_sensor_map.html">pr_sensor_map()</a></code>
+
+        </dt>
+        <dd>Per-Sensor Statistics Over Time</dd>
+
+        <dt>
+
+          <code><a href="pr_profile_matrix.html">pr_profile_matrix()</a></code>
+
+        </dt>
+        <dd>Per-Sensor Feature Matrix for a Dataset</dd>
+
+        <dt>
+
+          <code><a href="pr_batch_frame_summary.html">pr_batch_frame_summary()</a></code>
+
+        </dt>
+        <dd>Per-Recording Frame Summary for a Whole Cohort</dd>
+      </dl></div><div class="section level2">
+      <h2 id="sensor-quality-and-gradients">Sensor Quality and Gradients<a class="anchor" aria-label="anchor" href="#sensor-quality-and-gradients"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_sensor_quality.html">pr_sensor_quality()</a></code>
+
+        </dt>
+        <dd>Per-Sensor Hardware Quality Across a Cohort</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_gradient.html">pr_calc_gradient()</a></code>
+
+        </dt>
+        <dd>Spatial Pressure Gradient Magnitude</dd>
+      </dl></div><div class="section level2">
+      <h2 id="zones-and-symmetry">Zones and Symmetry<a class="anchor" aria-label="anchor" href="#zones-and-symmetry"></a></h2>
+
+      <div class="section-desc"><p>Row-band masks with an explicit split, zone statistics on the time-averaged map, and symmetry with a mirror-balance control.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_mask_rowbands.html">pr_mask_rowbands()</a></code>
+
+        </dt>
+        <dd>Row-Band Region Masks With an Explicit Split</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_regional_map.html">pr_calc_regional_map()</a></code>
+
+        </dt>
+        <dd>Zone Statistics of the Time-Averaged Sensor Map</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_symmetry_map.html">pr_calc_symmetry_map()</a></code>
+
+        </dt>
+        <dd>Left/Right Asymmetry of the Time-Averaged Sensor Map</dd>
+
+        <dt>
+
+          <code><a href="pr_mask_mirror_balance.html">pr_mask_mirror_balance()</a></code>
+
+        </dt>
+        <dd>Largest Mirror-Symmetric Subset of a Mask</dd>
+
+        <dt>
+
+          <code><a href="pr_symmetry_sensitivity.html">pr_symmetry_sensitivity()</a></code>
+
+        </dt>
+        <dd>Asymmetry Index Across a Family of Masks</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_cop_masked.html">pr_calc_cop_masked()</a></code>
+
+        </dt>
+        <dd>Centre of Pressure Per Region</dd>
+      </dl></div><div class="section level2">
+      <h2 id="temporal-structure">Temporal Structure<a class="anchor" aria-label="anchor" href="#temporal-structure"></a></h2>
+
+      <div class="section-desc"><p>Spectra and oscillation-based stride detection, for continuously loaded sensors that never unload between contacts.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_calc_spectrum.html">pr_calc_spectrum()</a></code>
+
+        </dt>
+        <dd>Power Spectrum of a Frame-Level Signal</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_dominant_freq.html">pr_calc_dominant_freq()</a></code>
+
+        </dt>
+        <dd>Dominant Oscillation Frequency in a Band</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_stride_cycles.html">pr_calc_stride_cycles()</a></code>
+
+        </dt>
+        <dd>Segment a Recording into Stride Cycles</dd>
+
+        <dt>
+
+          <code><a href="pr_calc_phase_map.html">pr_calc_phase_map()</a></code>
+
+        </dt>
+        <dd>Sensor Map Averaged Over the Stride Cycle</dd>
+
+        <dt>
+
+          <code><a href="pr_cop_shape.html">pr_cop_shape()</a></code>
+
+        </dt>
+        <dd>Loop Geometry of a COP Trajectory</dd>
+      </dl></div><div class="section level2">
+      <h2 id="provenance-and-design-integrity">Provenance and Design Integrity<a class="anchor" aria-label="anchor" href="#provenance-and-design-integrity"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pr_lock_table.html">pr_lock_table()</a></code>
+
+        </dt>
+        <dd>Lock a Table's Content and Shape</dd>
+
+        <dt>
+
+          <code><a href="pr_verify_lock.html">pr_verify_lock()</a></code>
+
+        </dt>
+        <dd>Verify a Table Against Its Lock File</dd>
+
+        <dt>
+
+          <code><a href="pr_validate_summary.html">pr_validate_summary()</a></code>
+
+        </dt>
+        <dd>Two-Tier Data Frame Validation</dd>
+
+        <dt>
+
+          <code><a href="pr_factor_contract.html">pr_factor_contract()</a></code>
+
+        </dt>
+        <dd>Assert the Level Sets of Design Factors</dd>
+
+        <dt>
+
+          <code><a href="pr_design_gaps.html">pr_design_gaps()</a></code>
+
+        </dt>
+        <dd>Observed Design Cells Against the Full Crossing</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

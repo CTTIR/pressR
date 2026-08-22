@@ -281,6 +281,130 @@ Predefined and custom sensor coordinate layouts
 - [`pr_downsample()`](https://cttir.github.io/pressR/reference/pr_downsample.md)
   : Downsample a Trial
 
+## Cohort Ingest
+
+Read a whole study into one object: a Pliance/Novel .asc reader that
+honours the recorded time column and the device channel map, directory
+batch reading, and filename-derived metadata.
+
+- [`pr_read_pliance()`](https://cttir.github.io/pressR/reference/pr_read_pliance.md)
+  : Read a Novel/Pliance ASCII Export
+- [`pr_read_dir()`](https://cttir.github.io/pressR/reference/pr_read_dir.md)
+  : Read a Directory of Pressure Exports
+- [`pr_meta_from_filename()`](https://cttir.github.io/pressR/reference/pr_meta_from_filename.md)
+  : Split Metadata Fields Out of a File Name
+
+## Device Channel Maps
+
+Layouts built from an explicit channel-to-grid index map, for devices
+whose channel order is not the grid’s column-major order.
+
+- [`pr_layout_from_index_map()`](https://cttir.github.io/pressR/reference/pr_layout_from_index_map.md)
+  : Build a Layout From an Explicit Channel Map
+- [`pr_layout_saddle_novel()`](https://cttir.github.io/pressR/reference/pr_layout_saddle_novel.md)
+  : Novel/Pliance 16x16 Saddle Mat Layout
+- [`pr_channel_order()`](https://cttir.github.io/pressR/reference/pr_channel_order.md)
+  : Raw Device Channel Order for a Layout
+
+## Cohort Handling
+
+Design tables, filtering as an assertion, and dataset validation.
+
+- [`pr_design_table()`](https://cttir.github.io/pressR/reference/pr_design_table.md)
+  : Cohort Design Table
+- [`pr_dataset_filter()`](https://cttir.github.io/pressR/reference/pr_dataset_filter.md)
+  : Filter a Dataset by Trial Metadata, With Count Assertions
+- [`pr_assert_cohort()`](https://cttir.github.io/pressR/reference/pr_assert_cohort.md)
+  : Assert Cohort Size
+- [`pr_validate_dataset()`](https://cttir.github.io/pressR/reference/pr_validate_dataset.md)
+  : Validate Cohort Homogeneity
+
+## Frame Metrics (whole-grid)
+
+Whole-grid counterparts to the loaded-cell family. See the details on
+each for the denominator distinction.
+
+- [`pr_frame_metrics()`](https://cttir.github.io/pressR/reference/pr_frame_metrics.md)
+  : Per-Frame Metric Table
+- [`pr_calc_mean_pressure_grid()`](https://cttir.github.io/pressR/reference/pr_calc_mean_pressure_grid.md)
+  : Whole-Grid Mean Pressure Per Frame
+- [`pr_calc_total_pressure()`](https://cttir.github.io/pressR/reference/pr_calc_total_pressure.md)
+  : Total Pressure Per Frame
+- [`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md)
+  : Loaded Cell Count Per Frame
+- [`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md)
+  : Center of Pressure in Grid Index Units
+- [`pr_calc_pci()`](https://cttir.github.io/pressR/reference/pr_calc_pci.md)
+  : Peak/Mean Pressure Concentration Index
+- [`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
+  : Pressure Concentration Index Interpretation Bands
+
+## Per-Sensor Maps
+
+Time-averaged per-sensor statistics, feature matrices, and streaming
+cohort summaries.
+
+- [`pr_sensor_map()`](https://cttir.github.io/pressR/reference/pr_sensor_map.md)
+  : Per-Sensor Statistics Over Time
+- [`pr_profile_matrix()`](https://cttir.github.io/pressR/reference/pr_profile_matrix.md)
+  : Per-Sensor Feature Matrix for a Dataset
+- [`pr_batch_frame_summary()`](https://cttir.github.io/pressR/reference/pr_batch_frame_summary.md)
+  : Per-Recording Frame Summary for a Whole Cohort
+
+## Sensor Quality and Gradients
+
+- [`pr_sensor_quality()`](https://cttir.github.io/pressR/reference/pr_sensor_quality.md)
+  : Per-Sensor Hardware Quality Across a Cohort
+- [`pr_calc_gradient()`](https://cttir.github.io/pressR/reference/pr_calc_gradient.md)
+  : Spatial Pressure Gradient Magnitude
+
+## Zones and Symmetry
+
+Row-band masks with an explicit split, zone statistics on the
+time-averaged map, and symmetry with a mirror-balance control.
+
+- [`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md)
+  : Row-Band Region Masks With an Explicit Split
+- [`pr_calc_regional_map()`](https://cttir.github.io/pressR/reference/pr_calc_regional_map.md)
+  : Zone Statistics of the Time-Averaged Sensor Map
+- [`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md)
+  : Left/Right Asymmetry of the Time-Averaged Sensor Map
+- [`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md)
+  : Largest Mirror-Symmetric Subset of a Mask
+- [`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
+  : Asymmetry Index Across a Family of Masks
+- [`pr_calc_cop_masked()`](https://cttir.github.io/pressR/reference/pr_calc_cop_masked.md)
+  : Centre of Pressure Per Region
+
+## Temporal Structure
+
+Spectra and oscillation-based stride detection, for continuously loaded
+sensors that never unload between contacts.
+
+- [`pr_calc_spectrum()`](https://cttir.github.io/pressR/reference/pr_calc_spectrum.md)
+  : Power Spectrum of a Frame-Level Signal
+- [`pr_calc_dominant_freq()`](https://cttir.github.io/pressR/reference/pr_calc_dominant_freq.md)
+  : Dominant Oscillation Frequency in a Band
+- [`pr_calc_stride_cycles()`](https://cttir.github.io/pressR/reference/pr_calc_stride_cycles.md)
+  : Segment a Recording into Stride Cycles
+- [`pr_calc_phase_map()`](https://cttir.github.io/pressR/reference/pr_calc_phase_map.md)
+  : Sensor Map Averaged Over the Stride Cycle
+- [`pr_cop_shape()`](https://cttir.github.io/pressR/reference/pr_cop_shape.md)
+  : Loop Geometry of a COP Trajectory
+
+## Provenance and Design Integrity
+
+- [`pr_lock_table()`](https://cttir.github.io/pressR/reference/pr_lock_table.md)
+  : Lock a Table's Content and Shape
+- [`pr_verify_lock()`](https://cttir.github.io/pressR/reference/pr_verify_lock.md)
+  : Verify a Table Against Its Lock File
+- [`pr_validate_summary()`](https://cttir.github.io/pressR/reference/pr_validate_summary.md)
+  : Two-Tier Data Frame Validation
+- [`pr_factor_contract()`](https://cttir.github.io/pressR/reference/pr_factor_contract.md)
+  : Assert the Level Sets of Design Factors
+- [`pr_design_gaps()`](https://cttir.github.io/pressR/reference/pr_design_gaps.md)
+  : Observed Design Cells Against the Full Crossing
+
 # Articles
 
 ### Getting Started
