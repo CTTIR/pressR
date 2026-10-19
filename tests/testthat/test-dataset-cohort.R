@@ -378,10 +378,9 @@ test_that("pr_validate_dataset rejects bad input", {
 
 # ---- ground truth ---------------------------------------------------------
 
-study_design_path <- file.path(
-  "/run/media/rh/LaCie 8TB Ext4/Desktop/2025_PR_saddle_analysis",
-  "workflow/data/tidy_data/design.rds"
-)
+# Path to the study's design.rds; set PRESSR_STUDY_DESIGN locally to run
+# this test, otherwise it is skipped.
+study_design_path <- Sys.getenv("PRESSR_STUDY_DESIGN")
 
 test_that("pr_assert_cohort agrees with the study's real design table", {
   skip_if_not(file.exists(study_design_path), "study design.rds unavailable")
