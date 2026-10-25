@@ -18,3 +18,4 @@
 ^MEMORY\.md$
 ^_pkgdown\.yml$
 ^_coverage$
+^tools/branding$
