@@ -1,0 +1,17 @@
+identity,rendered,destination
+pressR,icon-256.png,inst/shiny/pressR/www/logo.png
+pressR,icon-128.png,man/figures/icon-128.png
+pressR,icon-256.png,man/figures/icon-256.png
+pressR,icon-32.png,man/figures/icon-32.png
+pressR,icon-48.png,man/figures/icon-48.png
+pressR,icon-64.png,man/figures/icon-64.png
+pressR,logo-light.png,man/figures/logo-light.png
+pressR,logo-light.svg,man/figures/logo-light.svg
+pressR,logo-mono.png,man/figures/logo-mono.png
+pressR,logo-mono.svg,man/figures/logo-mono.svg
+pressR,logo-symbol.svg,man/figures/logo-symbol.svg
+pressR,logo.pdf,man/figures/logo.pdf
+pressR,logo.png,man/figures/logo.png
+pressR,logo.svg,man/figures/logo.svg
+pressR,icon-48.png,pkgdown/favicon/favicon-48x48.png
+pressR,logo-symbol.svg,pressR_icon.svg
