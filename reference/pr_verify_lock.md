@@ -73,14 +73,14 @@ path <- tempfile(fileext = ".lock")
 pr_lock_table(design, path)
 
 pr_verify_lock(design, path)
-#> ✔ Lock verified: /tmp/RtmpDeTWml/file1ef4379ae176.lock matches `x` (3 rows x 3
+#> ✔ Lock verified: /tmp/RtmpecgAEt/file1f79384c5641.lock matches `x` (3 rows x 3
 #>   columns, md5 "1efdd17d").
 
 # One edited value: same shape, same names, different content.
 edited <- design
 edited$n_frames[1] <- 23431L
 ok <- pr_verify_lock(edited, path)
-#> ✖ Lock mismatch for /tmp/RtmpDeTWml/file1ef4379ae176.lock.
+#> ✖ Lock mismatch for /tmp/RtmpecgAEt/file1f79384c5641.lock.
 #> • Content: same shape and names, different values (md5 1efdd17d -> 76247d72).
 #> ℹ Unchanged: rows, columns, and types.
 ok
