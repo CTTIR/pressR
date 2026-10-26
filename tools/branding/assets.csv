@@ -28,3 +28,9 @@ pressR,hex.png,man/figures/logo.png
 pressR,hex.svg,man/figures/logo.svg
 pressR,icon-48.png,pkgdown/favicon/favicon-48x48.png
 pressR,hex.svg,pressR_icon.svg
+pressR,hex-dark.svg,pkgdown/favicon/favicon.svg
+pressR,favicon.ico,pkgdown/favicon/favicon.ico
+pressR,icon-96.png,pkgdown/favicon/favicon-96x96.png
+pressR,icon-180.png,pkgdown/favicon/apple-touch-icon.png
+pressR,icon-192.png,pkgdown/favicon/web-app-manifest-192x192.png
+pressR,icon-512.png,pkgdown/favicon/web-app-manifest-512x512.png
