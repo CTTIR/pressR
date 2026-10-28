@@ -1,5 +1,11 @@
 # Changelog
 
+## pressR (development version)
+
+- Standardize the named v5 package logo across README, documentation
+  pages and available application headers, with matching light and dark
+  artwork.
+
 ## pressR 0.1.0
 
 ### Initial release

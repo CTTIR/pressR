@@ -1,5 +1,7 @@
 # Foot Pressure Analysis for Pedography and Gait Assessment
 
+![pressR logo](figures/logo.svg)![pressR logo](figures/logo-dark.svg)
+
 [![R-CMD-check](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
 [![CRAN
@@ -37,7 +39,7 @@ trial
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-10-26"
+#> • Date: "2026-10-28"
 #> • Condition: "walking"
 ```
 
