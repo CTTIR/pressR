@@ -3,9 +3,9 @@
 
 # -------- UI ---------------------------------------------------------------
 ui <- bslib::page_navbar(
+  window_title = "pressR",
   title = shiny::tags$span(
-    shiny::tags$img(src = "logo.png", height = "30px",
-                    style = "margin-right: 10px;"),
+    utils::getFromNamespace(".cttir_brand_logo", "pressR")(mode = "dark"),
     "pressR"
   ),
   theme = bslib::bs_theme(
