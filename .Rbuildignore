@@ -8,7 +8,8 @@
 ^cran-comments\.md$
 ^\.archive$
 ^LICENSE\.md$
-^.*\.svg$
+^man/figures/.*\.svg$
+^pressR_icon\.svg$
 ^\.lintr$
 ^codecov\.yml$
 ^\.Rproj\.user$
