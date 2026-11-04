@@ -80,13 +80,15 @@ rbind(
 )[, c("balanced", "n_left", "n_right", "asymmetry_pct")]
 }
 \seealso{
-\code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}} for a single scheme.
-
 Other regional symmetry functions:
-\code{\link[=pr_calc_cop_masked]{pr_calc_cop_masked()}},
-\code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}},
-\code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}},
-\code{\link[=pr_mask_mirror_balance]{pr_mask_mirror_balance()}},
-\code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}}
+\itemize{
+\item \code{\link[=pr_calc_cop_masked]{pr_calc_cop_masked()}}
+\item \code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}}
+\item \code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}}
+\item \code{\link[=pr_mask_mirror_balance]{pr_mask_mirror_balance()}}
+\item \code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}}
+}
+
+\code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}} for a single scheme.
 }
 \concept{regional symmetry functions}

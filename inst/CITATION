@@ -1,0 +1,8 @@
+bibentry(
+  bibtype = "Manual",
+  title = "pressR: Pressure Distribution Analysis for Capacitive Sensor Systems",
+  author = person("R.", "Heller"),
+  year = "2026",
+  note = paste("R package version", meta$Version),
+  url = "https://github.com/CTTIR/pressR"
+)

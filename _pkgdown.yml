@@ -12,6 +12,7 @@ navbar:
   components:
     github:
       icon: fa-github
+      aria-label: GitHub repository
       href: https://github.com/cttir/pressR
 
 reference:
@@ -64,6 +65,7 @@ reference:
   - title: "Trial Summary"
     contents:
       - pr_summary
+      - pr_summary_long
       - pr_calc_symmetry_index
   - title: "Regional Analysis"
     contents:
@@ -75,7 +77,7 @@ reference:
       - pr_calc_saddle_bridge
       - pr_calc_saddle_slip
       - pr_calc_seat_hotspot
-  - title: "Reference Thresholds"
+  - title: "Reference Observations"
     contents:
       - pr_ref_saddle
       - pr_ref_diabetic_foot
@@ -101,6 +103,9 @@ reference:
     contents:
       - pr_export_csv
       - pr_export_report
+      - pr_report_info
+      - pr_write_bundle
+      - pr_read_bundle
   - title: "Batch Processing"
     contents:
       - pr_batch_summary
@@ -185,6 +190,8 @@ reference:
       - pr_calc_stride_cycles
       - pr_calc_phase_map
       - pr_cop_shape
+      - pr_temporal_profile
+      - pr_lock_cycles
   - title: "Provenance and Design Integrity"
     contents:
       - pr_lock_table
@@ -192,6 +199,15 @@ reference:
       - pr_validate_summary
       - pr_factor_contract
       - pr_design_gaps
+  - title: "Study Attachments"
+    desc: "Inventory and explicitly selected ancillary files, with source identities retained."
+    contents:
+      - pr_inventory
+      - pr_read_workbook
+      - pr_read_asset
+      - pr_link_assets
+      - pr_list_archive
+      - pr_extract_archive
 articles:
   - title: "Getting Started"
     contents:

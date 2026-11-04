@@ -14,7 +14,7 @@ fixture <- function() test_path("fixtures", "ID052_K_K_KG00_MS.asc")
 study_metrics <- function(p) {
   n_cells <- ncol(p)
   side <- sqrt(n_cells)
-  grid_row <- rep(seq_len(side), times = side)   # column-major
+  grid_row <- rep(seq_len(side), times = side) # column-major
   grid_col <- rep(seq_len(side), each = side)
   total <- rowSums(p)
   den <- total + 1e-12
@@ -35,8 +35,10 @@ write_pliance <- function(path, mat, time = seq_len(nrow(mat)) / 50) {
   hdr <- c(
     "Dateiname:  synth.mat\tDatum/Zeit: 03.04.24 11.07",
     "Kalibrationsdatei:  synth_cal",
-    paste0("gesamte Messzeit [Sek.]: ", sprintf("%.3f", max(time)),
-           "\tZeit pro Bild [Sek.]:  0.02000\tMessfrequenz [Hz]:   50"),
+    paste0(
+      "gesamte Messzeit [Sek.]: ", sprintf("%.3f", max(time)),
+      "\tZeit pro Bild [Sek.]:  0.02000\tMessfrequenz [Hz]:   50"
+    ),
     "Druckwerte in  kPa",
     "",
     "elektrisch:",
@@ -92,7 +94,8 @@ test_that("pr_meta_from_filename honours on_fail", {
   fields <- c("ID", "Saddle", "Pad", "Weight", "Mode")
 
   na_row <- pr_meta_from_filename("ID003_K_K_KG60_MH_R01.asc", fields,
-                                  on_fail = "na")
+    on_fail = "na"
+  )
   expect_equal(nrow(na_row), 1L)
   expect_equal(names(na_row), fields)
   expect_true(all(vapply(na_row, is.na, logical(1))))
@@ -100,28 +103,36 @@ test_that("pr_meta_from_filename honours on_fail", {
 
   expect_error(
     pr_meta_from_filename("ID003_K_K_KG60_MH_R01.asc", fields,
-                          on_fail = "error"),
+      on_fail = "error"
+    ),
     "does not split"
   )
 })
 
 test_that("pr_meta_from_filename honours a custom separator", {
   out <- pr_meta_from_filename("2024-05-01-walk.txt", c("y", "m", "d", "task"),
-                               sep = "-")
+    sep = "-"
+  )
   expect_equal(out$y, "2024")
   expect_equal(out$task, "walk")
   # The default separator does not split this name at all.
-  expect_null(pr_meta_from_filename("2024-05-01-walk.txt",
-                                    c("y", "m", "d", "task")))
+  expect_null(pr_meta_from_filename(
+    "2024-05-01-walk.txt",
+    c("y", "m", "d", "task")
+  ))
 })
 
 test_that("pr_meta_from_filename validates its arguments", {
-  expect_error(pr_meta_from_filename(c("a_b", "c_d"), c("x", "y")),
-               "single, non-missing")
+  expect_error(
+    pr_meta_from_filename(c("a_b", "c_d"), c("x", "y")),
+    "single, non-missing"
+  )
   expect_error(pr_meta_from_filename("a_b", character(0)), "character vector")
   expect_error(pr_meta_from_filename("a_b_c", c("x", "x", "y")), "unique")
-  expect_error(pr_meta_from_filename("a_b", c("x", "y"), sep = ""),
-               "non-empty")
+  expect_error(
+    pr_meta_from_filename("a_b", c("x", "y"), sep = ""),
+    "non-empty"
+  )
 })
 
 
@@ -160,12 +171,12 @@ test_that("pr_read_pliance reproduces the study's frame statistics", {
   trial <- pr_read_pliance(fixture())
   got <- study_metrics(trial$pressure)
 
-  expect_equal(got$mean_kPa_avg,  1.6354980469, tolerance = 1e-9)
-  expect_equal(got$mean_kPa_sd,   0.0272013729, tolerance = 1e-8)
-  expect_equal(got$peak_kPa_max,  7)
-  expect_equal(got$peak_kPa_avg,  6.8275, tolerance = 1e-9)
+  expect_equal(got$mean_kPa_avg, 1.6354980469, tolerance = 1e-9)
+  expect_equal(got$mean_kPa_sd, 0.0272013729, tolerance = 1e-8)
+  expect_equal(got$peak_kPa_max, 7)
+  expect_equal(got$peak_kPa_avg, 6.8275, tolerance = 1e-9)
   expect_equal(got$total_kPa_avg, 418.6875, tolerance = 1e-9)
-  expect_equal(got$loaded_avg,    93.305, tolerance = 1e-9)
+  expect_equal(got$loaded_avg, 93.305, tolerance = 1e-9)
 
   # PCI, as the study defines it.
   expect_equal(got$peak_kPa_avg / got$mean_kPa_avg, 4.1745693, tolerance = 1e-6)
@@ -203,10 +214,15 @@ test_that("pr_read_pliance extracts the Pliance header block", {
 })
 
 test_that("pr_read_pliance lets the caller override header values", {
-  trial <- pr_read_pliance(fixture(), sampling_hz = 10,
-                           metadata = list(subject_id = "ID052",
-                                           condition = "K_K_KG00_MS"))
-  expect_equal(trial$sampling_hz, 10)
+  expect_error(pr_read_pliance(fixture(), sampling_hz = 10), "conflicts")
+  trial <- pr_read_pliance(fixture(),
+    sampling_hz = 50,
+    metadata = list(
+      subject_id = "ID052",
+      condition = "K_K_KG00_MS"
+    )
+  )
+  expect_equal(trial$sampling_hz, 50)
   expect_equal(trial$metadata$subject_id, "ID052")
   expect_equal(trial$metadata$condition, "K_K_KG00_MS")
   # The recorded timestamps are untouched by the override.
@@ -238,12 +254,12 @@ test_that("a single hot device channel lands on the right grid cell", {
   # This is the whole channel map in six assertions. Channel 1 is on the
   # RIGHT panel at grid (1, 9); channel 9 starts the LEFT panel, which runs
   # right-to-left, at (1, 8); each further 16 channels advance one grid row.
-  expect_equal(cell_of(1), c(1L, 9L))    # channel 1
-  expect_equal(cell_of(2), c(1L, 16L))   # channel 8  - end of right panel
-  expect_equal(cell_of(3), c(1L, 8L))    # channel 9  - start of left panel
-  expect_equal(cell_of(4), c(1L, 1L))    # channel 16 - end of left panel
-  expect_equal(cell_of(5), c(2L, 9L))    # channel 17 - next row
-  expect_equal(cell_of(6), c(16L, 1L))   # channel 256
+  expect_equal(cell_of(1), c(1L, 9L)) # channel 1
+  expect_equal(cell_of(2), c(1L, 16L)) # channel 8  - end of right panel
+  expect_equal(cell_of(3), c(1L, 8L)) # channel 9  - start of left panel
+  expect_equal(cell_of(4), c(1L, 1L)) # channel 16 - end of left panel
+  expect_equal(cell_of(5), c(2L, 9L)) # channel 17 - next row
+  expect_equal(cell_of(6), c(16L, 1L)) # channel 256
 })
 
 test_that("without a channel map the columns stay in device order", {
@@ -275,13 +291,17 @@ test_that("an explicit channel_map permutes the columns", {
   expect_equal(trial$pressure[2, ], c(6, 8, 5, 7))
 
   # A bare permutation vector is equivalent to the matrix form.
-  trial2 <- pr_read_pliance(path, layout = square_layout(),
-                            channel_map = as.vector(cmap))
+  trial2 <- pr_read_pliance(path,
+    layout = square_layout(),
+    channel_map = as.vector(cmap)
+  )
   expect_equal(trial2$pressure, trial$pressure)
 
   # The identity map is a no-op.
-  trial3 <- pr_read_pliance(path, layout = square_layout(),
-                            channel_map = 1:4)
+  trial3 <- pr_read_pliance(path,
+    layout = square_layout(),
+    channel_map = 1:4
+  )
   expect_equal(trial3$pressure[1, ], c(1, 2, 3, 4))
 })
 
@@ -291,15 +311,23 @@ test_that("pr_read_pliance rejects a malformed channel map", {
   lay <- square_layout()
 
   # Not a permutation.
-  expect_error(pr_read_pliance(path, layout = lay, channel_map = c(1, 1, 2, 3)),
-               "permutation")
+  expect_error(
+    pr_read_pliance(path, layout = lay, channel_map = c(1, 1, 2, 3)),
+    "permutation"
+  )
   # Right values, wrong length.
-  expect_error(pr_read_pliance(path, layout = lay, channel_map = 1:3),
-               "sensor column")
+  expect_error(
+    pr_read_pliance(path, layout = lay, channel_map = 1:3),
+    "sensor column"
+  )
   # Fractional channel numbers.
-  expect_error(pr_read_pliance(path, layout = lay,
-                               channel_map = c(1.5, 2, 3, 4)),
-               "whole")
+  expect_error(
+    pr_read_pliance(path,
+      layout = lay,
+      channel_map = c(1.5, 2, 3, 4)
+    ),
+    "whole"
+  )
   # Matrix shape disagrees with the grid.
   expect_error(
     pr_read_pliance(path, layout = lay, channel_map = matrix(1:4, nrow = 1)),
@@ -312,10 +340,12 @@ test_that("pr_read_pliance rejects a malformed channel map", {
 
 test_that("on_na drops or zeroes frames containing the '___' token", {
   path <- withr::local_tempfile(fileext = ".asc")
-  mat <- matrix(as.character(c(1, 2, 3, 4,
-                               5, 6, 7, 8,
-                               9, 10, 11, 12)), nrow = 3, byrow = TRUE)
-  mat[2, 3] <- "___"                     # one unread cell in frame 2
+  mat <- matrix(as.character(c(
+    1, 2, 3, 4,
+    5, 6, 7, 8,
+    9, 10, 11, 12
+  )), nrow = 3, byrow = TRUE)
+  mat[2, 3] <- "___" # one unread cell in frame 2
   write_pliance(path, mat, time = c(0.02, 0.04, 0.06))
 
   expect_warning(
@@ -340,8 +370,10 @@ test_that("pr_read_pliance aborts when every frame is missing", {
   path <- withr::local_tempfile(fileext = ".asc")
   mat <- matrix("___", nrow = 2, ncol = 4)
   write_pliance(path, mat, time = c(0.02, 0.04))
-  expect_error(pr_read_pliance(path, layout = square_layout()),
-               "Every frame")
+  expect_error(
+    pr_read_pliance(path, layout = square_layout()),
+    "Every frame"
+  )
 })
 
 
@@ -379,8 +411,10 @@ test_that("pr_read_pliance can synthesise time when told to", {
   # time_col = NULL treats every column as a sensor, so use a 5-cell layout.
   lay <- pr_layout(
     1, 5, matrix(TRUE, 1, 5),
-    data.frame(sensor_id = 1:5, row = rep(1L, 5), col = 1:5,
-               x_mm = 0:4, y_mm = rep(0, 5)),
+    data.frame(
+      sensor_id = 1:5, row = rep(1L, 5), col = 1:5,
+      x_mm = 0:4, y_mm = rep(0, 5)
+    ),
     name = "strip5"
   )
   trial <- pr_read_pliance(path, layout = lay, time_col = NULL)
@@ -396,15 +430,17 @@ make_dir <- function() {
   mat <- rbind(c(1, 2, 3, 4), c(5, 6, 7, 8))
   write_pliance(file.path(dir, "ID001_K_KG00.asc"), mat)
   write_pliance(file.path(dir, "ID002_W_KG40.asc"), mat)
-  write_pliance(file.path(dir, "ID002_W_KG40_R01.asc"), mat)  # repeat take
+  write_pliance(file.path(dir, "ID002_W_KG40_R01.asc"), mat) # repeat take
   writeLines("not a pressure file", file.path(dir, "notes.txt"))
   dir
 }
 
 test_that("pr_read_dir reads matching files and reports the skips", {
   dir <- make_dir()
-  ds <- pr_read_dir(dir, layout = square_layout(),
-                    meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE)
+  ds <- pr_read_dir(dir,
+    layout = square_layout(),
+    meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE
+  )
 
   expect_s3_class(ds, "pr_dataset")
   expect_equal(length(ds), 2L)
@@ -414,15 +450,19 @@ test_that("pr_read_dir reads matching files and reports the skips", {
   # notes.txt does not match the pattern, so it is not a candidate at all.
   expect_equal(nrow(rep_tbl), 3L)
   expect_equal(sum(rep_tbl$status == "ok"), 2L)
-  expect_equal(rep_tbl$file[rep_tbl$status == "skipped"],
-               "ID002_W_KG40_R01.asc")
+  expect_equal(
+    rep_tbl$file[rep_tbl$status == "skipped"],
+    "ID002_W_KG40_R01.asc"
+  )
   expect_match(rep_tbl$reason[rep_tbl$status == "skipped"], "3 field")
 })
 
 test_that("pr_read_dir writes the name fields into trial metadata", {
   dir <- make_dir()
-  ds <- pr_read_dir(dir, layout = square_layout(),
-                    meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE)
+  ds <- pr_read_dir(dir,
+    layout = square_layout(),
+    meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE
+  )
 
   md <- ds$trials[[2]]$metadata
   expect_equal(md$ID, "ID002")
@@ -444,8 +484,10 @@ test_that("pr_read_dir skips unreadable files but keeps the rest", {
   dir <- make_dir()
   writeLines(c("junk", "junk"), file.path(dir, "ID003_K_KG60.asc"))
 
-  ds <- pr_read_dir(dir, layout = square_layout(),
-                    meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE)
+  ds <- pr_read_dir(dir,
+    layout = square_layout(),
+    meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE
+  )
   expect_equal(length(ds), 2L)
   rep_tbl <- attr(ds, "read_report")
   bad <- rep_tbl[rep_tbl$file == "ID003_K_KG60.asc", ]
@@ -457,9 +499,11 @@ test_that("pr_read_dir with on_error = 'abort' re-throws the first failure", {
   dir <- make_dir()
   writeLines(c("junk", "junk"), file.path(dir, "ID003_K_KG60.asc"))
   expect_error(
-    pr_read_dir(dir, layout = square_layout(),
-                meta_fields = c("ID", "Saddle", "Weight"),
-                on_error = "abort", quiet = TRUE),
+    pr_read_dir(dir,
+      layout = square_layout(),
+      meta_fields = c("ID", "Saddle", "Weight"),
+      on_error = "abort", quiet = TRUE
+    ),
     "Failed to read"
   )
 })
@@ -467,13 +511,17 @@ test_that("pr_read_dir with on_error = 'abort' re-throws the first failure", {
 test_that("pr_read_dir reports counts unless quiet", {
   dir <- make_dir()
   expect_message(
-    pr_read_dir(dir, layout = square_layout(),
-                meta_fields = c("ID", "Saddle", "Weight")),
+    pr_read_dir(dir,
+      layout = square_layout(),
+      meta_fields = c("ID", "Saddle", "Weight")
+    ),
     "Read 2 files"
   )
   expect_silent(
-    pr_read_dir(dir, layout = square_layout(),
-                meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE)
+    pr_read_dir(dir,
+      layout = square_layout(),
+      meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE
+    )
   )
 })
 
@@ -496,8 +544,10 @@ test_that("pr_read_dir reads the real export end to end", {
   dir <- withr::local_tempdir()
   file.copy(fixture(), file.path(dir, "ID052_K_K_KG00_MS.asc"))
 
-  ds <- pr_read_dir(dir, meta_fields = c("ID", "Saddle", "Pad", "Weight", "Mode"),
-                    quiet = TRUE)
+  ds <- pr_read_dir(dir,
+    meta_fields = c("ID", "Saddle", "Pad", "Weight", "Mode"),
+    quiet = TRUE
+  )
   expect_equal(length(ds), 1L)
 
   trial <- ds$trials[[1]]
@@ -507,5 +557,6 @@ test_that("pr_read_dir reads the real export end to end", {
   expect_equal(trial$metadata$subject_id, "ID052")
   expect_equal(trial$metadata$condition, "K_K_KG00_MS")
   expect_equal(study_metrics(trial$pressure)$cop_col_mean, 9.9747067535,
-               tolerance = 1e-8)
+    tolerance = 1e-8
+  )
 })

@@ -4,13 +4,15 @@
 \alias{pr_plot_saddle_report}
 \title{Saddle Fit Report Panel}
 \usage{
-pr_plot_saddle_report(trial, thresholds = NULL)
+pr_plot_saddle_report(trial, thresholds = NULL, masks = NULL)
 }
 \arguments{
 \item{trial}{A \link{pr_trial} from a saddle recording.}
 
 \item{thresholds}{A reference threshold tibble (typically from
-\code{\link[=pr_ref_saddle]{pr_ref_saddle()}}). If \code{NULL}, uses the von Peinen 2010 defaults.}
+\code{\link[=pr_ref_saddle]{pr_ref_saddle()}}). If \code{NULL}, no reference overlay is drawn.}
+
+\item{masks}{Explicit region masks. NULL uses the historical six-mask layout.}
 }
 \value{
 A \code{patchwork} object (4-panel composite).

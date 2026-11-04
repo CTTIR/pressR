@@ -89,7 +89,7 @@
 
 # Internal: single numeric that may be NA, but must be positive if it is not.
 .check_optional_positive <- function(x, arg) {
-  if (!is.numeric(x) || length(x) != 1L) {
+  if (!.real_vector(x) || length(x) != 1L || is.nan(x)) {
     cli::cli_abort("{.arg {arg}} must be a single number or {.code NA}.")
   }
   if (!is.na(x) && (x <= 0 || is.infinite(x))) {

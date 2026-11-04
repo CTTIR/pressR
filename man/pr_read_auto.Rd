@@ -4,7 +4,7 @@
 \alias{pr_read_auto}
 \title{Auto-Detect and Read a Pressure Data File}
 \usage{
-pr_read_auto(path, layout = NULL, verbose = TRUE)
+pr_read_auto(path, layout = NULL, verbose = TRUE, filename = basename(path))
 }
 \arguments{
 \item{path}{Character. Path to any supported pressure data file.}
@@ -13,6 +13,9 @@ pr_read_auto(path, layout = NULL, verbose = TRUE)
 dispatched parser.}
 
 \item{verbose}{Logical. Default \code{TRUE}.}
+
+\item{filename}{Original filename when path is an upload temporary file.
+Only the extension and recording identity are used; content is read from path.}
 }
 \value{
 A \link{pr_trial} object (for \code{.asc} / \code{.txt} / \code{.csv}), or a

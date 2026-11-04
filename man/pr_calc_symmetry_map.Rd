@@ -73,14 +73,16 @@ pr_calc_symmetry_map(trial, bands$cranial)
 pr_calc_symmetry_map(trial, denominator = "loaded")$asymmetry_pct
 }
 \seealso{
+Other regional symmetry functions:
+\itemize{
+\item \code{\link[=pr_calc_cop_masked]{pr_calc_cop_masked()}}
+\item \code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}}
+\item \code{\link[=pr_mask_mirror_balance]{pr_mask_mirror_balance()}}
+\item \code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}}
+\item \code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}}
+}
+
 \code{\link[=pr_calc_symmetry_index]{pr_calc_symmetry_index()}} for the frame-first version,
 \code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}} to vary the mask.
-
-Other regional symmetry functions:
-\code{\link[=pr_calc_cop_masked]{pr_calc_cop_masked()}},
-\code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}},
-\code{\link[=pr_mask_mirror_balance]{pr_mask_mirror_balance()}},
-\code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}},
-\code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}}
 }
 \concept{regional symmetry functions}

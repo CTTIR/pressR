@@ -27,6 +27,14 @@ Invisibly returns the written file path.
 \description{
 Export Analysis Results to CSV
 }
+\details{
+Existing outputs are replaced only after writing succeeds. Reported
+replacement failures restore the old output or report a retained backup path.
+Source recordings, directories and symbolic-link destinations are refused.
+This does not provide a transaction against process termination or concurrent
+writers. Use \code{\link[=pr_write_bundle]{pr_write_bundle()}} for exact numeric preservation; decimal CSV
+is an exchange format and may change the last bits of floating-point values.
+}
 \examples{
 tmp <- tempfile(fileext = ".csv")
 pr_export_csv(pr_example_trial("insole"), tmp, what = "summary")

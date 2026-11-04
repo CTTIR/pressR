@@ -1,12 +1,7 @@
-# API lock for a FROZEN package.
-#
-# This package underpins manuscripts written or in press. This workflow is the
-# only gate that BLOCKS here - every other quality gate in the CTTIR roadmap is
-# report-only for frozen packages, precisely so that no rule can pressure anyone
-# into editing a package a paper depends on.
+# Versioned successor contract; the 0.1.0 baseline remains preserved.
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, 'production/**']
   pull_request:
     branches: [main, master]
 
@@ -52,13 +47,6 @@ jobs:
       - name: Explain a failure
         if: failure()
         run: |
-          echo "::error::The public API of this frozen package changed."
-          echo ""
-          echo "This package underpins manuscripts written or in press."
-          echo "A failure here means a signature, default, export or declared"
-          echo "dependency moved. The correct response is almost always to"
-          echo "revert the source change, NOT to accept the snapshot."
-          echo ""
-          echo "Adding a NEW export is the one additive change that is fine;"
-          echo "in that case existing snapshot lines must be untouched."
+          echo "::error::The successor API differs from its reviewed snapshot."
+          echo "Review the change and document migration before updating the contract."
           exit 1

@@ -37,6 +37,15 @@ Parses ASCII data files containing pressure sensor data. Automatically
 detects header format and extracts metadata, the pressure matrix, and
 timing.
 }
+\section{Numeric text}{
+
+Numeric text is qualified for nonzero magnitudes from \code{1e-290} to \code{1e290}.
+Values outside this range, or inconsistent decimal conversions, are refused.
+CSV does not carry layout calibration or promise bit-exact doubles; provide
+the original layout, or use \code{\link[=pr_write_bundle]{pr_write_bundle()}} for a self-contained round trip.
+The actual source path, basename and SHA-256 are retained in trial metadata.
+}
+
 \examples{
 path <- pr_example_files("insole")
 trial <- pr_read_ascii(path, verbose = FALSE)

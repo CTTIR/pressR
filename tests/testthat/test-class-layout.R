@@ -80,8 +80,8 @@ test_that("pr_validate_layout warns when a region covers inactive cells", {
     sensor_id = 1:3, row = c(1, 1, 2), col = c(1, 2, 1),
     x_mm = c(0, 10, 0), y_mm = c(0, 0, 10)
   )
-  lay <- pr_layout(2, 2, active, coords,
-                   regions = list(all = matrix(TRUE, 2, 2)))
+  expect_warning(lay <- pr_layout(2, 2, active, coords,
+                   regions = list(all = matrix(TRUE, 2, 2))), "inactive")
   expect_warning(pr_validate_layout(lay))
 })
 

@@ -18,7 +18,7 @@ pr_mask <- function(mask_matrix, name, layout) {
     cli::cli_abort("{.arg mask_matrix} must be a logical matrix.")
   }
   if (nrow(mask_matrix) != layout$grid_rows ||
-      ncol(mask_matrix) != layout$grid_cols) {
+    ncol(mask_matrix) != layout$grid_cols) {
     cli::cli_abort(
       "{.arg mask_matrix} dimensions must match layout grid
        ({layout$grid_rows} x {layout$grid_cols})."
@@ -29,9 +29,9 @@ pr_mask <- function(mask_matrix, name, layout) {
   }
 
   # Determine active-sensor-column indices hit by this mask
-  active_idx <- which(layout$active)
-  mask_idx <- which(mask_matrix & layout$active)
-  sensor_cols <- match(mask_idx, active_idx)
+  if (anyNA(mask_matrix)) cli::cli_abort("Mask cannot contain missing values.")
+  co <- layout$coords_mm
+  sensor_cols <- which(mask_matrix[cbind(co$row, co$col)])
 
   structure(
     list(
@@ -62,12 +62,14 @@ print.pr_mask <- function(x, ...) {
 # pressure-matrix column indices, given a layout.
 .mask_to_cols <- function(mask_input, layout) {
   if (inherits(mask_input, "pr_mask")) {
-    return(mask_input$sensor_cols)
+    mask_input <- mask_input$matrix
   }
   if (is.logical(mask_input) && is.matrix(mask_input)) {
-    active_idx <- which(layout$active)
-    mask_idx <- which(mask_input & layout$active)
-    return(match(mask_idx, active_idx))
+    if (!identical(dim(mask_input), dim(layout$active)) || anyNA(mask_input)) {
+      cli::cli_abort("Mask dimensions must match the layout, without missing values.")
+    }
+    co <- layout$coords_mm
+    return(which(mask_input[cbind(co$row, co$col)]))
   }
   cli::cli_abort(
     "Mask must be a {.cls pr_mask} object or a logical matrix."

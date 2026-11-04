@@ -10,8 +10,8 @@ pr_calc_seat_hotspot(trial, threshold = 4.7, duration_s = 0)
 \item{trial}{A \link{pr_trial} from a seating recording.}
 
 \item{threshold}{Numeric. Pressure threshold (kPa) above which a
-sensor is considered a hotspot. Default \code{4.7} (equivalent to
-32 mmHg, the capillary closing pressure).}
+sensor is flagged. The legacy default \code{4.7} is an exploratory setting,
+not a validated tissue-injury or capillary-closing threshold.}
 
 \item{duration_s}{Numeric. Minimum sustained duration (s) above
 threshold for a hotspot to be flagged. Default \code{0}.}
@@ -21,8 +21,8 @@ A \link[tibble:tibble]{tibble::tibble} with columns \code{sensor_id}, \code{row}
 \code{x_mm}, \code{y_mm}, \code{max_pressure}, \code{mean_pressure}, \code{duration_above_s}.
 }
 \description{
-Finds sensors exceeding a clinical pressure threshold — relevant for
-pressure ulcer risk assessment in wheelchair seating.
+Finds sensors exceeding an exploratory pressure level. This descriptive
+calculation is not a clinical risk classifier.
 }
 \examples{
 pr_calc_seat_hotspot(pr_example_trial("wheelchair"))

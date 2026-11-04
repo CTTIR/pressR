@@ -74,14 +74,16 @@ round(vapply(cops, function(c) c$path_length, numeric(1)), 3)
 round(pr_calc_cop_masked(trial, units = "mm")$cranial_left$range_x, 1)
 }
 \seealso{
+Other regional symmetry functions:
+\itemize{
+\item \code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}}
+\item \code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}}
+\item \code{\link[=pr_mask_mirror_balance]{pr_mask_mirror_balance()}}
+\item \code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}}
+\item \code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}}
+}
+
 \code{\link[=pr_calc_cop]{pr_calc_cop()}} and \code{\link[=pr_calc_cop_grid]{pr_calc_cop_grid()}} for the whole mat,
 \code{\link[=pr_calc_cop_excursion]{pr_calc_cop_excursion()}} for the range summary.
-
-Other regional symmetry functions:
-\code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}},
-\code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}},
-\code{\link[=pr_mask_mirror_balance]{pr_mask_mirror_balance()}},
-\code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}},
-\code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}}
 }
 \concept{regional symmetry functions}

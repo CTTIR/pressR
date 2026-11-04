@@ -14,20 +14,20 @@ pr_summary(trial, threshold = 0)
 \value{
 A one-row \link[tibble:tibble]{tibble::tibble} with columns:
 \itemize{
-\item \code{mpp}: maximum peak pressure (kPa)
-\item \code{mvp}: mean of per-frame mean pressures (kPa)
+\item \code{mpp}: maximum peak pressure (measurement unit)
+\item \code{mvp}: mean of per-frame mean pressures (measurement unit)
 \item \code{max_force}: maximum total force (N)
 \item \code{mean_force}: mean total force (N)
 \item \code{max_contact_area}: maximum contact area (cm^2)
 \item \code{mean_contact_area}: mean contact area (cm^2)
 \item \code{contact_time}: total contact duration (s)
-\item \code{pti_max}: maximum PTI across sensors (kPa*s)
-\item \code{pti_mean}: mean PTI across loaded sensors (kPa*s)
+\item \code{pti_max}: maximum PTI across sensors (measurement unit*s)
+\item \code{pti_mean}: mean PTI across loaded sensors (measurement unit*s)
 \item \code{impulse}: force-time integral (N*s)
-\item \code{cop_path_length}: total COP trajectory length (mm)
-\item \code{cop_velocity_mean}: mean COP velocity (mm/s)
-\item \code{cop_range_ap}: anterior-posterior COP range (mm)
-\item \code{cop_range_ml}: medial-lateral COP range (mm)
+\item \code{cop_path_length}: total COP trajectory length (coordinate unit)
+\item \code{cop_velocity_mean}: mean COP velocity (coordinate unit/s)
+\item \code{cop_range_ap}: anterior-posterior COP range (coordinate unit)
+\item \code{cop_range_ml}: medial-lateral COP range (coordinate unit)
 }
 }
 \description{

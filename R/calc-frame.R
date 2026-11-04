@@ -57,14 +57,16 @@ pr_calc_mean_pressure <- function(trial, threshold = 0) {
 #'
 #' Force in Newtons equals sum(pressure * sensor_area). With pressure in
 #' kPa and area in cm^2, force\[N\] = sum(p_kPa * a_cm2) * 0.1.
+#' When the unscaled sum overflows, conversion is applied before summation.
+#' Results outside the finite numeric range are refused; unknown calibration
+#' continues to produce `NA`.
 #'
 #' @param trial A [pr_trial] object.
 #' @return Numeric vector of length `n_frames`.
 #' @export
 pr_calc_force <- function(trial) {
   .validate_trial(trial)
-  a <- trial$layout$sensor_area_cm2
-  rowSums(trial$pressure) * a * 0.1
+  .force_rows(trial$pressure, trial)
 }
 
 #' Calculate Contact Area Per Frame
@@ -99,12 +101,13 @@ pr_calc_loaded_rate <- function(trial, threshold = 0) {
 #'
 #' Computes the pressure-weighted centroid of active sensors for each
 #' frame. Frames with no loaded sensors return `NA` for x and y.
+#' Overflowing weighted sums are evaluated with bounded weights and coordinates.
 #'
 #' @param trial A [pr_trial] object.
 #' @param threshold Numeric. Sensors at or below are treated as unloaded.
 #'   Default `0`.
 #'
-#' @return A [pr_cop] object containing x (mm), y (mm), time (s), and
+#' @return A [pr_cop] object containing x, y, the layout coordinate unit, time (s), and
 #'   derived metrics.
 #' @export
 #' @examples
@@ -125,17 +128,21 @@ pr_calc_cop <- function(trial, threshold = 0) {
     row[row <= threshold] <- 0
     s <- sum(row)
     if (s > 0) {
-      x[i] <- sum(row * xs) / s
-      y[i] <- sum(row * ys) / s
+      x[i] <- .weighted_coordinate(row, xs, s)
+      y[i] <- .weighted_coordinate(row, ys, s)
     }
   }
-  pr_cop(x, y, trial$time)
+  out <- pr_cop(x, y, trial$time)
+  out$coordinate_unit <- .coordinate_unit(trial$layout)
+  out
 }
 
 #' Pressure-Time Integral Per Sensor
 #'
 #' Integrates pressure over time for each sensor using the trapezoidal
-#' rule. Result is in kPa*s.
+#' rule. Result is in the measurement unit multiplied by seconds.
+#' Overflowing endpoint sums use a finite midpoint calculation. Unrepresentable
+#' interval areas or totals raise an error instead of returning infinity.
 #'
 #' @param trial A [pr_trial] object.
 #'
@@ -145,11 +152,11 @@ pr_calc_pti <- function(trial) {
   .validate_trial(trial)
   t <- trial$time
   P <- trial$pressure
-  if (nrow(P) < 2L) return(rep(0, ncol(P)))
+  if (nrow(P) < 2L) {
+    return(rep(0, ncol(P)))
+  }
 
-  dt <- diff(t)
-  pmid <- 0.5 * (P[-nrow(P), , drop = FALSE] + P[-1, , drop = FALSE])
-  colSums(pmid * dt)
+  .integrate_pressure(P, t)
 }
 
 #' Force-Time Integral (Impulse)
@@ -164,8 +171,12 @@ pr_calc_impulse <- function(trial) {
   .validate_trial(trial)
   f <- pr_calc_force(trial)
   t <- trial$time
-  if (length(t) < 2L) return(0)
-  sum(0.5 * (f[-length(f)] + f[-1]) * diff(t))
+  if (length(t) < 2L) {
+    return(0)
+  }
+  if (anyNA(f)) return(NA_real_)
+  area <- .finite_midpoint(f[-length(f)], f[-1]) * diff(t)
+  .finite_metric(sum(.finite_metric(area, "Impulse interval")), "Impulse")
 }
 
 #' Total Contact Time
@@ -180,7 +191,9 @@ pr_calc_impulse <- function(trial) {
 pr_calc_contact_time <- function(trial, threshold = 0) {
   .validate_trial(trial)
   any_load <- rowSums(trial$pressure > threshold) > 0
-  if (!any(any_load) || length(trial$time) < 2L) return(0)
+  if (!any(any_load) || length(trial$time) < 2L) {
+    return(0)
+  }
   # Use bin widths (dt) to estimate contact duration
   dt <- diff(trial$time)
   mid_loaded <- any_load[-1] & any_load[-length(any_load)]
@@ -193,7 +206,7 @@ pr_calc_contact_time <- function(trial, threshold = 0) {
 #' @param trial A [pr_trial] object.
 #' @param threshold Numeric. Default `0`.
 #'
-#' @return Numeric scalar (mm).
+#' @return Numeric scalar in the layout coordinate unit.
 #' @export
 pr_calc_cop_path <- function(trial, threshold = 0) {
   pr_calc_cop(trial, threshold)$path_length
@@ -204,7 +217,8 @@ pr_calc_cop_path <- function(trial, threshold = 0) {
 #' @param trial A [pr_trial] object.
 #' @param threshold Numeric. Default `0`.
 #'
-#' @return Named numeric vector with `ap` (y-range, mm) and `ml` (x-range, mm).
+#' @return Named numeric vector with `ap` (y-range) and `ml` (x-range),
+#'   both in the layout coordinate unit.
 #' @export
 pr_calc_cop_excursion <- function(trial, threshold = 0) {
   cop <- pr_calc_cop(trial, threshold)

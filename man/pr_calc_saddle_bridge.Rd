@@ -19,7 +19,8 @@ indicates bridging. Default \code{0.5}.}
 A list with class \code{pr_saddle_bridge}:
 \itemize{
 \item \code{bridge_ratio}: middle / mean(cranial, caudal) MVP ratio.
-\item \code{is_bridged}: logical.
+\item \code{is_bridged}: logical, or \code{NA} when any required region is absent,
+contains no active sensors, or the end pressure is not positive.
 \item \code{regional_pressures}: tibble with MVP per region.
 \item \code{recommendation}: character.
 }

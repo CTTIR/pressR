@@ -34,6 +34,11 @@ Invisibly returns the generated file path.
 Renders a parameterized R Markdown template into an HTML or PDF report
 for a trial.
 }
+\details{
+Source recordings and symbolic-link destinations are refused.
+Completed reports replace existing outputs with recovery on reported failures;
+process termination or concurrent writers are outside this guarantee.
+}
 \examples{
 \dontrun{
 tmp <- tempfile(fileext = ".html")

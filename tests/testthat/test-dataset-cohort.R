@@ -24,12 +24,18 @@ mk_trial <- function(meta = list(), n = 4L, layout = grid16(),
 
 study_ds <- function() {
   pr_dataset(list(
-    mk_trial(list(ID = "ID001", Saddle = "K", Pad = "F", Weight = "KG00",
-                  Mode = "MH"), n = 4L),
-    mk_trial(list(ID = "ID001", Saddle = "K", Pad = "F", Weight = "KG00",
-                  Mode = "MS"), n = 6L),
-    mk_trial(list(ID = "ID002", Saddle = "S", Pad = "K", Weight = "KG40",
-                  Mode = "MS"), n = 11L)
+    mk_trial(list(
+      ID = "ID001", Saddle = "K", Pad = "F", Weight = "KG00",
+      Mode = "MH"
+    ), n = 4L),
+    mk_trial(list(
+      ID = "ID001", Saddle = "K", Pad = "F", Weight = "KG00",
+      Mode = "MS"
+    ), n = 6L),
+    mk_trial(list(
+      ID = "ID002", Saddle = "S", Pad = "K", Weight = "KG40",
+      Mode = "MS"
+    ), n = 11L)
   ), name = "study")
 }
 
@@ -37,7 +43,8 @@ study_ds <- function() {
 
 test_that("pr_design_table reproduces the study design shape and values", {
   d <- pr_design_table(study_ds(),
-                       fields = c("ID", "Saddle", "Pad", "Weight", "Mode"))
+    fields = c("ID", "Saddle", "Pad", "Weight", "Mode")
+  )
 
   expect_s3_class(d, "tbl_df")
   expect_equal(dim(d), c(3L, 7L))
@@ -64,9 +71,11 @@ test_that("auto field detection drops the empty pr_trial defaults", {
   # subject_id / trial_id / date / condition / notes are all NA here and
   # must not appear; `system` is filled from the layout model.
   expect_false(any(c("subject_id", "trial_id", "date", "condition", "notes")
-                   %in% names(d)))
-  expect_equal(names(d)[1:5],
-               c("ID", "Saddle", "Pad", "Weight", "Mode"))
+  %in% names(d)))
+  expect_equal(
+    names(d)[1:5],
+    c("ID", "Saddle", "Pad", "Weight", "Mode")
+  )
   expect_equal(tail(names(d), 2), c("n_frames", "duration_s"))
 })
 
@@ -100,8 +109,10 @@ test_that("pr_design_table rejects bad input", {
   expect_error(pr_design_table(list(1, 2)), "pr_dataset")
   expect_error(pr_design_table(study_ds(), fields = 1:3), "character vector")
   expect_error(pr_design_table(study_ds(), fields = "Rider"), "Rider")
-  expect_error(pr_design_table(study_ds(), fields = "n_frames"),
-               "n_frames")
+  expect_error(
+    pr_design_table(study_ds(), fields = "n_frames"),
+    "n_frames"
+  )
   ds <- pr_dataset(list(mk_trial(list(ID = "ID001", notes = c("a", "b")))))
   expect_error(pr_design_table(ds, fields = "notes"), "single value")
   # the same non-scalar field is silently skipped by auto detection
@@ -126,7 +137,8 @@ test_that("pr_dataset_filter keeps the matching trials", {
 
 test_that("pr_dataset_filter accepts a plain function and chains history", {
   ms <- pr_dataset_filter(study_ds(), function(m) m$Mode == "MS",
-                          label = "walk")
+    label = "walk"
+  )
   id1 <- pr_dataset_filter(ms, ~ .x$ID == "ID001", label = "ID001 only")
   expect_equal(length(id1), 1L)
   expect_equal(id1$filter_history, c("walk", "ID001 only"))
@@ -135,26 +147,34 @@ test_that("pr_dataset_filter accepts a plain function and chains history", {
 
 test_that("pr_dataset_filter asserts unit and subject counts", {
   expect_equal(
-    length(pr_dataset_filter(study_ds(), ~ .x$Mode == "MS", label = "walk",
-                             n_units = 2, n_subjects = 2)),
+    length(pr_dataset_filter(study_ds(), ~ .x$Mode == "MS",
+      label = "walk",
+      n_units = 2, n_subjects = 2
+    )),
     2L
   )
   expect_error(
-    pr_dataset_filter(study_ds(), ~ .x$Mode == "MS", label = "walk",
-                      n_units = 3),
+    pr_dataset_filter(study_ds(), ~ .x$Mode == "MS",
+      label = "walk",
+      n_units = 3
+    ),
     class = "pr_cohort_assert_failed"
   )
   expect_error(
-    pr_dataset_filter(study_ds(), ~ .x$Mode == "MS", label = "walk",
-                      n_subjects = 19),
+    pr_dataset_filter(study_ds(), ~ .x$Mode == "MS",
+      label = "walk",
+      n_subjects = 19
+    ),
     class = "pr_cohort_assert_failed"
   )
 })
 
 test_that("pr_dataset_filter reports which expectation failed", {
   err <- tryCatch(
-    pr_dataset_filter(study_ds(), ~ .x$Mode == "MS", label = "walk",
-                      n_units = 170),
+    pr_dataset_filter(study_ds(), ~ .x$Mode == "MS",
+      label = "walk",
+      n_units = 170
+    ),
     pr_cohort_assert_failed = function(e) e
   )
   expect_equal(err$expected, 170L)
@@ -190,12 +210,18 @@ test_that("pr_dataset_filter rejects a predicate that is not a flag", {
     "single .*logical"
   )
   expect_error(pr_dataset_filter(study_ds(), "not a function"))
-  expect_error(pr_dataset_filter(study_ds(), ~ TRUE, n_units = -1),
-               "non-negative")
-  expect_error(pr_dataset_filter(study_ds(), ~ TRUE, n_units = 2.5),
-               "whole number")
-  expect_error(pr_dataset_filter(study_ds(), ~ TRUE, label = c("a", "b")),
-               "single string")
+  expect_error(
+    pr_dataset_filter(study_ds(), ~TRUE, n_units = -1),
+    "non-negative"
+  )
+  expect_error(
+    pr_dataset_filter(study_ds(), ~TRUE, n_units = 2.5),
+    "whole number"
+  )
+  expect_error(
+    pr_dataset_filter(study_ds(), ~TRUE, label = c("a", "b")),
+    "single string"
+  )
 })
 
 # ---- pr_assert_cohort -----------------------------------------------------
@@ -246,40 +272,55 @@ test_that("pr_assert_cohort counts trials and metadata on a pr_dataset", {
     pr_assert_cohort(ds, n_units = 3, n_subjects = 2, subject_col = "ID")
   )
   expect_error(pr_assert_cohort(ds, n_units = 4),
-               class = "pr_cohort_assert_failed")
+    class = "pr_cohort_assert_failed"
+  )
   expect_invisible(pr_assert_cohort(ds, n_units = 2, unit_col = "Mode"))
   # a bare list of trials is accepted too
   expect_invisible(pr_assert_cohort(ds$trials, n_units = 3))
   # the label defaults to the dataset name, then to the filter label
   err <- tryCatch(pr_assert_cohort(ds, n_units = 9),
-                  pr_cohort_assert_failed = function(e) e)
+    pr_cohort_assert_failed = function(e) e
+  )
   expect_equal(err$label, "study")
   filtered <- pr_dataset_filter(ds, ~ .x$Mode == "MS", label = "walk")
   err2 <- tryCatch(pr_assert_cohort(filtered, n_units = 9),
-                   pr_cohort_assert_failed = function(e) e)
+    pr_cohort_assert_failed = function(e) e
+  )
   expect_equal(err2$label, "walk")
 })
 
 test_that("pr_assert_cohort ignores missing values when counting subjects", {
   design <- data.frame(ID = c("ID001", NA, "ID002", NA))
-  expect_invisible(pr_assert_cohort(design, n_subjects = 2,
-                                    subject_col = "ID"))
+  expect_invisible(pr_assert_cohort(design,
+    n_subjects = 2,
+    subject_col = "ID"
+  ))
   expect_invisible(pr_assert_cohort(design, n_units = 4))
 })
 
 test_that("pr_assert_cohort rejects bad input", {
   design <- data.frame(ID = "ID001")
   expect_error(pr_assert_cohort(1:5, n_units = 5), "pr_dataset")
-  expect_error(pr_assert_cohort(design, n_units = 1, unit_col = "Rider"),
-               "Rider")
-  expect_error(pr_assert_cohort(design, n_subjects = 1,
-                                subject_col = "Rider"),
-               "Rider")
-  expect_error(pr_assert_cohort(data.frame(x = 1), n_subjects = 1),
-               "subject_col")
+  expect_error(
+    pr_assert_cohort(design, n_units = 1, unit_col = "Rider"),
+    "Rider"
+  )
+  expect_error(
+    pr_assert_cohort(design,
+      n_subjects = 1,
+      subject_col = "Rider"
+    ),
+    "Rider"
+  )
+  expect_error(
+    pr_assert_cohort(data.frame(x = 1), n_subjects = 1),
+    "subject_col"
+  )
   expect_error(pr_assert_cohort(design, n_units = "3"), "whole number")
-  expect_error(pr_assert_cohort(design, n_units = 1, label = 42),
-               "single string")
+  expect_error(
+    pr_assert_cohort(design, n_units = 1, label = 42),
+    "single string"
+  )
   # no expectation supplied: nothing is checked, x comes back unchanged
   expect_identical(pr_assert_cohort(design), design)
 })
@@ -302,17 +343,22 @@ test_that("pr_validate_dataset flags the odd trial, not the majority", {
   expect_warning(p <- pr_validate_dataset(ds, strict = FALSE), "cohort")
   expect_equal(unique(p$trial), 3L)
   expect_setequal(p$check, c("n_sensors", "layout_name"))
-  expect_equal(p$expected[p$check == "n_sensors"],
-               as.character(grid16()$n_sensors))
-  expect_equal(p$actual[p$check == "n_sensors"],
-               as.character(odd$n_sensors))
+  expect_equal(
+    p$expected[p$check == "n_sensors"],
+    as.character(grid16()$n_sensors)
+  )
+  expect_equal(
+    p$actual[p$check == "n_sensors"],
+    as.character(odd$n_sensors)
+  )
   expect_equal(p$actual[p$check == "layout_name"], odd$layout$name)
 })
 
 test_that("pr_validate_dataset aborts under strict and carries the table", {
   ds <- pr_dataset(list(mk_trial(), mk_trial(), pr_example_trial("insole")))
   err <- tryCatch(pr_validate_dataset(ds),
-                  pr_dataset_invalid = function(e) e)
+    pr_dataset_invalid = function(e) e
+  )
   expect_s3_class(err, "pr_dataset_invalid")
   expect_s3_class(err$problems, "tbl_df")
   expect_equal(nrow(err$problems), 2L)
@@ -323,14 +369,18 @@ test_that("pr_validate_dataset detects missing, infinite and negative data", {
   layout <- grid16()
   bad <- matrix(1, 3, layout$n_sensors)
   bad[2, 5] <- NA_real_
-  na_trial <- pr_trial(bad, time = c(0, 0.02, 0.04), layout = layout)
+  expect_error(pr_trial(bad, time = c(0, .02, .04), layout = layout), "finite")
+  na_trial <- mk_trial(n = 3L)
+  na_trial$pressure <- bad
   neg_trial <- mk_trial(n = 3L, value = -2)
   inf <- matrix(1, 3, layout$n_sensors)
   inf[1, 1] <- Inf
-  inf_trial <- pr_trial(inf, time = c(0, 0.02, 0.04), layout = layout)
+  expect_error(pr_trial(inf, time = c(0, .02, .04), layout = layout), "finite")
+  inf_trial <- mk_trial(n = 3L)
+  inf_trial$pressure <- inf
 
   p <- pr_validate_dataset(
-    pr_dataset(list(mk_trial(n = 3L), na_trial, neg_trial, inf_trial)),
+    list(mk_trial(n = 3L), na_trial, neg_trial, inf_trial),
     strict = FALSE
   ) |> suppressWarnings()
 
@@ -342,11 +392,13 @@ test_that("pr_validate_dataset detects missing, infinite and negative data", {
 
 test_that("pr_validate_dataset flags non-monotonic time", {
   layout <- grid16()
-  tr <- pr_trial(matrix(1, 3, layout$n_sensors), time = c(0, 0.04, 0.02),
-                 layout = layout)
+  expect_error(pr_trial(matrix(1, 3, layout$n_sensors), time = c(0, .04, .02), layout = layout), "increasing")
+  tr <- mk_trial(n = 3L)
+  tr$time <- c(0, .04, .02)
   p <- suppressWarnings(
-    pr_validate_dataset(pr_dataset(list(mk_trial(n = 3L), tr)),
-                        strict = FALSE)
+    pr_validate_dataset(list(mk_trial(n = 3L), tr),
+      strict = FALSE
+    )
   )
   expect_equal(p$check, "time_order")
   expect_equal(p$trial, 2L)
@@ -363,8 +415,10 @@ test_that("pr_validate_dataset labels trials by their metadata", {
   expect_equal(unique(p$trial_label), "insole_gait")
 
   # with no identifying metadata the index is used instead
-  ds2 <- pr_dataset(list(mk_trial(), mk_trial(),
-                         mk_trial(layout = pr_layout_mat("32"))))
+  ds2 <- pr_dataset(list(
+    mk_trial(), mk_trial(),
+    mk_trial(layout = pr_layout_mat("32"))
+  ))
   p2 <- suppressWarnings(pr_validate_dataset(ds2, strict = FALSE))
   expect_equal(unique(p2$trial_label), "trial 3")
   expect_setequal(p2$check, c("n_sensors", "layout_name"))
@@ -387,13 +441,17 @@ test_that("pr_assert_cohort agrees with the study's real design table", {
   design <- as.data.frame(readRDS(study_design_path))
 
   expect_invisible(
-    pr_assert_cohort(design, n_units = 431, n_subjects = 19,
-                     subject_col = "ID", label = "all recordings")
+    pr_assert_cohort(design,
+      n_units = 431, n_subjects = 19,
+      subject_col = "ID", label = "all recordings"
+    )
   )
   expect_error(pr_assert_cohort(design, n_units = 430),
-               class = "pr_cohort_assert_failed")
+    class = "pr_cohort_assert_failed"
+  )
   expect_error(pr_assert_cohort(design, n_subjects = 18, subject_col = "ID"),
-               class = "pr_cohort_assert_failed")
+    class = "pr_cohort_assert_failed"
+  )
 
   ms <- design[design$Mode == "MS", ]
   expect_invisible(
@@ -416,14 +474,18 @@ test_that("pr_design_table rebuilds the study's design.rds exactly", {
       matrix(0, n, 1L),
       time = seq(0, design$duration_s[i], length.out = n),
       layout = layout,
-      metadata = as.list(design[i, c("ID", "Saddle", "Pad", "Weight",
-                                     "Mode")])
+      metadata = as.list(design[i, c(
+        "ID", "Saddle", "Pad", "Weight",
+        "Mode"
+      )])
     )
   })
   ds <- pr_dataset(trials, name = "saddle cohort")
 
-  out <- pr_design_table(ds, fields = c("ID", "Saddle", "Pad", "Weight",
-                                        "Mode"))
+  out <- pr_design_table(ds, fields = c(
+    "ID", "Saddle", "Pad", "Weight",
+    "Mode"
+  ))
   expect_equal(dim(out), c(431L, 7L))
   expect_equal(as.data.frame(out), design, tolerance = 1e-8)
   expect_equal(sum(out$n_frames), 5501590)
@@ -432,8 +494,10 @@ test_that("pr_design_table rebuilds the study's design.rds exactly", {
     pr_assert_cohort(out, n_units = 431, n_subjects = 19, subject_col = "ID")
   )
 
-  walk <- pr_dataset_filter(ds, ~ .x$Mode == "MS", label = "MS (walk)",
-                            n_units = 170, n_subjects = 19)
+  walk <- pr_dataset_filter(ds, ~ .x$Mode == "MS",
+    label = "MS (walk)",
+    n_units = 170, n_subjects = 19
+  )
   expect_equal(length(walk), 170L)
   expect_error(
     pr_dataset_filter(ds, ~ .x$Mode == "MS", n_units = 169),

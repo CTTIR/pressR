@@ -14,5 +14,7 @@ Numeric vector of length \code{n_sensors}.
 }
 \description{
 Integrates pressure over time for each sensor using the trapezoidal
-rule. Result is in kPa*s.
+rule. Result is in the measurement unit multiplied by seconds.
+Overflowing endpoint sums use a finite midpoint calculation. Unrepresentable
+interval areas or totals raise an error instead of returning infinity.
 }

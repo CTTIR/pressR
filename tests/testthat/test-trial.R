@@ -20,8 +20,10 @@ test_that("pr_trial() rejects mismatched dimensions", {
 test_that("as.data.frame returns expected columns", {
   trial <- pr_example_trial("custom")
   df <- as.data.frame(trial)
-  expect_true(all(c("frame", "time", "sensor_id", "row", "col",
-                    "x_mm", "y_mm", "pressure") %in% names(df)))
+  expect_true(all(c(
+    "frame", "time", "sensor_id", "row", "col",
+    "x", "y", "coordinate_unit", "measurement_unit", "pressure"
+  ) %in% names(df)))
   expect_equal(nrow(df), trial$n_frames * trial$n_sensors)
 })
 

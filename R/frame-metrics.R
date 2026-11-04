@@ -89,7 +89,15 @@
 #' @param trial A [pr_trial] object.
 #'
 #' @return Numeric vector of length `n_frames`, in the trial's pressure unit.
-#' @family whole-grid frame metrics
+#' @concept whole-grid frame metrics
+#' @seealso Other whole-grid frame metrics:
+#'
+#' - [pr_calc_cop_grid()]
+#' - [pr_calc_loaded_count()]
+#' - [pr_calc_pci()]
+#' - [pr_calc_total_pressure()]
+#' - [pr_frame_metrics()]
+#' - [pr_ref_pci()]
 #' @export
 #' @examples
 #' trial <- pr_example_trial("saddle_horse")
@@ -122,7 +130,15 @@ pr_calc_mean_pressure_grid <- function(trial) {
 #' @inheritParams pr_calc_mean_pressure_grid
 #'
 #' @return Numeric vector of length `n_frames`, summed pressure per frame.
-#' @family whole-grid frame metrics
+#' @concept whole-grid frame metrics
+#' @seealso Other whole-grid frame metrics:
+#'
+#' - [pr_calc_cop_grid()]
+#' - [pr_calc_loaded_count()]
+#' - [pr_calc_mean_pressure_grid()]
+#' - [pr_calc_pci()]
+#' - [pr_frame_metrics()]
+#' - [pr_ref_pci()]
 #' @export
 #' @examples
 #' trial <- pr_example_trial("saddle_horse")
@@ -149,7 +165,15 @@ pr_calc_total_pressure <- function(trial) {
 #'   Default `0`.
 #'
 #' @return Integer vector of length `n_frames`.
-#' @family whole-grid frame metrics
+#' @concept whole-grid frame metrics
+#' @seealso Other whole-grid frame metrics:
+#'
+#' - [pr_calc_cop_grid()]
+#' - [pr_calc_mean_pressure_grid()]
+#' - [pr_calc_pci()]
+#' - [pr_calc_total_pressure()]
+#' - [pr_frame_metrics()]
+#' - [pr_ref_pci()]
 #' @export
 #' @examples
 #' trial <- pr_example_trial("saddle_horse")
@@ -188,7 +212,15 @@ pr_calc_loaded_count <- function(trial, threshold = 0) {
 #'
 #' @return A [tibble::tibble] with one row per frame and columns `frame`
 #'   (integer), `time_s`, `cop_row`, `cop_col` (grid index units).
-#' @family whole-grid frame metrics
+#' @concept whole-grid frame metrics
+#' @seealso Other whole-grid frame metrics:
+#'
+#' - [pr_calc_loaded_count()]
+#' - [pr_calc_mean_pressure_grid()]
+#' - [pr_calc_pci()]
+#' - [pr_calc_total_pressure()]
+#' - [pr_frame_metrics()]
+#' - [pr_ref_pci()]
 #' @export
 #' @examples
 #' trial <- pr_example_trial("saddle_horse")
@@ -249,7 +281,15 @@ pr_calc_cop_grid <- function(trial, threshold = 0, eps = 1e-12) {
 #'   `time_s`, `mean_kPa`, `peak_kPa`, `total_kPa`, `loaded`, `cop_row`,
 #'   `cop_col`. Pressure columns carry the trial's own unit; the `kPa`
 #'   suffixes follow the cohort naming convention.
-#' @family whole-grid frame metrics
+#' @concept whole-grid frame metrics
+#' @seealso Other whole-grid frame metrics:
+#'
+#' - [pr_calc_cop_grid()]
+#' - [pr_calc_loaded_count()]
+#' - [pr_calc_mean_pressure_grid()]
+#' - [pr_calc_pci()]
+#' - [pr_calc_total_pressure()]
+#' - [pr_ref_pci()]
 #' @export
 #' @examples
 #' trial <- pr_example_trial("saddle_horse")
@@ -286,9 +326,9 @@ pr_frame_metrics <- function(trial, threshold = 0, eps = 1e-12) {
   tibble::tibble(
     frame = seq_len(nrow(P)),
     time_s = as.numeric(trial$time),
-    mean_kPa = total / n_sensors,
-    peak_kPa = peak,
-    total_kPa = total,
+    mean_kPa = total / n_sensors * .kpa_scale(trial),
+    peak_kPa = peak * .kpa_scale(trial),
+    total_kPa = total * .kpa_scale(trial),
     loaded = loaded,
     cop_row = moment[, 1L] / denom,
     cop_col = moment[, 2L] / denom
@@ -326,7 +366,15 @@ pr_frame_metrics <- function(trial, threshold = 0, eps = 1e-12) {
 #'   `1e-12`.
 #'
 #' @return A single numeric value (dimensionless ratio).
-#' @family whole-grid frame metrics
+#' @concept whole-grid frame metrics
+#' @seealso Other whole-grid frame metrics:
+#'
+#' - [pr_calc_cop_grid()]
+#' - [pr_calc_loaded_count()]
+#' - [pr_calc_mean_pressure_grid()]
+#' - [pr_calc_total_pressure()]
+#' - [pr_frame_metrics()]
+#' - [pr_ref_pci()]
 #' @export
 #' @examples
 #' trial <- pr_example_trial("saddle_horse")
@@ -380,7 +428,15 @@ pr_calc_pci <- function(trial, denominator = c("grid", "loaded"),
 #' @return A [tibble::tibble] with columns `region`, `parameter`,
 #'   `threshold`, `unit`, `interpretation`, `source`, `band`, `band_min`,
 #'   `band_max`.
-#' @family whole-grid frame metrics
+#' @concept whole-grid frame metrics
+#' @seealso Other whole-grid frame metrics:
+#'
+#' - [pr_calc_cop_grid()]
+#' - [pr_calc_loaded_count()]
+#' - [pr_calc_mean_pressure_grid()]
+#' - [pr_calc_pci()]
+#' - [pr_calc_total_pressure()]
+#' - [pr_frame_metrics()]
 #' @export
 #' @examples
 #' pr_ref_pci()

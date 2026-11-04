@@ -1,36 +1,24 @@
-# Tests for R/reference.R: all source arms and required columns,
-# plus a snapshot regression lock on the von Peinen 2010 thresholds.
-
-test_that("pr_ref_saddle returns each documented source", {
-  v1 <- pr_ref_saddle("vonpeinen2010")
-  v2 <- pr_ref_saddle("monkemoller2005")
-  v3 <- pr_ref_saddle("werner2002")
-  expect_equal(nrow(v1), 6L)
-  expect_equal(nrow(v2), 3L)
-  expect_equal(nrow(v3), 3L)
-  for (v in list(v1, v2, v3)) {
-    expect_true(all(c("region", "parameter", "threshold", "unit",
-                      "interpretation", "source") %in% names(v)))
+test_that("saddle observations have the correct attribution and study context", {
+  x <- pr_ref_saddle()
+  expect_identical(x, pr_ref_saddle("nyikos2005"))
+  expect_equal(x$threshold, c(34.5, 30.3, 31, 13.2, 11.4, 10))
+  expect_true(all(x$status == "verified_source"))
+  expect_true(all(x$species == "equine" & x$gait == "trot"))
+  expect_match(x$source[1], "Nyikos")
+  for (source in c("vonpeinen2010", "monkemoller2005", "werner2002")) {
+    old <- pr_ref_saddle(source)
+    expect_true(all(is.na(old$threshold)))
+    expect_true(all(old$status == "withdrawn"))
+    expect_true(all(c("source_url", "interpretation", "region_scheme") %in% names(old)))
   }
+  expect_error(pr_ref_saddle("unknown"))
 })
-
-test_that("pr_ref_saddle default equals vonpeinen2010", {
-  expect_identical(pr_ref_saddle(), pr_ref_saddle("vonpeinen2010"))
-})
-
-test_that("pr_ref_saddle vonpeinen thresholds are stable", {
-  expect_snapshot_value(pr_ref_saddle("vonpeinen2010"), style = "json2")
-})
-
-test_that("pr_ref_diabetic_foot has four rows with thresholds", {
-  df <- pr_ref_diabetic_foot()
-  expect_s3_class(df, "tbl_df")
-  expect_equal(nrow(df), 4L)
-  expect_true(all(df$threshold > 0))
-})
-
-test_that("pr_ref_wheelchair reports mmHg thresholds", {
-  wc <- pr_ref_wheelchair()
-  expect_equal(nrow(wc), 3L)
-  expect_true(all(wc$unit == "mmHg"))
+test_that("unverified foot and seating cutoffs cannot become numeric overlays", {
+  foot <- pr_ref_diabetic_foot()
+  expect_equal(foot$threshold[foot$status == "verified_source"], 700)
+  expect_true(all(is.na(foot$threshold[foot$status == "withdrawn"])))
+  seat <- pr_ref_wheelchair()
+  expect_true(all(is.na(seat$threshold)))
+  expect_true(all(seat$status == "withdrawn"))
+  expect_true(all(seat$unit == "mmHg"))
 })

@@ -91,7 +91,11 @@ pr_plot_cop_butterfly(trial)
 pr_calc_regional(trial)
 ```
 
-## Diabetic foot thresholds
+## Plantar-pressure reference observations
+
+These source-specific observations are not universal clinical cut-offs. The
+synthetic insole example does not establish equivalent acquisition or patient
+context. Rows marked withdrawn have no verified numeric value.
 
 ```{r}
 pr_ref_diabetic_foot()
@@ -99,6 +103,24 @@ pr_ref_diabetic_foot()
 
 ## Composite foot report
 
-```{r, fig.alt="Foot-pressure composite report", fig.width=9, fig.height=7}
-pr_plot_foot_report(trial)
+`pr_plot_foot_report()` returns four component plots. Display them separately
+here so labels and legends remain readable at the article width. The HTML/PDF
+report from `pr_export_report(trial, path, template = "foot")` uses these same
+components.
+
+```{r, fig.alt="Maximum measured value at each insole sensor with the selected region boundaries.", fig.height=5}
+panels <- pr_plot_foot_report(trial)
+panels[[1]]
+```
+
+```{r, fig.alt="Maximum measured values by insole region, with the region names on the horizontal axis.", fig.height=5}
+panels[[2]]
+```
+
+```{r, fig.alt="Total force over time with detected stance intervals shaded.", fig.height=5}
+panels[[3]]
+```
+
+```{r, fig.alt="Center of pressure trajectory in millimetres, colored by recording time in seconds.", fig.height=5}
+panels[[4]]
 ```

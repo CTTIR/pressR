@@ -1,19 +1,7 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# API lock — do not edit to make a build pass.
-#
-# This package is FROZEN: it underpins manuscripts written or in press, so its
-# observable behaviour must not change. This file pins the public surface.
-#
-# If a snapshot here fails, the correct response is almost always to revert the
-# source change, NOT to accept the snapshot. Accepting a snapshot in this file
-# is a decision to change what a published analysis referred to.
-#
-# Legitimate reasons to accept a new snapshot:
-#   * a NEW export was added (additive; existing lines must be untouched)
-#
-# Everything else — a changed signature, a changed default, a removed export,
-# a changed return type — is a breaking change to a frozen package.
-# ─────────────────────────────────────────────────────────────────────────────
+# Versioned successor API contract. The approved 0.2.0 migration intentionally
+# changes behavior documented in NEWS.md. The frozen 0.1.0 contract remains in
+# dev/production/baseline and at commit 5f5b370; it is not replaced in place.
+# Future snapshot changes still require deliberate review and migration notes.
 
 # testing_package() is the supported way to learn which package is under
 # test; packageName() returns NULL from inside a testthat test file.

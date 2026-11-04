@@ -20,12 +20,17 @@ pr_read_csv(
 \code{"long"} (a tidy format with \code{frame}, \code{sensor_id}, \code{pressure}).}
 
 \item{layout}{A \link{pr_layout} object. Required for wide format when the
-sensor count cannot be inferred.}
+sensor count cannot be inferred. Declared long-format sensor IDs or wide
+\verb{s<number>} column names must match the supplied or inferred layout;
+measurements are aligned to its sensor order. Other wide column names
+retain positional order.}
 
-\item{time_col}{Character. Name of the time column. If \code{NULL},
-timestamps are generated from \code{sampling_hz}.}
+\item{time_col}{Character. Name of the time column. If \code{NULL}, the exported \code{time} column is recognized automatically;
+otherwise timestamps are generated from \code{sampling_hz}.}
 
-\item{sampling_hz}{Numeric. Sampling rate. Default \code{100}.}
+\item{sampling_hz}{Numeric. Used when timestamps are absent (default \code{100}).
+With timestamps, the rate is inferred unless explicitly supplied; conflicts
+with measured timing are rejected.}
 
 \item{verbose}{Logical. Default \code{TRUE}.}
 }
@@ -36,11 +41,22 @@ A \link{pr_trial} object.
 Reads pressure data from a CSV file in either wide (one column per
 sensor) or long (tidy) format.
 }
+\section{Numeric text}{
+
+Numeric text is qualified for nonzero magnitudes from \code{1e-290} to \code{1e290}.
+Values outside this range, or inconsistent decimal conversions, are refused.
+CSV does not carry layout calibration or promise bit-exact doubles; provide
+the original layout, or use \code{\link[=pr_write_bundle]{pr_write_bundle()}} for a self-contained round trip.
+The actual source path, basename and SHA-256 are retained in trial metadata.
+}
+
 \examples{
 tmp <- tempfile(fileext = ".csv")
 m <- matrix(runif(10 * 99, 0, 100), nrow = 10, ncol = 99)
 utils::write.csv(m, tmp, row.names = FALSE)
-trial <- pr_read_csv(tmp, format = "wide", layout = pr_layout_insole(),
-                     verbose = FALSE)
+trial <- pr_read_csv(tmp,
+  format = "wide", layout = pr_layout_insole(),
+  verbose = FALSE
+)
 trial$n_frames
 }

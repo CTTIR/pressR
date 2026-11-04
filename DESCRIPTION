@@ -1,6 +1,6 @@
 Package: pressR
 Title: Pressure Distribution Analysis for Capacitive Sensor Systems
-Version: 0.1.0
+Version: 0.2.0.9000
 Authors@R: person("R.", "Heller", email = "raban.heller@charite.de",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Parse, analyze, and visualize pressure distribution data from
@@ -29,23 +29,30 @@ Imports:
     ggplot2,
     plotly,
     DT,
-    shiny,
-    bslib,
+    shiny (>= 1.6.0),
+    bslib (>= 0.5.0),
     patchwork,
     stats,
     utils,
-    tools
+    tools,
+    jsonlite,
+    digest,
+    fs
 Suggests:
     gganimate,
     gifski,
     withr,
-    testthat (>= 3.0.0),
+    testthat (>= 3.2.0),
     knitr,
     rmarkdown,
+    htmltools,
     pkgdown,
     covr,
     shinytest2,
-    vdiffr
+    vdiffr,
+    readxl,
+    archive,
+    writexl
 VignetteBuilder: knitr
 Config/Needs/website: CTTIR/themakR
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.0.0

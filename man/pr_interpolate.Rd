@@ -14,7 +14,8 @@ Default \code{2}.}
 }
 \value{
 A list with \code{pressure_interp} (interpolated matrix),
-\code{x_mm}, \code{y_mm}.
+\code{x_grid}, \code{y_grid} and \code{coordinate_unit = "grid_index"}. Interpolated
+positions are grid indices; no physical sensor pitch is inferred.
 }
 \description{
 Performs bilinear interpolation on the maximum pressure picture

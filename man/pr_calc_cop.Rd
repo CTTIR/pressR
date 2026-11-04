@@ -13,12 +13,13 @@ pr_calc_cop(trial, threshold = 0)
 Default \code{0}.}
 }
 \value{
-A \link{pr_cop} object containing x (mm), y (mm), time (s), and
+A \link{pr_cop} object containing x, y, the layout coordinate unit, time (s), and
 derived metrics.
 }
 \description{
 Computes the pressure-weighted centroid of active sensors for each
 frame. Frames with no loaded sensors return \code{NA} for x and y.
+Overflowing weighted sums are evaluated with bounded weights and coordinates.
 }
 \examples{
 cop <- pr_calc_cop(pr_example_trial("saddle_horse"))

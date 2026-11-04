@@ -9,20 +9,22 @@
 #'
 #' @param trial A [pr_trial] from a saddle recording.
 #' @param thresholds A reference threshold tibble (typically from
-#'   [pr_ref_saddle()]). If `NULL`, uses the von Peinen 2010 defaults.
+#'   [pr_ref_saddle()]). If `NULL`, no reference overlay is drawn.
+#' @param masks Explicit region masks. NULL uses the historical six-mask layout.
 #'
 #' @return A `patchwork` object (4-panel composite).
 #' @export
 #' @examples
 #' pr_plot_saddle_report(pr_example_trial("saddle_horse"))
-pr_plot_saddle_report <- function(trial, thresholds = NULL) {
+pr_plot_saddle_report <- function(trial, thresholds = NULL, masks = NULL) {
   .validate_trial(trial)
-  if (is.null(thresholds)) thresholds <- pr_ref_saddle("vonpeinen2010")
-  masks <- pr_mask_saddle_6(trial$layout)
+  if (is.null(masks)) masks <- pr_mask_saddle_6(trial$layout)
   reg <- pr_calc_regional(trial, masks)
 
-  p_hm <- pr_plot_heatmap_masked(trial, masks = masks,
-                                 title = "MPP with 6-region mask")
+  p_hm <- pr_plot_heatmap_masked(trial,
+    masks = masks,
+    title = "MPP with selected regions"
+  )
   p_bar <- pr_plot_regional_bar(reg, "mpp", thresholds)
   p_cop <- pr_plot_cop(trial)
   p_sym <- pr_plot_symmetry(trial, "peak_pressure")
@@ -45,14 +47,17 @@ pr_plot_saddle_report <- function(trial, thresholds = NULL) {
 #'
 #' @param trial A [pr_trial] object from an insole or platform recording.
 #'
+#' @param masks Optional explicit region masks.
 #' @return A `patchwork` object.
 #' @export
 #' @examples
 #' pr_plot_foot_report(pr_example_trial("insole"))
-pr_plot_foot_report <- function(trial) {
+pr_plot_foot_report <- function(trial, masks = NULL) {
   .validate_trial(trial)
   # Pick default regions from the layout; if empty, auto-segment
-  if (length(trial$layout$regions) == 0L) {
+  if (!is.null(masks)) {
+    masks <- masks
+  } else if (length(trial$layout$regions) == 0L) {
     masks <- tryCatch(pr_mask_foot_auto(trial), error = function(e) list())
   } else {
     masks <- pr_mask_default(trial$layout)
@@ -64,7 +69,8 @@ pr_plot_foot_report <- function(trial) {
     pr_plot_heatmap_masked(trial, masks = masks)
   }
   p_bar <- if (length(masks) == 0L) {
-    ggplot2::ggplot() + ggplot2::theme_void() +
+    ggplot2::ggplot() +
+      ggplot2::theme_void() +
       ggplot2::labs(title = "No regions available")
   } else {
     pr_plot_regional_bar(

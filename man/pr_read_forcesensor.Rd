@@ -10,7 +10,7 @@ pr_read_forcesensor(path, force_cols = NULL, time_col = "time", verbose = TRUE)
 \item{path}{Character. Path to the CSV file.}
 
 \item{force_cols}{Character vector. Names of force columns. If \code{NULL},
-all numeric columns other than the first (time) column are used.}
+all columns other than the time column are used and must be numeric.}
 
 \item{time_col}{Character. Name of the time column. Default \code{"time"}.}
 
@@ -27,12 +27,23 @@ of force zones (not a full pressure matrix); this parser returns a
 simplified \link{pr_trial} where each "sensor" represents a force zone.
 Pressure values are reported in Newtons.
 }
+\section{Numeric text}{
+
+Numeric text is qualified for nonzero magnitudes from \code{1e-290} to \code{1e290}.
+Values outside this range, or inconsistent decimal conversions, are refused.
+CSV does not carry layout calibration or promise bit-exact doubles; provide
+the original layout, or use \code{\link[=pr_write_bundle]{pr_write_bundle()}} for a self-contained round trip.
+The actual source path, basename and SHA-256 are retained in trial metadata.
+}
+
 \examples{
 tmp <- tempfile(fileext = ".csv")
-df <- data.frame(time = seq(0, 1, by = 0.01),
-                 heel = runif(101, 0, 200),
-                 mid  = runif(101, 0, 150),
-                 fore = runif(101, 0, 300))
+df <- data.frame(
+  time = seq(0, 1, by = 0.01),
+  heel = runif(101, 0, 200),
+  mid = runif(101, 0, 150),
+  fore = runif(101, 0, 300)
+)
 utils::write.csv(df, tmp, row.names = FALSE)
 trial <- pr_read_forcesensor(tmp, verbose = FALSE)
 trial$n_sensors

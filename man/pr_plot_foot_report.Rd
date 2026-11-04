@@ -4,10 +4,12 @@
 \alias{pr_plot_foot_report}
 \title{Foot Pressure Report Panel}
 \usage{
-pr_plot_foot_report(trial)
+pr_plot_foot_report(trial, masks = NULL)
 }
 \arguments{
 \item{trial}{A \link{pr_trial} object from an insole or platform recording.}
+
+\item{masks}{Optional explicit region masks.}
 }
 \value{
 A \code{patchwork} object.

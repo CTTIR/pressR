@@ -7,7 +7,9 @@
   pat <- sprintf("^%s[[:space:]]*:[[:space:]]*(.+)$", key)
   for (ln in lines) {
     m <- regmatches(ln, regexec(pat, ln, ignore.case = TRUE))
-    if (length(m[[1]]) >= 2) return(trimws(m[[1]][2]))
+    if (length(m[[1]]) >= 2) {
+      return(trimws(m[[1]][2]))
+    }
   }
   NA_character_
 }
@@ -21,7 +23,9 @@
     parts <- parts[nzchar(parts)]
     if (length(parts) < 5L) next
     nums <- suppressWarnings(as.numeric(parts))
-    if (sum(!is.na(nums)) / length(nums) > 0.8) return(i)
+    if (sum(!is.na(nums)) / length(nums) > 0.8) {
+      return(i)
+    }
   }
   NA_integer_
 }
@@ -31,6 +35,8 @@
 #' Parses ASCII data files containing pressure sensor data. Automatically
 #' detects header format and extracts metadata, the pressure matrix, and
 #' timing.
+#'
+#' @inheritSection pr_read_csv Numeric text
 #'
 #' @param path Character. Path to the ASCII file (`.asc`, `.txt`).
 #' @param layout A [pr_layout] object. If `NULL`, inferred from the
@@ -54,14 +60,21 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
   if (!file.exists(path)) {
     cli::cli_abort("File not found: {.path {path}}.")
   }
-  lines <- readLines(path, warn = FALSE)
+  if (.is_pliance(path)) {
+    return(pr_read_pliance(path, layout = layout, sampling_hz = sampling_hz))
+  }
+  lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+  if (any(!validUTF8(lines))) lines <- iconv(lines, from = "latin1", to = "UTF-8")
   if (length(lines) == 0L) {
     cli::cli_abort("File {.path {path}} is empty.")
   }
 
   # Determine separator
-  sep_regex <- if (identical(separator, "auto")) "[[:space:],;]+"
-               else separator
+  sep_regex <- if (identical(separator, "auto")) {
+    "[[:space:],;]+"
+  } else {
+    separator
+  }
 
   # Detect skip
   if (is.null(skip)) {
@@ -75,11 +88,11 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
   header_lines <- lines[seq_len(skip)]
 
   # Metadata
-  sys_label  <- .header_value(header_lines, "System")
-  subject    <- .header_value(header_lines, "Patient")
-  date_str   <- .header_value(header_lines, "Date")
-  size_str   <- .header_value(header_lines, "Insole Size")
-  hz_str     <- .header_value(header_lines, "Sampling Rate")
+  sys_label <- .header_value(header_lines, "System")
+  subject <- .header_value(header_lines, "Patient")
+  date_str <- .header_value(header_lines, "Date")
+  size_str <- .header_value(header_lines, "Insole Size")
+  hz_str <- .header_value(header_lines, "Sampling Rate")
   n_sens_str <- .header_value(header_lines, "Sensors")
 
   if (is.null(sampling_hz) && !is.na(hz_str)) {
@@ -95,18 +108,14 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
   split <- lapply(split, function(x) x[nzchar(x)])
   ncols <- vapply(split, length, integer(1))
   if (length(unique(ncols)) > 1L) {
-    # Pad short rows with NA
-    maxc <- max(ncols)
-    split <- lapply(split, function(x) {
-      c(x, rep(NA_character_, maxc - length(x)))
-    })
+    cli::cli_abort("Inconsistent row widths in ASCII data; no padding or truncation is performed.")
   }
+  invisible(lapply(split, .check_decimal_tokens))
   mat <- suppressWarnings(do.call(
     rbind,
     lapply(split, function(x) as.numeric(x))
   ))
-  mat[is.na(mat)] <- 0
-  mat <- mat[, colSums(!is.na(mat)) > 0, drop = FALSE]
+  if (any(!is.finite(mat))) cli::cli_abort("ASCII data contain missing or non-numeric measurements.")
 
   n_sensors <- ncol(mat)
   n_frames <- nrow(mat)
@@ -114,8 +123,7 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
   if (is.null(layout)) {
     if (!is.na(sys_label)) {
       # Use system label to infer
-      layout <- switch(
-        tolower(sys_label),
+      layout <- switch(tolower(sys_label),
         insole = pr_layout_insole(),
         platform = pr_layout_platform("st"),
         mat = .layout_from_n_sensors(n_sensors) %||% pr_layout_mat("16"),
@@ -134,19 +142,7 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
   }
 
   if (ncol(mat) != layout$n_sensors) {
-    # Pad or truncate as needed, but warn
-    if (verbose) {
-      cli::cli_warn(
-        "Pressure matrix has {ncol(mat)} column(s) but layout has
-         {layout$n_sensors}; padding/truncating."
-      )
-    }
-    if (ncol(mat) < layout$n_sensors) {
-      pad <- matrix(0, nrow = n_frames, ncol = layout$n_sensors - ncol(mat))
-      mat <- cbind(mat, pad)
-    } else {
-      mat <- mat[, seq_len(layout$n_sensors), drop = FALSE]
-    }
+    cli::cli_abort("Pressure matrix has {ncol(mat)} columns but layout has {layout$n_sensors}; supply the correct layout.")
   }
 
   t <- seq(0, by = 1 / sampling_hz, length.out = n_frames)
@@ -159,6 +155,7 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
     system = sys_label %||% layout$model,
     notes = sprintf("Imported from %s", basename(path))
   )
+  metadata <- c(metadata, .reader_source_metadata(path))
 
   if (verbose) {
     cli::cli_inform(
@@ -167,6 +164,8 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
     )
   }
 
-  pr_trial(pressure = mat, time = t, layout = layout,
-           metadata = metadata, sampling_hz = sampling_hz)
+  pr_trial(
+    pressure = mat, time = t, layout = layout,
+    metadata = metadata, sampling_hz = sampling_hz
+  )
 }

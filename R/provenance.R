@@ -246,9 +246,11 @@
       call = call
     )
   }
-  n_row <- suppressWarnings(as.integer(one("nrow")))
-  n_col <- suppressWarnings(as.integer(one("ncol")))
-  if (is.na(n_row) || is.na(n_col)) {
+  n_row <- suppressWarnings(as.numeric(one("nrow")))
+  n_col <- suppressWarnings(as.numeric(one("ncol")))
+  if (!is.finite(n_row) || !is.finite(n_col) || n_row < 0 || n_col < 0 ||
+      n_row != trunc(n_row) || n_col != trunc(n_col) ||
+      n_row > .Machine$integer.max || n_col > .Machine$integer.max) {
     cli::cli_abort(
       c("Lock file {.file {path}} is malformed.",
         x = "{.field nrow} and {.field ncol} must be whole numbers."),
@@ -257,8 +259,8 @@
   }
   list(
     algo = one("algo"),
-    n_row = n_row,
-    n_col = n_col,
+    n_row = as.integer(n_row),
+    n_col = as.integer(n_col),
     columns = vapply(parts, `[`, character(1), 1L),
     types = vapply(parts, `[`, character(1), 2L),
     content = one("content")

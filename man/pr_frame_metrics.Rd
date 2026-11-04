@@ -59,11 +59,13 @@ all.equal(fm$mean_kPa, fm$total_kPa / trial$layout$n_sensors)
 }
 \seealso{
 Other whole-grid frame metrics:
-\code{\link[=pr_calc_cop_grid]{pr_calc_cop_grid()}},
-\code{\link[=pr_calc_loaded_count]{pr_calc_loaded_count()}},
-\code{\link[=pr_calc_mean_pressure_grid]{pr_calc_mean_pressure_grid()}},
-\code{\link[=pr_calc_pci]{pr_calc_pci()}},
-\code{\link[=pr_calc_total_pressure]{pr_calc_total_pressure()}},
-\code{\link[=pr_ref_pci]{pr_ref_pci()}}
+\itemize{
+\item \code{\link[=pr_calc_cop_grid]{pr_calc_cop_grid()}}
+\item \code{\link[=pr_calc_loaded_count]{pr_calc_loaded_count()}}
+\item \code{\link[=pr_calc_mean_pressure_grid]{pr_calc_mean_pressure_grid()}}
+\item \code{\link[=pr_calc_pci]{pr_calc_pci()}}
+\item \code{\link[=pr_calc_total_pressure]{pr_calc_total_pressure()}}
+\item \code{\link[=pr_ref_pci]{pr_ref_pci()}}
+}
 }
 \concept{whole-grid frame metrics}

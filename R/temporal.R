@@ -33,7 +33,9 @@
 # Internal: match a single string against a set of choices, tolerating the
 # full default vector that match.arg() would normally absorb.
 .tp_match_arg <- function(x, choices, arg, call = rlang::caller_env()) {
-  if (identical(x, choices)) return(choices[1])
+  if (identical(x, choices)) {
+    return(choices[1])
+  }
   if (!is.character(x) || length(x) != 1L || is.na(x)) {
     cli::cli_abort(
       "{.arg {arg}} must be a single string, one of {.val {choices}}.",
@@ -43,7 +45,8 @@
   if (!x %in% choices) {
     cli::cli_abort(
       c("{.arg {arg}} must be one of {.val {choices}}.",
-        "x" = "Got {.val {x}}."),
+        "x" = "Got {.val {x}}."
+      ),
       call = call
     )
   }
@@ -72,7 +75,7 @@
 # Internal: a single whole number at least `min`, returned as integer.
 .tp_check_count <- function(x, arg, min = 1L, call = rlang::caller_env()) {
   if (!is.numeric(x) || length(x) != 1L || !is.finite(x) ||
-      x != as.integer(x) || x < min) {
+    x != as.integer(x) || x < min) {
     cli::cli_abort(
       "{.arg {arg}} must be a single whole number of at least {min}.",
       call = call
@@ -97,9 +100,13 @@
     cli::cli_abort(
       c("{.arg trial} has no usable sampling rate.",
         "i" = "Set {.field sampling_hz} or give the trial increasing
-               timestamps."),
+               timestamps."
+      ),
       call = call
     )
+  }
+  if (length(trial$time) > 2L && any(abs(diff(trial$time) * fs - 1) > 0.02)) {
+    cli::cli_abort("Temporal analysis requires regularly sampled time; resample gaps explicitly before analysis.")
   }
   as.numeric(fs)
 }
@@ -111,9 +118,13 @@
 # the notes in pr_calc_spectrum().
 .tp_frame_signal <- function(trial, signal, call = rlang::caller_env()) {
   P <- trial$pressure
-  if (identical(signal, "peak")) return(.fm_row_max(P))
+  if (identical(signal, "peak")) {
+    return(.fm_row_max(P))
+  }
   total <- rowSums(P)
-  if (identical(signal, "total")) return(total)
+  if (identical(signal, "total")) {
+    return(total)
+  }
   n <- trial$layout$n_sensors
   if (n == 0L) {
     cli::cli_abort(
@@ -127,7 +138,9 @@
 # Internal: symmetric (periodic-endpoint) Hann window of length n, the
 # `hanning` definition whose first and last weights are exactly 0.
 .tp_hann <- function(n) {
-  if (n < 2L) return(rep(1, n))
+  if (n < 2L) {
+    return(rep(1, n))
+  }
   0.5 - 0.5 * cos(2 * pi * seq.int(0L, n - 1L) / (n - 1))
 }
 
@@ -212,13 +225,15 @@ pr_calc_spectrum <- function(trial, signal = c("total", "mean", "peak"),
   if (n < 2L) {
     cli::cli_abort(
       c("{.arg trial} has {n} frame{?s}.",
-        "i" = "A spectrum needs at least two frames.")
+        "i" = "A spectrum needs at least two frames."
+      )
     )
   }
   if (anyNA(x)) {
     cli::cli_abort(
       c("The {.val {signal}} signal contains missing values.",
-        "i" = "{.fun stats::fft} has no missing-value handling.")
+        "i" = "{.fun stats::fft} has no missing-value handling."
+      )
     )
   }
 
@@ -285,7 +300,8 @@ pr_calc_dominant_freq <- function(trial, band = c(0.3, 5), signal = "total",
   if (band[1] >= band[2]) {
     cli::cli_abort(
       c("{.arg band} must be increasing.",
-        "x" = "Got {.val {band[1]}} to {.val {band[2]}} Hz.")
+        "x" = "Got {.val {band[1]}} to {.val {band[2]}} Hz."
+      )
     )
   }
 
@@ -334,7 +350,9 @@ pr_calc_dominant_freq <- function(trial, band = c(0.3, 5), signal = "total",
   if (k %% 2L == 0L) k <- k + 1L
   k_max <- if (n %% 2L == 0L) n - 1L else n
   k <- max(1L, min(k, k_max))
-  if (k <= 1L) return(lp - lp)
+  if (k <= 1L) {
+    return(lp - lp)
+  }
   lp - as.numeric(stats::runmed(lp, k, endrule = "median"))
 }
 
@@ -346,12 +364,16 @@ pr_calc_dominant_freq <- function(trial, band = c(0.3, 5), signal = "total",
 # distance" conventionally means -- the tallest peak in a crowded run wins
 # and suppresses its neighbours, rather than whichever happened to come
 # first. Written in base R; no external peak-finding dependency.
-.tp_find_peaks <- function(x, min_dist, height) {
+.tp_strict_peaks <- function(x, min_dist, height) {
   n <- length(x)
-  if (n < 3L) return(integer(0))
+  if (n < 3L) {
+    return(integer(0))
+  }
   is_pk <- c(FALSE, x[-1] > x[-n]) & c(x[-n] > x[-1], FALSE)
   cand <- which(is_pk & x >= height)
-  if (length(cand) < 2L || min_dist <= 1L) return(cand)
+  if (length(cand) < 2L || min_dist <= 1L) {
+    return(cand)
+  }
   keep <- integer(0)
   for (p in cand[order(x[cand], decreasing = TRUE)]) {
     if (all(abs(p - keep) >= min_dist)) keep <- c(keep, p)
@@ -412,28 +434,14 @@ pr_calc_dominant_freq <- function(trial, band = c(0.3, 5), signal = "total",
 #' not a raw frame total: on the reference recording the frame totals run
 #' 383-434 kPa while `peak_total` runs 2.5-13.8 kPa.
 #'
-#' @section Agreement with the source study:
-#' On the 869-frame reference recording `ID052_K_K_KG00_MS`, the defaults
-#' reproduce the study's own segmentation exactly: 14 cycles, identical
-#' `cycle`, `start_idx`, `end_idx`, `duration_s`, `peak_total` and
-#' `stride_freq` to machine precision. Rerun over the study's whole cohort,
-#' all 323 of its 50 Hz recordings match cycle for cycle — 137,761 cycles,
-#' no differences.
-#'
-#' The remaining 108 recordings were sampled at 10 Hz, and there the two
-#' disagree. The study hard-coded its running-median width at 251 samples
-#' and its minimum peak separation at 15 samples, which are 5 s and 0.3 s
-#' only at 50 Hz; the parameters here are in seconds and scale with the
-#' trial's own sampling rate. Passing `hp_window_s = 25.1` and
-#' `min_period_s = 1.5` reproduces the study's fixed sample counts on a
-#' 10 Hz recording.
-#'
-#' That difference shows up in the published cohort means. All 34,095 of
-#' the study's slow-gait (`MG`) cycles come from 50 Hz recordings, and this
-#' function returns their published mean duration of 0.719 s exactly. The
-#' `MH` and `MS` means, 0.748 s and 0.773 s, mix in 10 Hz recordings; on
-#' the 50 Hz half alone both this function and the study give 0.650 s and
-#' 0.726 s.
+#' @section Reproducibility:
+#' The corrected detector treats differences below floating-point resolution
+#' as ties and chooses the first sample of a plateau deterministically.
+#' Historical strict-maximum detection can select different cycles after
+#' rounding differences around 1e-13. The former claim of exact agreement
+#' across all study recordings has been withdrawn. Use [pr_temporal_profile()]
+#' to distinguish corrected analysis, the historical method, and verified
+#' replay of saved reference cycles.
 #'
 #' @inheritParams pr_calc_spectrum
 #' @param signal Character. Frame-level signal to segment. Default
@@ -477,6 +485,13 @@ pr_calc_dominant_freq <- function(trial, band = c(0.3, 5), signal = "total",
 pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
                                   hp_window_s = 5, min_period_s = 0.3,
                                   height_quantile = 0.3, max_period_s = 3) {
+  .tp_stride_engine(trial, signal, lp_window, hp_window_s, min_period_s, height_quantile, max_period_s)
+}
+
+.tp_stride_engine <- function(trial, signal = "total", lp_window = 11L,
+                              hp_window_s = 5, min_period_s = .3,
+                              height_quantile = .3, max_period_s = 3,
+                              peak_finder = .tp_find_peaks, sample_rate = NULL) {
   .validate_trial(trial)
   signal <- .tp_match_arg(signal, .tp_signals, "signal")
   lp_window <- .tp_check_count(lp_window, "lp_window")
@@ -497,7 +512,8 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
   if (max_period_s <= min_period_s) {
     cli::cli_abort(
       c("{.arg max_period_s} must exceed {.arg min_period_s}.",
-        "x" = "Got {.val {max_period_s}} and {.val {min_period_s}} seconds.")
+        "x" = "Got {.val {max_period_s}} and {.val {min_period_s}} seconds."
+      )
     )
   }
   if (height_quantile < 0 || height_quantile >= 1) {
@@ -507,9 +523,11 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
     )
   }
 
-  fs <- .tp_fs(trial)
+  fs <- sample_rate %||% .tp_fs(trial)
   x <- .tp_frame_signal(trial, signal)
-  if (length(x) < 3L || anyNA(x)) return(.tp_empty_cycles())
+  if (length(x) < 3L || anyNA(x)) {
+    return(.tp_empty_cycles())
+  }
 
   sig <- .tp_bandpass(x, fs, lp_window, hp_window_s)
   pos <- sig[sig > 0]
@@ -521,9 +539,13 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
     unname(stats::quantile(pos, height_quantile))
   }
 
-  peaks <- .tp_find_peaks(sig, max(1L, as.integer(round(min_period_s * fs))),
-                          height)
-  if (length(peaks) < 2L) return(.tp_empty_cycles())
+  peaks <- peak_finder(
+    sig, max(1L, as.integer(round(min_period_s * fs))),
+    height
+  )
+  if (length(peaks) < 2L) {
+    return(.tp_empty_cycles())
+  }
 
   from <- peaks[-length(peaks)]
   to <- peaks[-1]
@@ -569,11 +591,14 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
   if (length(missing) > 0L) {
     cli::cli_abort(
       c("{.arg cycles} is missing column{?s} {.val {missing}}.",
-        "i" = "{.fun pr_calc_stride_cycles} supplies them."),
+        "i" = "{.fun pr_calc_stride_cycles} supplies them."
+      ),
       call = call
     )
   }
-  if (nrow(cycles) == 0L) return(invisible(cycles))
+  if (nrow(cycles) == 0L) {
+    return(invisible(cycles))
+  }
   s <- cycles$start_idx
   e <- cycles$end_idx
   if (!is.numeric(s) || !is.numeric(e) || anyNA(s) || anyNA(e)) {
@@ -587,7 +612,8 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
     cli::cli_abort(
       c("{.arg cycles} indexes frames outside the trial.",
         "x" = "The trial has {n_frames} frame{?s}; got
-               {.val {min(s)}}-{.val {max(e)}}."),
+               {.val {min(s)}}-{.val {max(e)}}."
+      ),
       call = call
     )
   }
@@ -605,7 +631,9 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
 # reached the bin. NaN (no cycle contributed) becomes NA, not 0.
 .tp_bin_mean <- function(v, trim) {
   v <- v[!is.na(v)]
-  if (length(v) == 0L) return(NA_real_)
+  if (length(v) == 0L) {
+    return(NA_real_)
+  }
   mean(v, trim = trim)
 }
 
@@ -747,7 +775,7 @@ pr_calc_phase_map <- function(trial, cycles = NULL, n_bins = 10L, trim = 0.1,
     sensor = rep(as.integer(coords$sensor_id), times = n_bins),
     row = rep(as.integer(coords$row), times = n_bins),
     col = rep(as.integer(coords$col), times = n_bins),
-    mean_kPa = as.numeric(t(mval))
+    mean_kPa = as.numeric(t(mval)) * .kpa_scale(trial)
   )
 }
 
@@ -768,7 +796,8 @@ pr_calc_phase_map <- function(trial, cycles = NULL, n_bins = 10L, trim = 0.1,
     c("{.arg cop} must be a {.cls pr_cop} object or a data frame of
        coordinates.",
       "i" = "Accepted column pairs: {.field x}/{.field y}, or
-             {.field cop_row}/{.field cop_col}."),
+             {.field cop_row}/{.field cop_col}."
+    ),
     call = call
   )
 }
@@ -787,14 +816,22 @@ pr_calc_phase_map <- function(trial, cycles = NULL, n_bins = 10L, trim = 0.1,
 # and the last. Collinear overlaps are not counted as crossings.
 .tp_crossings <- function(x, y, closed) {
   m <- length(x) - 1L
-  if (m < 3L) return(0L)
+  if (m < 3L) {
+    return(0L)
+  }
   total <- 0L
   for (i in seq_len(m - 2L)) {
     j <- seq.int(i + 2L, m)
     if (closed && i == 1L) j <- j[j < m]
     if (length(j) == 0L) next
-    ax <- x[i]; ay <- y[i]; bx <- x[i + 1L]; by <- y[i + 1L]
-    cx <- x[j]; cy <- y[j]; dx <- x[j + 1L]; dy <- y[j + 1L]
+    ax <- x[i]
+    ay <- y[i]
+    bx <- x[i + 1L]
+    by <- y[i + 1L]
+    cx <- x[j]
+    cy <- y[j]
+    dx <- x[j + 1L]
+    dy <- y[j + 1L]
     straddle_ab <- .tp_ccw(ax, ay, cx, cy, dx, dy) !=
       .tp_ccw(bx, by, cx, cy, dx, dy)
     straddle_cd <- .tp_ccw(ax, ay, bx, by, cx, cy) !=
@@ -892,7 +929,8 @@ pr_cop_shape <- function(cop, close = TRUE) {
   if (n == 0L) {
     cli::cli_abort(
       c("{.arg cop} has no complete coordinate pairs.",
-        "i" = "Every point had a missing x or y.")
+        "i" = "Every point had a missing x or y."
+      )
     )
   }
 
