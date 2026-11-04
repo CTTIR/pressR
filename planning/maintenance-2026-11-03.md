@@ -136,3 +136,22 @@ the completed source milestone and observe its hosted checks. The original dirty
 production checkout and five unfinished study-specific scripts remain preserved.
 Current working evidence is maintained outside the package archive; no unrun
 check is counted as a pass. The README gives the installation and first-use path.
+
+### Completed local qualification after disk recovery
+
+The same final archive subsequently passed a fresh full check with zero errors,
+zero warnings and one incoming development NOTE, and a required-only check with
+zero errors, zero warnings and two NOTEs (development version and optional V8
+unavailable for HTML math rendering). Installed assertions pass 1,877/full and
+1,819/minimal, with two and eight named skips respectively. Coverage is 95.78984%,
+meeting the unchanged 95% gate. Fifteen installed first-use checks pass.
+
+The final site has 132 HTML pages and no broken references among 5,901 local HTML
+links and 54 CSS references. Forty-eight browser page/theme/viewport states pass;
+720 sampled scientific image pixels match their source images. The successful
+stock manual has 107 pages, 121 contents entries and 660 numeric links with no
+mismatches or out-of-page words; 19 selected pages were visually reviewed.
+
+The earlier ENOSPC results remain preserved. Local source qualification is now
+complete; publication and hosted results are recorded separately. Private-corpus
+and clinical acceptance, formal release/DOI and deployment remain separate.

@@ -1,10 +1,10 @@
 pressR 0.2 successor source qualification
 Frozen manuscript baseline: 5f5b370890fafae01b78174a1cec52b4a2039ce3 (0.1.0).
 Current source milestone: 0.2.0.9000; qualification remains in progress.
-4 November checkpoint: final installed tests pass1877 assertions, but disk
-exhaustion prevents a successful final full check. Required-only check is
-incomplete; coverage and final site qualification remain pending. Source has
-not been published as a completed milestone. Restore sustained free space first.
+4 November qualification after disk recovery: exact final archive passes full
+and required-only checks with zero errors/warnings, 1877/1819 assertions and
+95.78984% coverage. Installed first-use, actual browser/report, site and manual
+checks pass. Earlier ENOSPC failures are retained. Hosted results remain separate.
 
 The original production branch and private study scripts/data remain preserved.
 The public integration scripts use synthetic fixtures unless an explicit data
