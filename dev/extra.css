@@ -1,0 +1,14 @@
+/* Scientific plots retain their original colours and readable label background. */
+html[data-bs-theme] img.r-plt {
+  filter: none !important;
+  background-color: #fff;
+}
+
+/* Preserve syntax distinctions while keeping code comments and output readable. */
+html[data-bs-theme="light"] pre code span.co { color: #505b66; }
+html[data-bs-theme="dark"] pre code span.co { color: #adb5bd; }
+html[data-bs-theme="light"] pre code span.va,
+html[data-bs-theme="light"] pre code span.va a { color: #a04400; }
+html[data-bs-theme] pre code span.co * { color: inherit !important; }
+html[data-bs-theme="light"] pre code span.kw,
+html[data-bs-theme="light"] pre code span.kw a { color: #a62c3a; }
