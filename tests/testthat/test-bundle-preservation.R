@@ -162,14 +162,27 @@ test_that("a source filename is not partially matched as a recording path", {
   expect_silent(pressR:::.protect_recording(trial, "sensor.csv"))
 })
 
-test_that("bundle paths are explicit and special files are refused without reading", {
+test_that("bundle paths are explicit and directory manifests are refused", {
   for (path in list(character(), c("one", "two"), NA_character_, "")) {
     expect_error(pr_read_bundle(path), "one nonempty")
   }
+  root <- withr::local_tempdir()
+  manifest <- file.path(root, "manifest.json")
+  dir.create(manifest)
+  expect_true(dir.exists(manifest))
+  expect_error(pr_read_bundle(root), "regular file")
+})
+
+test_that("POSIX FIFO manifests are refused without reading", {
+  # An MSYS mkfifo executable can succeed on Windows while native Windows R
+  # cannot see its FIFO. That is not a native filesystem FIFO fixture.
+  skip_on_os("windows")
   skip_if_not(nzchar(Sys.which("mkfifo")), "Named pipe fixture needs mkfifo")
   root <- withr::local_tempdir()
   manifest <- file.path(root, "manifest.json")
   expect_identical(system2(Sys.which("mkfifo"), shQuote(manifest)), 0L)
+  expect_true(file.exists(manifest))
+  expect_identical(as.character(fs::file_info(manifest)$type), "FIFO")
   expect_error(pr_read_bundle(root), "regular file")
 })
 

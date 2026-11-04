@@ -58,7 +58,11 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          # Current readxl requires R >= 4.2. The last compatible archive
+          # declares R >= 4.1; retain workbook tests in the minimum-R job.
+          extra-packages: >-
+            any::rcmdcheck,
+            readxl=url::https://cran.r-project.org/src/contrib/Archive/readxl/readxl_1.5.0.1.tar.gz
           needs: check
       - name: Check declared minimum R
         run: rcmdcheck::rcmdcheck(args=c('--no-manual','--as-cran'), error_on='warning')
