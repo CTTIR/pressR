@@ -155,3 +155,26 @@ mismatches or out-of-page words; 19 selected pages were visually reviewed.
 The earlier ENOSPC results remain preserved. Local source qualification is now
 complete; publication and hosted results are recorded separately. Private-corpus
 and clinical acceptance, formal release/DOI and deployment remain separate.
+
+### Hosted portability follow-up
+
+The first published successor commit, `6b89fb7543e646e831a10b0abc6f736b96711811`,
+passed lint, the API lock, the website build, the 95% coverage gate (95.79%),
+the six synthetic HTML/PDF report renders and the production browser workflow.
+All five Linux/macOS package-check rows passed. Two portability issues remain
+subject to a new exact-commit hosted run:
+
+- The R 4.1.3 job failed during dependency resolution because current optional
+  `readxl` requires R 4.2. Only that job now uses the official CRAN archive
+  [readxl 1.5.0.1](https://cran.r-project.org/src/contrib/Archive/readxl/readxl_1.5.0.1.tar.gz),
+  whose DESCRIPTION declares R >= 4.1. All suggested packages and workbook checks
+  remain enabled; other jobs continue to use current dependencies.
+- Windows passed 1,874 assertions but could not see a POSIX FIFO created by the
+  runner's MSYS `mkfifo`, despite its successful exit status. Invalid-path and
+  directory-manifest refusal now run on every platform. The separate POSIX FIFO
+  test verifies the fixture's existence and FIFO type before testing refusal;
+  it explicitly skips native Windows R. Reader behavior is unchanged.
+
+These changes repair the CI environment and its fixture assumptions. They do not
+raise the package's R requirement, remove a supported workflow, or establish a
+passing Windows/minimum-R result before the new hosted checks finish.
