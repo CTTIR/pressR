@@ -20,3 +20,9 @@
 ^_pkgdown\.yml$
 ^_coverage$
 ^tools/branding$
+^dev$
+^\.zenodo\.json$
+^CITATION\.cff$
+^planning$
+^\.git$
+(^|/)Rplots\.pdf$

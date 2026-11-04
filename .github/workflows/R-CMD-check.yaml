@@ -2,7 +2,7 @@
 # shared one at CTTIR/.github so every package moves together.
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, 'production/**']
   pull_request:
     branches: [main, master]
 
@@ -13,3 +13,5 @@ permissions: read-all
 jobs:
   R-CMD-check:
     uses: CTTIR/.github/.github/workflows/R-CMD-check.yaml@main
+    secrets:
+      CTTIR_PRIVATE_TERMS: ${{ secrets.CTTIR_PRIVATE_TERMS }}

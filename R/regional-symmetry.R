@@ -42,7 +42,8 @@
   known <- .rs_statistics
   if (!is.character(statistic) || length(statistic) < 1L || anyNA(statistic)) {
     cli::cli_abort("{.arg statistic} must be one of {.val {known}}.",
-                   call = call)
+      call = call
+    )
   }
   if (length(statistic) > 1L) {
     if (!identical(statistic, .rs_statistics)) {
@@ -56,7 +57,8 @@
   if (!statistic %in% known) {
     cli::cli_abort(
       c("{.arg statistic} must be one of {.val {known}}.",
-        "x" = "Got {.val {statistic}}."),
+        "x" = "Got {.val {statistic}}."
+      ),
       call = call
     )
   }
@@ -75,7 +77,8 @@
 .rs_check_flag <- function(x, arg, call = rlang::caller_env()) {
   if (!is.logical(x) || length(x) != 1L || is.na(x)) {
     cli::cli_abort("{.arg {arg}} must be {.code TRUE} or {.code FALSE}.",
-                   call = call)
+      call = call
+    )
   }
   invisible(x)
 }
@@ -117,8 +120,11 @@
 
 # Internal: reflect a grid matrix across the mat's midline.
 .rs_flip <- function(m, axis) {
-  if (identical(axis, "vertical")) m[, rev(seq_len(ncol(m))), drop = FALSE]
-  else m[rev(seq_len(nrow(m))), , drop = FALSE]
+  if (identical(axis, "vertical")) {
+    m[, rev(seq_len(ncol(m))), drop = FALSE]
+  } else {
+    m[rev(seq_len(nrow(m))), , drop = FALSE]
+  }
 }
 
 # Internal: the two half-plane matrices used by pr_mask_symmetry(), so that
@@ -178,7 +184,7 @@
   if (is.null(masks)) {
     roi <- layout$active
   } else if (inherits(masks, "pr_mask") ||
-             (is.logical(masks) && is.matrix(masks))) {
+    (is.logical(masks) && is.matrix(masks))) {
     roi <- .rs_mask_matrix(masks, layout, arg = arg, call = call)
   } else if (is.list(masks) && length(masks) == 2L) {
     nms <- names(masks)
@@ -203,7 +209,7 @@
 # Internal: pressure-column indices of a logical grid matrix, in the
 # column-major order every other pressR function uses.
 .rs_cols <- function(m, layout) {
-  match(which(m & layout$active), which(layout$active))
+  .mask_to_cols(m, layout)
 }
 
 # Internal: the asymmetry index itself, on two already-resolved half-masks.
@@ -213,7 +219,9 @@
   reduce <- function(cols) {
     x <- v[cols]
     if (identical(denominator, "loaded")) x <- x[x > 0]
-    if (length(x) == 0L) return(0)
+    if (length(x) == 0L) {
+      return(0)
+    }
     mean(x)
   }
   va <- reduce(ca)
@@ -261,7 +269,14 @@
 #'
 #' @return A named list of [pr_mask] objects: `length(band_names)` of them
 #'   when `sides = FALSE`, twice that when `sides = TRUE`.
-#' @family regional symmetry functions
+#' @concept regional symmetry functions
+#' @seealso Other regional symmetry functions:
+#'
+#' - [pr_calc_cop_masked()]
+#' - [pr_calc_regional_map()]
+#' - [pr_calc_symmetry_map()]
+#' - [pr_mask_mirror_balance()]
+#' - [pr_symmetry_sensitivity()]
 #' @seealso [pr_mask_saddle_6()] for the derived-thirds convention,
 #'   [pr_calc_regional_map()] which consumes these masks.
 #' @export
@@ -283,7 +298,7 @@ pr_mask_rowbands <- function(layout, breaks = c(5, 11), sides = TRUE,
   .rs_check_flag(sides, "sides")
 
   if (!is.character(band_names) || length(band_names) == 0L ||
-      anyNA(band_names) || !all(nzchar(band_names))) {
+    anyNA(band_names) || !all(nzchar(band_names))) {
     cli::cli_abort("{.arg band_names} must be a character vector of names.")
   }
   if (anyDuplicated(band_names) > 0L) {
@@ -305,7 +320,7 @@ pr_mask_rowbands <- function(layout, breaks = c(5, 11), sides = TRUE,
   nr <- layout$grid_rows
   if (n_breaks > 0L) {
     if (any(breaks != round(breaks)) || any(breaks < 1) ||
-        any(breaks > nr - 1L)) {
+      any(breaks > nr - 1L)) {
       cli::cli_abort(
         "{.arg breaks} must be whole numbers in {.code 1:{nr - 1L}}, not
          {.val {breaks}}."
@@ -386,7 +401,14 @@ pr_mask_rowbands <- function(layout, breaks = c(5, 11), sides = TRUE,
 #' @return A [pr_mask] object carrying two extra fields: `axis`, and
 #'   `halves`, a named integer vector of the two sides' sensor counts, which
 #'   are equal by construction.
-#' @family regional symmetry functions
+#' @concept regional symmetry functions
+#' @seealso Other regional symmetry functions:
+#'
+#' - [pr_calc_cop_masked()]
+#' - [pr_calc_regional_map()]
+#' - [pr_calc_symmetry_map()]
+#' - [pr_mask_rowbands()]
+#' - [pr_symmetry_sensitivity()]
 #' @seealso [pr_symmetry_sensitivity()], which applies this across a family
 #'   of masks.
 #' @export
@@ -408,8 +430,11 @@ pr_mask_mirror_balance <- function(mask, layout,
   .validate_layout(layout)
   axis <- match.arg(axis)
 
-  nm <- if (inherits(mask, "pr_mask")) paste0(mask$name, "_balanced") else
+  nm <- if (inherits(mask, "pr_mask")) {
+    paste0(mask$name, "_balanced")
+  } else {
     "mirror_balanced"
+  }
   m <- .rs_mask_matrix(mask, layout, arg = "mask")
 
   bal <- .rs_drop_centre(m & .rs_flip(m, axis), axis)
@@ -475,7 +500,14 @@ pr_mask_mirror_balance <- function(mask, layout,
 #'
 #' @return A [tibble::tibble] with one row per mask and columns `zone`,
 #'   `zone_mean_kPa`, `zone_peak_kPa`, `zone_loaded`.
-#' @family regional symmetry functions
+#' @concept regional symmetry functions
+#' @seealso Other regional symmetry functions:
+#'
+#' - [pr_calc_cop_masked()]
+#' - [pr_calc_symmetry_map()]
+#' - [pr_mask_mirror_balance()]
+#' - [pr_mask_rowbands()]
+#' - [pr_symmetry_sensitivity()]
 #' @seealso [pr_sensor_map()] for the map being reduced,
 #'   [pr_calc_regional()] for the frame-first counterpart.
 #' @export
@@ -520,14 +552,16 @@ pr_calc_regional_map <- function(trial, masks = NULL,
   stat <- vapply(seq_along(masks), function(i) {
     m <- .rs_mask_matrix(masks[[i]], layout, arg = "masks")
     x <- v[.rs_cols(m, layout)]
-    if (length(x) == 0L) return(c(0, 0, 0))
+    if (length(x) == 0L) {
+      return(c(0, 0, 0))
+    }
     c(mean(x), max(x), sum(x > 0))
   }, numeric(3))
 
   tibble::tibble(
     zone = nms,
-    zone_mean_kPa = stat[1L, ],
-    zone_peak_kPa = stat[2L, ],
+    zone_mean_kPa = stat[1L, ] * if(statistic=="loaded") 1 else .kpa_scale(trial),
+    zone_peak_kPa = stat[2L, ] * if(statistic=="loaded") 1 else .kpa_scale(trial),
     zone_loaded = as.integer(stat[3L, ])
   )
 }
@@ -575,7 +609,14 @@ pr_calc_regional_map <- function(trial, masks = NULL,
 #' @return A one-row [tibble::tibble] with columns `statistic`,
 #'   `denominator`, `n_left`, `n_right`, `left_value`, `right_value` and
 #'   `asymmetry_pct`.
-#' @family regional symmetry functions
+#' @concept regional symmetry functions
+#' @seealso Other regional symmetry functions:
+#'
+#' - [pr_calc_cop_masked()]
+#' - [pr_calc_regional_map()]
+#' - [pr_mask_mirror_balance()]
+#' - [pr_mask_rowbands()]
+#' - [pr_symmetry_sensitivity()]
 #' @seealso [pr_calc_symmetry_index()] for the frame-first version,
 #'   [pr_symmetry_sensitivity()] to vary the mask.
 #' @export
@@ -644,7 +685,14 @@ pr_calc_symmetry_map <- function(trial, masks = NULL, statistic = "mean",
 #' @return A [tibble::tibble] with one row per scheme and columns `scheme`,
 #'   `balanced`, `statistic`, `denominator`, `n_left`, `n_right`,
 #'   `left_value`, `right_value`, `asymmetry_pct`.
-#' @family regional symmetry functions
+#' @concept regional symmetry functions
+#' @seealso Other regional symmetry functions:
+#'
+#' - [pr_calc_cop_masked()]
+#' - [pr_calc_regional_map()]
+#' - [pr_calc_symmetry_map()]
+#' - [pr_mask_mirror_balance()]
+#' - [pr_mask_rowbands()]
 #' @seealso [pr_calc_symmetry_map()] for a single scheme.
 #' @export
 #' @examples
@@ -697,8 +745,10 @@ pr_symmetry_sensitivity <- function(trial, masks, statistic = "mean",
   v <- .rs_sensor_values(trial, statistic, threshold = 0)
 
   rows <- lapply(seq_along(masks), function(i) {
-    sides <- .rs_side_masks(masks[[i]], layout, axis = "vertical",
-                            arg = "masks")
+    sides <- .rs_side_masks(masks[[i]], layout,
+      axis = "vertical",
+      arg = "masks"
+    )
     a <- sides$a
     b <- sides$b
     if (balance) {
@@ -768,7 +818,14 @@ pr_symmetry_sensitivity <- function(trial, masks, statistic = "mean",
 #'
 #' @return A named list of [pr_cop] objects, one per mask, in the order the
 #'   masks were given.
-#' @family regional symmetry functions
+#' @concept regional symmetry functions
+#' @seealso Other regional symmetry functions:
+#'
+#' - [pr_calc_regional_map()]
+#' - [pr_calc_symmetry_map()]
+#' - [pr_mask_mirror_balance()]
+#' - [pr_mask_rowbands()]
+#' - [pr_symmetry_sensitivity()]
 #' @seealso [pr_calc_cop()] and [pr_calc_cop_grid()] for the whole mat,
 #'   [pr_calc_cop_excursion()] for the range summary.
 #' @export
@@ -850,11 +907,13 @@ pr_calc_cop_masked <- function(trial, masks = NULL, threshold = 0,
     # NA rather than 0/0: an unloaded region has no centroid, and pr_cop()
     # drops those frames from the trajectory metrics.
     den <- ifelse(s > 0, s, NA_real_)
-    pr_cop(
+    cop <- pr_cop(
       x = as.vector(W %*% xs[cols]) / den,
       y = as.vector(W %*% ys[cols]) / den,
       time = time
     )
+    cop$coordinate_unit <- if (identical(units, "mm")) "mm" else "grid_index"
+    cop
   })
   stats::setNames(out, nms)
 }

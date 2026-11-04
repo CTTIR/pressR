@@ -20,7 +20,9 @@
 
 # Internal: read and re-encode the header block of a delimited export.
 .pliance_header <- function(path, skip, encoding) {
-  if (skip < 1L) return(character())
+  if (skip < 1L) {
+    return(character())
+  }
   lines <- readLines(path, n = skip, warn = FALSE)
   if (!identical(toupper(encoding), "UTF-8")) {
     conv <- iconv(lines, from = encoding, to = "UTF-8", sub = "?")
@@ -33,7 +35,9 @@
 .pliance_field <- function(lines, pattern) {
   for (ln in lines) {
     m <- regmatches(ln, regexec(pattern, ln, ignore.case = TRUE))[[1]]
-    if (length(m) >= 2L && nzchar(trimws(m[2]))) return(trimws(m[2]))
+    if (length(m) >= 2L && nzchar(trimws(m[2]))) {
+      return(trimws(m[2]))
+    }
   }
   NA_character_
 }
@@ -41,7 +45,9 @@
 # Internal: same, coerced to a positive number (NA when absent or <= 0).
 .pliance_field_num <- function(lines, pattern) {
   v <- suppressWarnings(as.numeric(.pliance_field(lines, pattern)))
-  if (length(v) != 1L || !is.finite(v) || v <= 0) return(NA_real_)
+  if (length(v) != 1L || !is.finite(v) || v <= 0) {
+    return(NA_real_)
+  }
   v
 }
 
@@ -49,10 +55,14 @@
 # discard the phantom column produced by the trailing delimiter without
 # discarding a genuinely all-missing sensor channel.
 .pliance_n_named <- function(header, skip, sep) {
-  if (skip < 1L || length(header) < skip) return(NA_integer_)
+  if (skip < 1L || length(header) < skip) {
+    return(NA_integer_)
+  }
   toks <- trimws(strsplit(header[[skip]], sep, fixed = TRUE)[[1]])
   n <- sum(nzchar(toks))
-  if (n < 2L) return(NA_integer_)
+  if (n < 2L) {
+    return(NA_integer_)
+  }
   as.integer(n)
 }
 
@@ -101,7 +111,9 @@
     fn <- tryCatch(match.fun("pr_layout_saddle_novel"), error = function(e) NULL)
     if (is.function(fn)) {
       lay <- tryCatch(fn(), error = function(e) NULL)
-      if (inherits(lay, "pr_layout")) return(lay)
+      if (inherits(lay, "pr_layout")) {
+        return(lay)
+      }
     }
   }
   .layout_from_n_sensors(n)
@@ -150,7 +162,7 @@ pr_meta_from_filename <- function(path, fields, sep = "_",
     cli::cli_abort("{.arg path} must be a single, non-missing file name.")
   }
   if (!is.character(fields) || length(fields) == 0L || anyNA(fields) ||
-      !all(nzchar(fields))) {
+    !all(nzchar(fields))) {
     cli::cli_abort("{.arg fields} must be a character vector of column names.")
   }
   if (anyDuplicated(fields) > 0L) {
@@ -175,7 +187,9 @@ pr_meta_from_filename <- function(path, fields, sep = "_",
         "i" = "Expected field{?s}: {.val {fields}}."
       ))
     }
-    if (identical(on_fail, "skip")) return(NULL)
+    if (identical(on_fail, "skip")) {
+      return(NULL)
+    }
     parts <- rep(NA_character_, length(fields))
   }
 
@@ -189,6 +203,8 @@ pr_meta_from_filename <- function(path, fields, sep = "_",
 #' Reads one Novel/Pliance `.asc` pressure export into a [pr_trial]. The
 #' recorded time column is used as-is rather than a synthesised sequence, so
 #' a trial whose frames were dropped keeps honest timestamps.
+#'
+#' @inheritSection pr_read_csv Numeric text
 #'
 #' @section Channel order:
 #' A device export lists columns in *device channel* order. Every other
@@ -228,11 +244,12 @@ pr_meta_from_filename <- function(path, fields, sep = "_",
 #'   `c("", "NA", "___")`.
 #' @param encoding Character. File encoding, default `"latin1"`.
 #' @param on_na `"drop_frame"` (default) or `"zero"`. See *Missing values*.
-#' @param sampling_hz Numeric. Overrides the rate recorded in the header.
+#' @param sampling_hz Numeric. Declared rate; must agree with measured timestamps.
 #'   `NULL` (default) uses the header, or the timestamps when the header is
 #'   silent.
 #' @param metadata Named list merged over the parsed metadata, so callers can
-#'   override any field.
+#'   attach study fields. The actual source path, filename and checksum cannot
+#'   be replaced by this argument.
 #'
 #' @return A [pr_trial] object.
 #' @family Pliance ingest functions
@@ -254,9 +271,11 @@ pr_meta_from_filename <- function(path, fields, sep = "_",
 #'
 #' lay <- pr_layout(
 #'   2, 2, matrix(TRUE, 2, 2),
-#'   data.frame(sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
-#'              col = c(1L, 1L, 2L, 2L),
-#'              x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1))
+#'   data.frame(
+#'     sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
+#'     col = c(1L, 1L, 2L, 2L),
+#'     x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1)
+#'   )
 #' )
 #'
 #' # Device channel 1 sits at grid (row 1, col 2), channel 2 at (1, 1).
@@ -279,7 +298,8 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
   if (!file.exists(path)) {
     cli::cli_abort("File not found: {.path {path}}.")
   }
-  if (!is.numeric(skip) || length(skip) != 1L || is.na(skip) || skip < 0) {
+  if (!.real_vector(skip) || length(skip) != 1L || !is.finite(skip) ||
+      skip < 0 || skip > .Machine$integer.max || skip != floor(skip)) {
     cli::cli_abort("{.arg skip} must be a single non-negative integer.")
   }
   skip <- as.integer(skip)
@@ -290,35 +310,34 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
     cli::cli_abort("{.arg encoding} must be a single string.")
   }
   if (!is.null(layout)) .validate_layout(layout)
-  if (!is.list(metadata)) {
-    cli::cli_abort("{.arg metadata} must be a named list.")
-  }
+  .require_fields(metadata, character(), "Metadata")
   if (!is.null(sampling_hz) &&
-      (!is.numeric(sampling_hz) || length(sampling_hz) != 1L ||
-       !is.finite(sampling_hz) || sampling_hz <= 0)) {
+    (!is.numeric(sampling_hz) || length(sampling_hz) != 1L ||
+      !is.finite(sampling_hz) || sampling_hz <= 0)) {
     cli::cli_abort("{.arg sampling_hz} must be a single positive number.")
   }
 
   header <- .pliance_header(path, skip, encoding)
 
-  hz_header    <- .pliance_field_num(header, "\\[[[:space:]]*Hz[[:space:]]*\\][^0-9-]*([0-9]+(?:\\.[0-9]+)?)")
+  hz_header <- .pliance_field_num(header, "\\[[[:space:]]*Hz[[:space:]]*\\][^0-9-]*([0-9]+(?:\\.[0-9]+)?)")
   frame_period <- .pliance_field_num(header, "Zeit pro Bild[^0-9-]*([0-9]+(?:\\.[0-9]+)?)")
-  unit         <- .pliance_field(header, "Druckwerte in[[:space:]]+([^[:space:]]+)")
-  date_str     <- .pliance_field(header, "Datum/Zeit:[[:space:]]*(.+?)[[:space:]]*$")
-  source_name  <- .pliance_field(header, "Dateiname:[[:space:]]*([^[:space:]]+)")
-  calibration  <- .pliance_field(header, "Kalibrationsdatei:[[:space:]]*([^[:space:]]+)")
+  unit <- .pliance_field(header, "Druckwerte in[[:space:]]+([^[:space:]]+)")
+  date_str <- .pliance_field(header, "Datum/Zeit:[[:space:]]*(.+?)[[:space:]]*$")
+  source_name <- .pliance_field(header, "Dateiname:[[:space:]]*([^[:space:]]+)")
+  calibration <- .pliance_field(header, "Kalibrationsdatei:[[:space:]]*([^[:space:]]+)")
 
-  dat <- readr::read_delim(
-    file = path,
+  dat <- .read_measurement_delim(
+    path = path,
     delim = sep,
     skip = skip,
     col_names = FALSE,
     na = na_strings,
     trim_ws = TRUE,
     locale = readr::locale(encoding = encoding),
-    col_types = readr::cols(.default = readr::col_double()),
-    progress = FALSE
+    col_types = readr::cols(.default = readr::col_double())
   )
+
+  if (nrow(readr::problems(dat))) cli::cli_abort("Malformed Pliance measurements; unexpected numeric tokens or row widths.")
 
   if (nrow(dat) == 0L || ncol(dat) == 0L) {
     cli::cli_abort(c(
@@ -339,8 +358,9 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
 
   n_col <- ncol(dat)
   if (!is.null(time_col)) {
-    if (!is.numeric(time_col) || length(time_col) != 1L || is.na(time_col) ||
-        time_col < 1 || time_col > n_col) {
+    if (!.real_vector(time_col) || length(time_col) != 1L || !is.finite(time_col) ||
+      time_col != floor(time_col) ||
+      time_col < 1 || time_col > n_col) {
       cli::cli_abort(
         "{.arg time_col} must be a column position in {.code 1:{n_col}}."
       )
@@ -408,18 +428,23 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
   # ---- channel order ------------------------------------------------------
   order_src <- "device"
   if (is.null(channel_map) && !is.null(layout) &&
-      !is.null(layout$channel_order)) {
-    channel_map <- layout$channel_order
+    !is.null(layout[["channel_order"]])) {
+    channel_map <- layout[["channel_order"]]
     order_src <- "layout"
   } else if (!is.null(channel_map)) {
     order_src <- "channel_map"
   }
   if (!is.null(channel_map)) {
-    arg <- if (identical(order_src, "layout")) "layout$channel_order"
-           else "channel_map"
+    arg <- if (identical(order_src, "layout")) {
+      "layout$channel_order"
+    } else {
+      "channel_map"
+    }
     if (is.matrix(channel_map) && !is.null(layout) &&
-        !identical(dim(channel_map),
-                   c(layout$grid_rows, layout$grid_cols))) {
+      !identical(
+        dim(channel_map),
+        c(layout$grid_rows, layout$grid_cols)
+      )) {
       cli::cli_abort(c(
         "{.arg {arg}} is {nrow(channel_map)}x{ncol(channel_map)} but layout
          {.val {layout$name}} is a {layout$grid_rows}x{layout$grid_cols} grid.",
@@ -433,8 +458,7 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
   # ---- time and rate ------------------------------------------------------
   if (is.null(sampling_hz) && is.finite(hz_header)) sampling_hz <- hz_header
   if (is.null(time_col)) {
-    step <- if (!is.null(sampling_hz)) 1 / sampling_hz else
-            if (is.finite(frame_period)) frame_period else NULL
+    step <- if (!is.null(sampling_hz)) 1 / sampling_hz else if (is.finite(frame_period)) frame_period else NULL
     if (is.null(step)) {
       cli::cli_abort(c(
         "{.arg time_col} is {.code NULL} and no sampling rate is available.",
@@ -454,6 +478,8 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
     system = if (nzchar(layout$manufacturer)) layout$manufacturer else "Pliance",
     notes = sprintf("Imported from %s", basename(path)),
     source_file = path,
+    source_filename = basename(path),
+    source_sha256 = digest::digest(path, algo = "sha256", file = TRUE),
     source_name = source_name,
     calibration = calibration,
     pressure_unit = unit,
@@ -464,6 +490,9 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
     channel_order_from = order_src
   )
   for (nm in names(metadata)) meta[[nm]] <- metadata[[nm]]
+  source <- .reader_source_metadata(path)
+  for (nm in names(source)) meta[[nm]] <- source[[nm]]
+  if (!is.na(unit)) layout$pressure_unit <- unit
 
   pr_trial(
     pressure = press,
@@ -527,16 +556,20 @@ pr_read_pliance <- function(path, layout = NULL, skip = 7L, sep = "\t",
 #' )
 #' writeLines(hdr, file.path(dir, "ID001_K_KG00.asc"))
 #' writeLines(hdr, file.path(dir, "ID002_K_KG40.asc"))
-#' writeLines(hdr, file.path(dir, "ID002_K_KG40_R01.asc"))  # repeat take
+#' writeLines(hdr, file.path(dir, "ID002_K_KG40_R01.asc")) # repeat take
 #'
 #' lay <- pr_layout(
 #'   2, 2, matrix(TRUE, 2, 2),
-#'   data.frame(sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
-#'              col = c(1L, 1L, 2L, 2L),
-#'              x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1))
+#'   data.frame(
+#'     sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
+#'     col = c(1L, 1L, 2L, 2L),
+#'     x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1)
+#'   )
 #' )
-#' ds <- pr_read_dir(dir, layout = lay,
-#'                   meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE)
+#' ds <- pr_read_dir(dir,
+#'   layout = lay,
+#'   meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE
+#' )
 #' length(ds)
 #' attr(ds, "read_report")$status
 #' unlink(dir, recursive = TRUE)
@@ -556,7 +589,7 @@ pr_read_dir <- function(dir, pattern = "\\.asc$", reader = pr_read_pliance,
     cli::cli_abort("{.arg reader} must be a function.")
   }
   if (!is.null(meta_fields) &&
-      (!is.character(meta_fields) || length(meta_fields) == 0L)) {
+    (!is.character(meta_fields) || length(meta_fields) == 0L)) {
     cli::cli_abort("{.arg meta_fields} must be a character vector or NULL.")
   }
   if (!is.logical(quiet) || length(quiet) != 1L || is.na(quiet)) {
@@ -564,8 +597,10 @@ pr_read_dir <- function(dir, pattern = "\\.asc$", reader = pr_read_pliance,
   }
   if (!is.null(layout)) .validate_layout(layout)
 
-  paths <- sort(list.files(dir, pattern = pattern, full.names = TRUE,
-                           recursive = recursive))
+  paths <- sort(list.files(dir,
+    pattern = pattern, full.names = TRUE,
+    recursive = recursive
+  ))
   paths <- paths[!dir.exists(paths)]
   if (length(paths) == 0L) {
     cli::cli_warn(
@@ -582,12 +617,16 @@ pr_read_dir <- function(dir, pattern = "\\.asc$", reader = pr_read_pliance,
     fields <- NULL
 
     if (!is.null(meta_fields)) {
-      fields <- pr_meta_from_filename(p, meta_fields, sep = sep,
-                                      on_fail = "skip")
+      fields <- pr_meta_from_filename(p, meta_fields,
+        sep = sep,
+        on_fail = "skip"
+      )
       if (is.null(fields)) {
         status[i] <- "skipped"
-        reason[i] <- sprintf("name does not split into %d field(s) on '%s'",
-                             length(meta_fields), sep)
+        reason[i] <- sprintf(
+          "name does not split into %d field(s) on '%s'",
+          length(meta_fields), sep
+        )
         next
       }
     }
@@ -620,8 +659,10 @@ pr_read_dir <- function(dir, pattern = "\\.asc$", reader = pr_read_pliance,
         )
       }
       status[i] <- "skipped"
-      reason[i] <- sprintf("reader returned a %s, not a pr_trial",
-                           class(tr)[1])
+      reason[i] <- sprintf(
+        "reader returned a %s, not a pr_trial",
+        class(tr)[1]
+      )
       next
     }
 
@@ -632,7 +673,7 @@ pr_read_dir <- function(dir, pattern = "\\.asc$", reader = pr_read_pliance,
         tr$metadata$subject_id <- vals[1]
       }
       if ((is.null(tr$metadata$condition) || is.na(tr$metadata$condition)) &&
-          length(vals) > 1L) {
+        length(vals) > 1L) {
         tr$metadata$condition <- paste(vals[-1], collapse = sep)
       }
     }

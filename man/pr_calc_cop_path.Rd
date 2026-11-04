@@ -12,7 +12,7 @@ pr_calc_cop_path(trial, threshold = 0)
 \item{threshold}{Numeric. Default \code{0}.}
 }
 \value{
-Numeric scalar (mm).
+Numeric scalar in the layout coordinate unit.
 }
 \description{
 Total COP Path Length

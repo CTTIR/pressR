@@ -41,14 +41,13 @@ pr_layout <- function(grid_rows, grid_cols, active, coords_mm,
                       pressure_range = c(0, 600), pressure_unit = "kPa",
                       name = "custom", description = "",
                       manufacturer = "", model = "") {
-
-  if (!is.numeric(grid_rows) || length(grid_rows) != 1L || grid_rows <= 0) {
+  if (!is.numeric(grid_rows) || length(grid_rows) != 1L || !is.finite(grid_rows) || grid_rows != floor(grid_rows) || grid_rows <= 0) {
     cli::cli_abort("{.arg grid_rows} must be a single positive integer.")
   }
-  if (!is.numeric(grid_cols) || length(grid_cols) != 1L || grid_cols <= 0) {
+  if (!is.numeric(grid_cols) || length(grid_cols) != 1L || !is.finite(grid_cols) || grid_cols != floor(grid_cols) || grid_cols <= 0) {
     cli::cli_abort("{.arg grid_cols} must be a single positive integer.")
   }
-  if (!is.logical(active) || !is.matrix(active)) {
+  if (!is.logical(active) || !is.matrix(active) || anyNA(active)) {
     cli::cli_abort("{.arg active} must be a logical matrix.")
   }
   if (nrow(active) != grid_rows || ncol(active) != grid_cols) {
@@ -82,7 +81,7 @@ pr_layout <- function(grid_rows, grid_cols, active, coords_mm,
   for (nm in names(regions)) {
     m <- regions[[nm]]
     if (!is.logical(m) || !is.matrix(m) ||
-        nrow(m) != grid_rows || ncol(m) != grid_cols) {
+      nrow(m) != grid_rows || ncol(m) != grid_cols) {
       cli::cli_abort(
         "Region mask {.val {nm}} must be a logical matrix of dimensions
          {grid_rows} x {grid_cols}."
@@ -90,14 +89,14 @@ pr_layout <- function(grid_rows, grid_cols, active, coords_mm,
     }
   }
   if (!is.numeric(sensor_area_cm2) || length(sensor_area_cm2) != 1L ||
-      sensor_area_cm2 <= 0) {
+    (!is.na(sensor_area_cm2) && (!is.finite(sensor_area_cm2) || sensor_area_cm2 <= 0))) {
     cli::cli_abort("{.arg sensor_area_cm2} must be a positive number.")
   }
   if (!is.numeric(pressure_range) || length(pressure_range) != 2L) {
     cli::cli_abort("{.arg pressure_range} must be numeric of length 2.")
   }
 
-  structure(
+  result <- structure(
     list(
       grid_rows = as.integer(grid_rows),
       grid_cols = as.integer(grid_cols),
@@ -115,6 +114,8 @@ pr_layout <- function(grid_rows, grid_cols, active, coords_mm,
     ),
     class = "pr_layout"
   )
+  pr_validate_layout(result)
+  result
 }
 
 #' @export
@@ -192,8 +193,8 @@ plot.pr_layout <- function(x, show_regions = TRUE, show_ids = FALSE, ...) {
       ggplot2::geom_tile(
         data = region_df,
         ggplot2::aes(x = .data$x_mm, y = .data$y_mm, fill = .data$region),
-        width = sqrt(x$sensor_area_cm2) * 10,
-        height = sqrt(x$sensor_area_cm2) * 10,
+        width = .tile_size(x),
+        height = .tile_size(x),
         alpha = 0.5
       )
   }
@@ -203,11 +204,13 @@ plot.pr_layout <- function(x, show_regions = TRUE, show_ids = FALSE, ...) {
     ggplot2::coord_fixed() +
     ggplot2::labs(
       title = sprintf("Layout: %s", x$name),
-      subtitle = sprintf("%d sensors \u00b7 %s",
-                         x$n_sensors,
-                         if (nzchar(x$model)) x$model else "custom"),
-      x = "x (mm)",
-      y = "y (mm)",
+      subtitle = sprintf(
+        "%d sensors \u00b7 %s",
+        x$n_sensors,
+        if (nzchar(x$model)) x$model else "custom"
+      ),
+      x = sprintf("x (%s)", .coordinate_label(x)),
+      y = sprintf("y (%s)", .coordinate_label(x)),
       fill = "Region"
     ) +
     ggplot2::theme_minimal(base_size = 11)
@@ -224,9 +227,7 @@ plot.pr_layout <- function(x, show_regions = TRUE, show_ids = FALSE, ...) {
 
 # Internal: validate a pr_layout argument
 .validate_layout <- function(layout) {
-  if (!inherits(layout, "pr_layout")) {
-    cli::cli_abort("{.arg layout} must be a {.cls pr_layout} object.")
-  }
+  pr_validate_layout(layout)
   invisible(layout)
 }
 
@@ -273,10 +274,52 @@ plot.pr_layout <- function(x, show_regions = TRUE, show_ids = FALSE, ...) {
 #' @examples
 #' pr_validate_layout(pr_layout_insole())
 pr_validate_layout <- function(layout) {
-  .validate_layout(layout)
+  if (!inherits(layout, "pr_layout") || !is.list(layout)) {
+    cli::cli_abort("{.arg layout} must be a {.cls pr_layout} object.")
+  }
+  required <- c("grid_rows", "grid_cols", "active", "coords_mm", "regions",
+                "sensor_area_cm2", "n_sensors", "pressure_range", "pressure_unit")
+  .require_fields(layout, required, "Layout")
+  for (field in c("grid_rows", "grid_cols", "n_sensors")) {
+    value <- layout[[field]]
+    minimum <- if (field == "n_sensors") 0 else 1
+    if (!.real_vector(value) || length(value) != 1L || !is.finite(value) ||
+        value < minimum || value > .Machine$integer.max || value != floor(value)) {
+      cli::cli_abort("Layout {.val {field}} must be a finite whole count.")
+    }
+  }
+  if (!is.matrix(layout$active) || !is.logical(layout$active) || anyNA(layout$active) ||
+      !identical(dim(layout$active), as.integer(c(layout$grid_rows, layout$grid_cols)))) {
+    cli::cli_abort("Active matrix dimensions or values are inconsistent with the grid.")
+  }
+  co <- layout[["coords_mm"]]
+  columns <- c("sensor_id", "row", "col", "x_mm", "y_mm")
+  if (!is.data.frame(co) || anyDuplicated(names(co)) || !all(columns %in% names(co))) {
+    cli::cli_abort("Layout coordinate columns must be present with unique names.")
+  }
+  if (!all(vapply(co[columns], .real_vector, logical(1))) ||
+    any(!is.finite(as.matrix(co[c("sensor_id", "row", "col", "x_mm", "y_mm")])))) {
+    cli::cli_abort("Layout coordinates and identifiers must be finite numeric values.")
+  }
+  if (anyDuplicated(co$sensor_id) || anyDuplicated(co[c("row", "col")]) ||
+    any(co$sensor_id < 1 | co$sensor_id > .Machine$integer.max | co$sensor_id != floor(co$sensor_id)) ||
+    any(co$row != floor(co$row) | co$col != floor(co$col)) ||
+    any(co$row < 1 | co$row > layout$grid_rows | co$col < 1 | co$col > layout$grid_cols)) {
+    cli::cli_abort("Layout sensor identifiers and grid cells must be unique and in bounds.")
+  }
+  if (!all(layout$active[cbind(co$row, co$col)])) cli::cli_abort("Layout coordinates refer to inactive cells.")
+  .check_optional_positive(layout$sensor_area_cm2, "sensor_area_cm2")
+  coordinate_unit <- .coordinate_unit(layout)
+  if (!is.character(coordinate_unit) || length(coordinate_unit) != 1L ||
+      is.na(coordinate_unit) || !coordinate_unit %in% c("mm", "grid_index")) cli::cli_abort("Unknown layout coordinate unit.")
+  if (!.real_vector(layout$pressure_range) || length(layout$pressure_range) != 2L ||
+      any(is.infinite(layout$pressure_range)) || any(is.nan(layout$pressure_range))) {
+    cli::cli_abort("Pressure range must contain two finite numeric bounds or NA for unknown bounds.")
+  }
+  if (!is.character(layout$pressure_unit) || length(layout$pressure_unit) != 1L || is.na(layout$pressure_unit) || !nzchar(layout$pressure_unit)) cli::cli_abort("Measurement unit must be specified.")
 
   if (nrow(layout$active) != layout$grid_rows ||
-      ncol(layout$active) != layout$grid_cols) {
+    ncol(layout$active) != layout$grid_cols) {
     cli::cli_abort("Active matrix dimensions inconsistent with grid size.")
   }
   if (layout$n_sensors != sum(layout$active)) {
@@ -285,10 +328,12 @@ pr_validate_layout <- function(layout) {
   if (nrow(layout$coords_mm) != layout$n_sensors) {
     cli::cli_abort("Coordinate count does not match sensor count.")
   }
+  .require_fields(layout$regions, character(), "Regions")
   for (nm in names(layout$regions)) {
     m <- layout$regions[[nm]]
-    if (nrow(m) != layout$grid_rows || ncol(m) != layout$grid_cols) {
-      cli::cli_abort("Region {.val {nm}} has wrong dimensions.")
+    if (!is.matrix(m) || !is.logical(m) || anyNA(m) ||
+        !identical(dim(m), dim(layout$active))) {
+      cli::cli_abort("Region {.val {nm}} must be a nonmissing logical matrix with the grid dimensions.")
     }
     if (any(m & !layout$active)) {
       cli::cli_warn("Region {.val {nm}} covers inactive cells.")

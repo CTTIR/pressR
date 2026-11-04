@@ -17,8 +17,7 @@
 
 # Internal: colour palette dispatch.
 .palette_fill <- function(palette, range = NULL, name = "Pressure (kPa)") {
-  switch(
-    palette,
+  switch(palette,
     viridis = ggplot2::scale_fill_viridis_c(
       option = "viridis", limits = range, name = name, na.value = "white"
     ),
@@ -78,7 +77,7 @@ pr_plot_heatmap <- function(trial, frame = NULL,
 
   if (!is.null(frame)) {
     if (!is.numeric(frame) || length(frame) != 1L ||
-        frame < 1 || frame > trial$n_frames) {
+      frame < 1 || frame > trial$n_frames) {
       cli::cli_abort(
         "{.arg frame} must be an integer in 1..{trial$n_frames}."
       )
@@ -87,8 +86,7 @@ pr_plot_heatmap <- function(trial, frame = NULL,
     label <- sprintf("Frame %d (t = %.3f s)", frame, trial$time[frame])
     legend_title <- sprintf("Pressure (%s)", trial$layout$pressure_unit)
   } else {
-    values <- switch(
-      type,
+    values <- switch(type,
       mpp = apply(trial$pressure, 2, max),
       mvp = apply(trial$pressure, 2, function(c) {
         ld <- c[c > 0]
@@ -97,15 +95,13 @@ pr_plot_heatmap <- function(trial, frame = NULL,
       pti = pr_calc_pti(trial),
       contact = colMeans(trial$pressure > 0)
     )
-    label <- switch(
-      type,
+    label <- switch(type,
       mpp = "Maximum Pressure Picture (MPP)",
       mvp = "Mean Pressure (loaded sensors)",
       pti = "Pressure-Time Integral (PTI)",
       contact = "Contact frequency"
     )
-    legend_title <- switch(
-      type,
+    legend_title <- switch(type,
       mpp = sprintf("Peak (%s)", trial$layout$pressure_unit),
       mvp = sprintf("Mean (%s)", trial$layout$pressure_unit),
       pti = sprintf("PTI (%s\u00b7s)", trial$layout$pressure_unit),
@@ -115,7 +111,7 @@ pr_plot_heatmap <- function(trial, frame = NULL,
 
   df <- .heatmap_tibble(trial$layout, values)
 
-  tile_w <- sqrt(trial$layout$sensor_area_cm2) * 10
+  tile_w <- .tile_size(trial$layout)
   tile_h <- tile_w
 
   p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$x_mm, y = .data$y_mm)) +
@@ -128,7 +124,7 @@ pr_plot_heatmap <- function(trial, frame = NULL,
     ggplot2::labs(
       title = title %||% label,
       subtitle = sprintf("Layout: %s", trial$layout$name),
-      x = "x (mm)", y = "y (mm)"
+      x = sprintf("x (%s)", .coordinate_label(trial$layout)), y = sprintf("y (%s)", .coordinate_label(trial$layout))
     ) +
     ggplot2::theme_minimal(base_size = 11)
 
@@ -165,14 +161,17 @@ pr_plot_heatmap_masked <- function(trial, masks = NULL, frame = NULL,
   type <- match.arg(type)
   if (is.null(masks)) {
     return(pr_plot_heatmap(
-      trial, frame = frame, type = type, show_regions = TRUE,
+      trial,
+      frame = frame, type = type, show_regions = TRUE,
       palette = palette, range = range, title = title
     ))
   }
   # If user-supplied masks: just draw the regular heatmap plus geom_tile layers
-  p <- pr_plot_heatmap(trial, frame = frame, type = type,
-                      palette = palette, range = range, title = title)
-  tile_w <- sqrt(trial$layout$sensor_area_cm2) * 10
+  p <- pr_plot_heatmap(trial,
+    frame = frame, type = type,
+    palette = palette, range = range, title = title
+  )
+  tile_w <- .tile_size(trial$layout)
   coords <- trial$layout$coords_mm
   for (nm in names(masks)) {
     cols <- .mask_to_cols(masks[[nm]], trial$layout)
@@ -211,17 +210,15 @@ pr_plot_3d <- function(trial, frame = NULL, palette = "viridis") {
   }
   layout <- trial$layout
   grid <- matrix(NA_real_, layout$grid_rows, layout$grid_cols)
-  active_idx <- which(layout$active)
-  grid[active_idx] <- values
+  grid[cbind(layout$coords_mm$row, layout$coords_mm$col)] <- values
 
-  pal <- switch(
-    palette,
+  pal <- switch(palette,
     viridis = "Viridis",
     inferno = "Inferno",
-    plasma  = "Plasma",
-    magma   = "Magma",
-    jet     = "Jet",
-    classic   = "Portland",
+    plasma = "Plasma",
+    magma = "Magma",
+    jet = "Jet",
+    classic = "Portland",
     "Viridis"
   )
 

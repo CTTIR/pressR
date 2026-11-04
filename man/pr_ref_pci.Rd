@@ -39,11 +39,13 @@ ref$band[pci >= ref$band_min & pci < ref$band_max]
 }
 \seealso{
 Other whole-grid frame metrics:
-\code{\link[=pr_calc_cop_grid]{pr_calc_cop_grid()}},
-\code{\link[=pr_calc_loaded_count]{pr_calc_loaded_count()}},
-\code{\link[=pr_calc_mean_pressure_grid]{pr_calc_mean_pressure_grid()}},
-\code{\link[=pr_calc_pci]{pr_calc_pci()}},
-\code{\link[=pr_calc_total_pressure]{pr_calc_total_pressure()}},
-\code{\link[=pr_frame_metrics]{pr_frame_metrics()}}
+\itemize{
+\item \code{\link[=pr_calc_cop_grid]{pr_calc_cop_grid()}}
+\item \code{\link[=pr_calc_loaded_count]{pr_calc_loaded_count()}}
+\item \code{\link[=pr_calc_mean_pressure_grid]{pr_calc_mean_pressure_grid()}}
+\item \code{\link[=pr_calc_pci]{pr_calc_pci()}}
+\item \code{\link[=pr_calc_total_pressure]{pr_calc_total_pressure()}}
+\item \code{\link[=pr_frame_metrics]{pr_frame_metrics()}}
+}
 }
 \concept{whole-grid frame metrics}

@@ -34,10 +34,12 @@ test_that("pr_trial requires a pr_layout", {
   expect_error(pr_trial(matrix(0, 1, 1), time = 0, layout = list()))
 })
 
-test_that("pr_trial coerces non-list metadata to list and fills defaults", {
+test_that("pr_trial rejects metadata loss and fills defaults for named lists", {
   layout <- pr_layout_mat("16")
+  expect_error(pr_trial(matrix(1, 2, layout$n_sensors), time = c(0, 1),
+    layout = layout, metadata = "not a list"), "Metadata")
   tr <- pr_trial(matrix(1, 2, layout$n_sensors), time = c(0, 1),
-                 layout = layout, metadata = "not a list")
+                 layout = layout, metadata = list())
   expect_type(tr$metadata, "list")
   expect_true("subject_id" %in% names(tr$metadata))
   expect_equal(tr$metadata$system, layout$model)

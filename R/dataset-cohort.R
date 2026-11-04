@@ -35,7 +35,7 @@
   for (nm in c("trial_id", "file_label", "subject_id")) {
     v <- md[[nm]]
     if (!is.null(v) && length(v) == 1L && !is.na(v) &&
-        nzchar(as.character(v))) {
+      nzchar(as.character(v))) {
       return(as.character(v))
     }
   }
@@ -45,6 +45,17 @@
 # Internal: combine a list of length-1 metadata values into one vector,
 # keeping Date/POSIXct classes that unlist() would strip.
 .cohort_combine <- function(vals) {
+  factors <- Filter(is.factor, vals)
+  if (length(factors)) {
+    lev <- levels(factors[[1L]])
+    ordered <- is.ordered(factors[[1L]])
+    if (!all(vapply(factors, function(v) identical(levels(v), lev) && identical(is.ordered(v), ordered), logical(1)))) {
+      cli::cli_abort("Conflicting factor levels in trial metadata; apply one explicit study schema first.")
+    }
+    labels <- vapply(vals, function(v) if (length(v) == 1L) as.character(v) else NA_character_, character(1))
+    if (any(!is.na(labels) & !labels %in% lev)) cli::cli_abort("Metadata values fall outside the declared factor levels.")
+    return(factor(labels, levels = lev, ordered = ordered))
+  }
   # A bare NA of any type carries no class information: `pr_trial()` fills
   # absent metadata with NA_character_, which must not mask a Date column.
   cls <- unique(unlist(lapply(vals, function(v) {
@@ -71,14 +82,18 @@
                           call = rlang::caller_env()) {
   vals <- lapply(trials, function(t) {
     v <- t$metadata[[field]]
-    if (is.null(v)) return(NA)
-    if (is.factor(v)) as.character(v) else v
+    if (is.null(v)) {
+      return(NA)
+    }
+    v
   })
   bad <- which(!vapply(
     vals, function(v) is.atomic(v) && length(v) == 1L, logical(1)
   ))
   if (length(bad) > 0L) {
-    if (!strict) return(NULL)
+    if (!strict) {
+      return(NULL)
+    }
     cli::cli_abort(c(
       "Metadata field {.val {field}} is not a single value in every trial.",
       x = "Trial{?s} {bad} do{?es/} not hold exactly one value for it.",
@@ -92,7 +107,9 @@
 # Internal: most common value, ties broken by first appearance.
 .cohort_modal <- function(x) {
   keep <- x[!is.na(x)]
-  if (length(keep) == 0L) return(x[1])
+  if (length(keep) == 0L) {
+    return(x[1])
+  }
   u <- unique(keep)
   counts <- vapply(u, function(v) sum(keep == v), integer(1))
   u[which.max(counts)]
@@ -100,9 +117,11 @@
 
 # Internal: validate an expected-count argument.
 .cohort_count_arg <- function(x, arg, call = rlang::caller_env()) {
-  if (is.null(x)) return(NULL)
+  if (is.null(x)) {
+    return(NULL)
+  }
   if (!is.numeric(x) || length(x) != 1L || is.na(x) || x < 0 ||
-      x != trunc(x)) {
+    x != trunc(x)) {
     cli::cli_abort(
       "{.arg {arg}} must be a single non-negative whole number, not
        {.val {x}}.",
@@ -148,7 +167,9 @@
                                  call = rlang::caller_env()) {
   actual <- as.integer(actual)
   expected <- as.integer(expected)
-  if (identical(actual, expected)) return(invisible(TRUE))
+  if (identical(actual, expected)) {
+    return(invisible(TRUE))
+  }
 
   delta <- actual - expected
   direction <- if (delta > 0) "more" else "fewer"
@@ -256,10 +277,14 @@ pr_design_table <- function(dataset, fields = NULL) {
     if (auto && all(is.na(v))) next
     cols[[f]] <- v
   }
-  cols$n_frames <- vapply(trials, function(t) as.integer(t$n_frames),
-                          integer(1))
-  cols$duration_s <- vapply(trials, function(t) as.numeric(t$duration),
-                            numeric(1))
+  cols$n_frames <- vapply(
+    trials, function(t) as.integer(t$n_frames),
+    integer(1)
+  )
+  cols$duration_s <- vapply(
+    trials, function(t) as.numeric(t$duration),
+    numeric(1)
+  )
   tibble::as_tibble(cols)
 }
 
@@ -293,13 +318,19 @@ pr_design_table <- function(dataset, fields = NULL) {
 #' @examples
 #' layout <- pr_layout_mat("16")
 #' mk <- function(id, mode) {
-#'   pr_trial(matrix(1, 3, layout$n_sensors), time = c(0, 0.02, 0.04),
-#'            layout = layout, metadata = list(ID = id, Mode = mode))
+#'   pr_trial(matrix(1, 3, layout$n_sensors),
+#'     time = c(0, 0.02, 0.04),
+#'     layout = layout, metadata = list(ID = id, Mode = mode)
+#'   )
 #' }
-#' ds <- pr_dataset(list(mk("ID001", "MS"), mk("ID001", "MH"),
-#'                       mk("ID002", "MS")))
-#' walk <- pr_dataset_filter(ds, ~ .x$Mode == "MS", label = "walk",
-#'                           n_units = 2, n_subjects = 2)
+#' ds <- pr_dataset(list(
+#'   mk("ID001", "MS"), mk("ID001", "MH"),
+#'   mk("ID002", "MS")
+#' ))
+#' walk <- pr_dataset_filter(ds, ~ .x$Mode == "MS",
+#'   label = "walk",
+#'   n_units = 2, n_subjects = 2
+#' )
 #' walk$filter_label
 pr_dataset_filter <- function(dataset, f, label = NULL, n_units = NULL,
                               n_subjects = NULL, subject_field = "ID") {
@@ -461,7 +492,8 @@ pr_assert_cohort <- function(x, n_units = NULL, n_subjects = NULL,
       u <- unique(v[!is.na(v)])
       .cohort_assert_count(
         length(u), n_units,
-        sprintf("distinct %s value", unit_col), label, values = u
+        sprintf("distinct %s value", unit_col), label,
+        values = u
       )
     }
   }
@@ -486,7 +518,8 @@ pr_assert_cohort <- function(x, n_units = NULL, n_subjects = NULL,
     u <- unique(v[!is.na(v)])
     .cohort_assert_count(
       length(u), n_subjects,
-      sprintf("distinct %s value", subject_col), label, values = u
+      sprintf("distinct %s value", subject_col), label,
+      values = u
     )
   }
 
@@ -519,15 +552,18 @@ pr_assert_cohort <- function(x, n_units = NULL, n_subjects = NULL,
 #' @examples
 #' layout <- pr_layout_mat("16")
 #' mk <- function() {
-#'   pr_trial(matrix(1, 3, layout$n_sensors), time = c(0, 0.02, 0.04),
-#'            layout = layout)
+#'   pr_trial(matrix(1, 3, layout$n_sensors),
+#'     time = c(0, 0.02, 0.04),
+#'     layout = layout
+#'   )
 #' }
 #' pr_validate_dataset(pr_dataset(list(mk(), mk())))
 #'
 #' # A mixed-layout cohort is reported, not silently summarised:
 #' odd <- pr_example_trial("insole")
 #' problems <- pr_validate_dataset(pr_dataset(list(mk(), mk(), odd)),
-#'                                 strict = FALSE)
+#'   strict = FALSE
+#' )
 #' problems$check
 pr_validate_dataset <- function(dataset, strict = TRUE) {
   trials <- .cohort_trials(dataset)
@@ -563,40 +599,60 @@ pr_validate_dataset <- function(dataset, strict = TRUE) {
   for (i in seq_along(trials)) {
     tr <- trials[[i]]
     if (!identical(n_sensors[i], ref_sensors)) {
-      add(i, "n_sensors", ref_sensors, n_sensors[i],
-          sprintf("sensor count differs from the cohort (%d vs %d)",
-                  n_sensors[i], ref_sensors))
+      add(
+        i, "n_sensors", ref_sensors, n_sensors[i],
+        sprintf(
+          "sensor count differs from the cohort (%d vs %d)",
+          n_sensors[i], ref_sensors
+        )
+      )
     }
     if (!identical(lay_name[i], ref_layout)) {
-      add(i, "layout_name", ref_layout, lay_name[i],
-          sprintf("layout is '%s', cohort layout is '%s'",
-                  lay_name[i], ref_layout))
+      add(
+        i, "layout_name", ref_layout, lay_name[i],
+        sprintf(
+          "layout is '%s', cohort layout is '%s'",
+          lay_name[i], ref_layout
+        )
+      )
     }
     if (tr$n_frames == 0L) {
       add(i, "n_frames", "> 0", tr$n_frames, "trial holds no frames")
     }
     if (ncol(tr$pressure) != tr$layout$n_sensors) {
-      add(i, "pressure_cols", tr$layout$n_sensors, ncol(tr$pressure),
-          "pressure columns do not match the layout's active sensors")
+      add(
+        i, "pressure_cols", tr$layout$n_sensors, ncol(tr$pressure),
+        "pressure columns do not match the layout's active sensors"
+      )
     }
     if (tr$n_frames > 0L) {
       if (anyNA(tr$pressure)) {
         n_na <- sum(is.na(tr$pressure))
-        add(i, "missing", 0, n_na,
-            sprintf("%d missing pressure value(s)", n_na))
+        add(
+          i, "missing", 0, n_na,
+          sprintf("%d missing pressure value(s)", n_na)
+        )
       } else {
         rng <- range(tr$pressure)
         if (!all(is.finite(rng))) {
-          add(i, "finite", "finite", paste(rng, collapse = " .. "),
-              "pressure contains non-finite values")
+          add(
+            i, "finite", "finite", paste(rng, collapse = " .. "),
+            "pressure contains non-finite values"
+          )
         } else if (rng[1] < 0) {
-          add(i, "negative", ">= 0", rng[1],
-              sprintf("minimum pressure is %g", rng[1]))
+          add(
+            i, "negative", ">= 0", rng[1],
+            sprintf("minimum pressure is %g", rng[1])
+          )
         }
       }
-      if (tr$n_frames > 1L && any(diff(tr$time) < 0)) {
-        add(i, "time_order", "increasing", "decreasing",
-            "time is not monotonically increasing")
+      if (any(!is.finite(tr$time))) {
+        add(i, "time_finite", "finite", "non-finite", "timestamps contain missing or infinite values")
+      } else if (tr$n_frames > 1L && any(diff(tr$time) <= 0)) {
+        add(
+          i, "time_order", "increasing", "decreasing",
+          "time is not monotonically increasing"
+        )
       }
     }
   }
@@ -613,8 +669,10 @@ pr_validate_dataset <- function(dataset, strict = TRUE) {
   if (nrow(problems) > 0L) {
     shown <- utils::head(problems, 10L)
     bullets <- stats::setNames(
-      sprintf("Trial %d (%s) - %s: %s",
-              shown$trial, shown$trial_label, shown$check, shown$problem),
+      sprintf(
+        "Trial %d (%s) - %s: %s",
+        shown$trial, shown$trial_label, shown$check, shown$problem
+      ),
       rep("x", nrow(shown))
     )
     header <- "{nrow(problems)} cohort problem{?s} in
@@ -628,7 +686,8 @@ pr_validate_dataset <- function(dataset, strict = TRUE) {
       cli::cli_abort(
         c(header, bullets, footer,
           i = "Call {.code pr_validate_dataset(dataset, strict = FALSE)} for
-               the full problem table."),
+               the full problem table."
+        ),
         class = "pr_dataset_invalid",
         problems = problems
       )

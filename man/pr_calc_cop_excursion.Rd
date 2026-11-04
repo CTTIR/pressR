@@ -12,7 +12,8 @@ pr_calc_cop_excursion(trial, threshold = 0)
 \item{threshold}{Numeric. Default \code{0}.}
 }
 \value{
-Named numeric vector with \code{ap} (y-range, mm) and \code{ml} (x-range, mm).
+Named numeric vector with \code{ap} (y-range) and \code{ml} (x-range),
+both in the layout coordinate unit.
 }
 \description{
 COP Excursion (Anterior-Posterior and Medial-Lateral Range)

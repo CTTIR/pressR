@@ -64,14 +64,16 @@ bal$halves
 which(apply(bal$matrix, 2, any))
 }
 \seealso{
+Other regional symmetry functions:
+\itemize{
+\item \code{\link[=pr_calc_cop_masked]{pr_calc_cop_masked()}}
+\item \code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}}
+\item \code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}}
+\item \code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}}
+\item \code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}}
+}
+
 \code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}}, which applies this across a family
 of masks.
-
-Other regional symmetry functions:
-\code{\link[=pr_calc_cop_masked]{pr_calc_cop_masked()}},
-\code{\link[=pr_calc_regional_map]{pr_calc_regional_map()}},
-\code{\link[=pr_calc_symmetry_map]{pr_calc_symmetry_map()}},
-\code{\link[=pr_mask_rowbands]{pr_mask_rowbands()}},
-\code{\link[=pr_symmetry_sensitivity]{pr_symmetry_sensitivity()}}
 }
 \concept{regional symmetry functions}

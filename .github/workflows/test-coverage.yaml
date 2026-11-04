@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, 'production/**']
   pull_request:
     branches: [main, master]
 
@@ -12,8 +12,5 @@ jobs:
   test-coverage:
     uses: CTTIR/.github/.github/workflows/test-coverage.yaml@main
     with:
-      # Report-only for now. The shared workflow computes coverage with covr
-      # and an explicit exit rather than delegating the gate to Codecov;
-      # set a real floor once this package is re-baselined.
-      floor: 0
+      floor: 95
     secrets: inherit

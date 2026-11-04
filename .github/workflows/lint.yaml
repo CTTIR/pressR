@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, 'production/**']
   pull_request:
     branches: [main, master]
 
@@ -12,6 +12,6 @@ jobs:
   lint:
     uses: CTTIR/.github/.github/workflows/lint.yaml@main
     with:
-      # FROZEN package - it underpins manuscripts in press. Every quality
-      # gate is report-only here; only api-lock blocks.
-      blocking: false
+      # Gate vocabulary without renaming existing verbose arguments merely for style.
+      vocabulary-only: true
+      blocking: true

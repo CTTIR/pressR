@@ -1,6 +1,8 @@
 ---
 title: "pressR saddle pressure report"
 output: html_document
+header-includes:
+  - \usepackage{longtable}
 params:
   trial: NULL
   masks: NULL
@@ -20,30 +22,44 @@ trial <- params$trial
 ## Trial
 
 ```{r}
-print(trial)
+.report_table(pr_report_info(trial))
 ```
 
 ## Regional pressures
 
 ```{r}
 masks <- if (is.null(params$masks)) pr_mask_saddle_6(trial$layout) else params$masks
-pr_calc_regional(trial, masks)
+.report_table(.report_regional_table(trial, masks), digits=2)
 ```
 
 ## Composite report
 
-```{r, fig.width=9, fig.height=7}
-pr_plot_saddle_report(trial, thresholds = params$thresholds)
+```{r, fig.width=9, fig.height=7, fig.alt="Four panels show the maximum sensor map with selected regions, regional maxima, center of pressure trajectory, and left/right peak-measurement symmetry."}
+pr_plot_saddle_report(trial, thresholds = params$thresholds, masks = masks)
 ```
 
 ## Bridge detection
 
 ```{r}
-pr_calc_saddle_bridge(trial, masks = masks)
+bridge <- pr_calc_saddle_bridge(trial, masks = masks)
+.report_table(data.frame(parameter=c("Middle / ends ratio", "Below exploratory threshold"),
+                       value=c(as.character(round(bridge$bridge_ratio,3)),as.character(bridge$is_bridged))))
 ```
 
 ## Slip analysis
 
 ```{r}
-pr_calc_saddle_slip(trial)
+slip <- pr_calc_saddle_slip(trial)
+.report_table(data.frame(parameter=c("Mean symmetry index (%)", "Maximum absolute symmetry index (%)", "Dominant side", "Above exploratory threshold"),
+                       value=c(round(slip$symmetry_index_mean,2),round(slip$symmetry_index_max,2),slip$dominant_side,slip$is_asymmetric)))
+```
+
+## Interpretation and provenance
+
+`NA` indicates an unavailable physical quantity or insufficient measurements. Region definitions and
+reference observations must match the acquisition and analysis context.
+Exploratory bridge, slip and concentration settings are not diagnostic rules.
+
+```{r}
+if (!is.null(params$thresholds)) .report_table(params$thresholds)
 ```

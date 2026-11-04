@@ -49,10 +49,12 @@
       pr_example_trial(type = c("insole", "platform", "saddle_horse", "saddle_bicycle", "wheelchair", "custom"), duration_s = NULL, sampling_hz = 50, seed = 42)
       pr_export_csv(trial, path, what = c("summary", "regional", "pressure", "cop"), masks = NULL)
       pr_export_report(trial, output_file, format = c("html", "pdf"), template = c("generic", "saddle", "foot"), masks = NULL, thresholds = NULL)
+      pr_extract_archive(path, members, destination, max_bytes = 1024^3)
       pr_factor_contract(x, levels_list, id_cols = NULL)
       pr_filter_time(trial, from = 0, to = Inf)
       pr_frame_metrics(trial, threshold = 0, eps = 1e-12)
       pr_interpolate(trial, factor = 2L)
+      pr_inventory(path, hash = TRUE)
       pr_layout(grid_rows, grid_cols, active, coords_mm, regions = list(), sensor_area_cm2 = 1, pressure_range = c(0, 600), pressure_unit = "kPa", name = "custom", description = "", manufacturer = "", model = "")
       pr_layout_from_index_map(index_matrix, name = "custom", sensor_area_cm2 = NA_real_, spacing_mm = NA_real_, pressure_range = NULL, ...)
       pr_layout_glove()
@@ -63,6 +65,9 @@
       pr_layout_saddle(type = c("horse", "bicycle"))
       pr_layout_saddle_novel(pressure_range = c(0, 63.75), sensor_area_cm2 = NA_real_, ...)
       pr_layout_seat(type = c("wheelchair", "car", "office"))
+      pr_link_assets(recordings, assets, by, relationship = c("one-to-one", "one-to-many"), allow_unmatched = FALSE)
+      pr_list_archive(path)
+      pr_lock_cycles(trial, cycles)
       pr_lock_table(x, path, algo = "md5")
       pr_mask(mask_matrix, name, layout)
       pr_mask_apply(trial, masks = NULL)
@@ -79,36 +84,43 @@
       pr_plot_contact_area(trial, show_cycles = FALSE)
       pr_plot_cop(trial, show_layout = TRUE, color_by = c("time", "velocity"))
       pr_plot_cop_butterfly(trial, cycles = NULL)
-      pr_plot_foot_report(trial)
+      pr_plot_foot_report(trial, masks = NULL)
       pr_plot_force_time(trial, show_cycles = FALSE)
       pr_plot_heatmap(trial, frame = NULL, type = c("mpp", "mvp", "pti", "contact"), show_regions = FALSE, palette = "viridis", range = NULL, interpolate = FALSE, title = NULL)
       pr_plot_heatmap_masked(trial, masks = NULL, frame = NULL, type = c("mpp", "mvp", "pti", "contact"), palette = "viridis", range = NULL, title = NULL)
       pr_plot_pressure_time(trial, show_cycles = FALSE)
       pr_plot_regional_bar(regional_data, parameter = "mpp", thresholds = NULL)
-      pr_plot_saddle_report(trial, thresholds = NULL)
+      pr_plot_saddle_report(trial, thresholds = NULL, masks = NULL)
       pr_plot_symmetry(trial, parameter = c("peak_pressure", "mean_pressure", "force", "contact_area"))
       pr_profile_matrix(dataset, statistic = "mean", threshold = 0)
       pr_read_ascii(path, layout = NULL, sampling_hz = NULL, separator = "auto", skip = NULL, verbose = TRUE)
-      pr_read_auto(path, layout = NULL, verbose = TRUE)
+      pr_read_asset(path, exiftool = Sys.which("exiftool"))
+      pr_read_auto(path, layout = NULL, verbose = TRUE, filename = basename(path))
+      pr_read_bundle(path)
       pr_read_csv(path, format = c("wide", "long"), layout = NULL, time_col = NULL, sampling_hz = 100, verbose = TRUE)
       pr_read_dir(dir, pattern = "\\.asc$", reader = pr_read_pliance, layout = NULL, meta_fields = NULL, recursive = TRUE, on_error = c("skip", "abort"), quiet = FALSE, ..., sep = "_", name = NULL)
       pr_read_forcesensor(path, force_cols = NULL, time_col = "time", verbose = TRUE)
       pr_read_mask(path, layout = NULL, name = "imported", verbose = TRUE)
       pr_read_pliance(path, layout = NULL, skip = 7L, sep = "\t", time_col = 1L, channel_map = NULL, na_strings = c("", "NA", "___"), encoding = "latin1", on_na = c("drop_frame", "zero"), sampling_hz = NULL, metadata = list())
+      pr_read_workbook(path, numeric_time_unit = NULL)
       pr_ref_diabetic_foot()
       pr_ref_pci()
-      pr_ref_saddle(source = c("vonpeinen2010", "monkemoller2005", "werner2002"))
+      pr_ref_saddle(source = c("nyikos2005", "vonpeinen2010", "monkemoller2005", "werner2002"))
       pr_ref_wheelchair()
+      pr_report_info(trial)
       pr_run_app(trial = NULL, ...)
       pr_sensor_map(trial, statistic = c("mean", "max", "sd", "pti", "pct_zero"), threshold = 0)
       pr_sensor_quality(dataset, dead_pct_zero = 95, saturation_kpa = NULL, low_var_sd = 0.1, threshold = 0)
       pr_summary(trial, threshold = 0)
+      pr_summary_long(trial)
       pr_symmetry_sensitivity(trial, masks, statistic = "mean", denominator = "grid", balance = TRUE)
+      pr_temporal_profile(trial, profile = c("corrected", "legacy_method", "reference"), reference = NULL)
       pr_trial(pressure, time, layout, metadata = list(), sampling_hz = NULL)
       pr_validate_dataset(dataset, strict = TRUE)
       pr_validate_layout(layout)
       pr_validate_summary(x, hard = list(), soft = list(), label = NULL)
       pr_verify_lock(x, path)
+      pr_write_bundle(trial, path)
 
 # registered S3 methods are unchanged
 
@@ -142,15 +154,18 @@
         R (>= 4.1.0)
       Imports:
         DT
-        bslib
+        bslib (>= 0.5.0)
         cli
+        digest
         dplyr
+        fs
         ggplot2
+        jsonlite
         patchwork
         plotly
         readr
         rlang
-        shiny
+        shiny (>= 1.6.0)
         stats
         tibble
         tidyr

@@ -17,7 +17,8 @@ phase. Default \code{51}.}
 }
 \value{
 A \link[tibble:tibble]{tibble::tibble} with columns \code{cycle}, \code{percent_stance},
-\code{cop_x_mm}, \code{cop_y_mm}, \code{cop_velocity}.
+\code{cop_x}, \code{cop_y}, \code{cop_velocity} and \code{coordinate_unit}. Velocity uses
+the stated coordinate unit per second.
 }
 \description{
 Computes the center of pressure progression during the stance phase

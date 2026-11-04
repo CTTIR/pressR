@@ -1,6 +1,8 @@
 ---
 title: "pressR trial report"
 output: html_document
+header-includes:
+  - \usepackage{longtable}
 params:
   trial: NULL
   masks: NULL
@@ -20,23 +22,33 @@ trial <- params$trial
 ## Trial
 
 ```{r}
-print(trial)
+.report_table(pr_report_info(trial))
 ```
 
 ## Summary
 
 ```{r}
-pr_summary(trial)
+.report_table(pr_summary_long(trial), digits=4)
 ```
 
 ## Maximum pressure picture
 
-```{r}
+```{r, fig.alt="Maximum measured value at each sensor across the recording, arranged by sensor coordinates."}
 pr_plot_heatmap(trial)
 ```
 
 ## Dynamics
 
-```{r}
+```{r, fig.alt="Total force over time when physical calibration is available; otherwise an explicit unavailable notice."}
 pr_plot_force_time(trial)
+```
+
+## Interpretation and provenance
+
+Unavailable physical quantities are labelled explicitly. Region definitions and
+reference observations must match the acquisition and analysis context.
+Exploratory bridge, slip and concentration settings are not diagnostic rules.
+
+```{r}
+if (!is.null(params$thresholds)) .report_table(params$thresholds)
 ```

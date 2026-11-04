@@ -136,3 +136,17 @@ pr_export_csv(trial, tmp, what = "summary")
 ```{r, eval=FALSE}
 pr_run_app(trial)
 ```
+
+The seven tabs cover import, maps, regions, dynamics, temporal analysis,
+comparison, and export. Examples are synthetic. Choose masks in Regions before
+exporting regional results or a report. An invalid replacement clears the
+recording and its derived results; load a valid recording or example to recover.
+
+HTML reports need `rmarkdown` and Pandoc; PDF additionally needs LaTeX. Failed
+exports show an error in the app and do not return a completed report.
+
+Pressure CSV is a measurement table: it omits the layout, physical calibration,
+and typed metadata. Re-import it with the correct layout in R. For an exact,
+self-contained roundtrip, use `pr_write_bundle(trial, new_directory)` and
+`pr_read_bundle(new_directory)` instead. Unknown physical quantities remain
+unavailable; generic channel-count layout inference is not evidence of calibration.

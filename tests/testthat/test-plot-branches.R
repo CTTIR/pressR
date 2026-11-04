@@ -54,7 +54,8 @@ test_that("pr_plot_cop_butterfly builds across cycles", {
 test_that("pr_plot_cop_butterfly falls back when no cycles", {
   layout <- pr_layout_insole()
   tr <- pr_trial(matrix(0, 50, layout$n_sensors),
-                 time = seq(0, by = 0.02, length.out = 50), layout = layout)
+    time = seq(0, by = 0.02, length.out = 50), layout = layout
+  )
   p <- pr_plot_cop_butterfly(tr)
   expect_s3_class(p, "ggplot")
 })
@@ -75,6 +76,7 @@ test_that("pr_plot_regional_bar errors on missing parameter or bad data", {
 
 test_that("pr_plot_regional_bar draws threshold lines", {
   tr <- pr_example_trial("saddle_horse")
+  tr$metadata$reference_context <- list(species = "equine", gait = "trot", region_scheme = "nyikos_six_masks")
   reg <- pr_calc_regional(tr)
   p <- pr_plot_regional_bar(reg, "mpp", thresholds = pr_ref_saddle())
   expect_s3_class(p, "ggplot")
@@ -94,13 +96,17 @@ test_that("pr_plot_comparison difference errors on layout mismatch", {
 })
 
 test_that("pr_plot_foot_report builds for an insole trial", {
-  expect_true(inherits(pr_plot_foot_report(pr_example_trial("insole")),
-                       c("patchwork", "ggplot")))
+  expect_true(inherits(
+    pr_plot_foot_report(pr_example_trial("insole")),
+    c("patchwork", "ggplot")
+  ))
 })
 
 test_that("pr_plot_foot_report auto-segments a platform trial", {
-  expect_true(inherits(pr_plot_foot_report(pr_example_trial("platform")),
-                       c("patchwork", "ggplot")))
+  expect_true(inherits(
+    pr_plot_foot_report(pr_example_trial("platform")),
+    c("patchwork", "ggplot")
+  ))
 })
 
 test_that("pr_plot_3d returns a plotly object", {

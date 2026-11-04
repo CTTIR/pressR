@@ -16,7 +16,8 @@ pr_cop(x, y, time)
 \value{
 A \code{pr_cop} S3 object with fields \code{x}, \code{y}, \code{time},
 \code{path_length}, \code{velocity_mean}, \code{velocity_max}, \code{range_x}, \code{range_y},
-\code{sway_area}.
+\code{sway_area}. Trajectory segments require adjacent valid frames; the mean
+velocity is total distance divided by observed segment duration.
 }
 \description{
 Construct a \code{pr_cop} object from x/y coordinates and time. Normally

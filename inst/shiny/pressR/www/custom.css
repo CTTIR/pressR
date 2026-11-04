@@ -15,6 +15,19 @@
   border-bottom: 2px solid var(--pr-primary);
 }
 
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .navbar-nav .nav-link.active {
+  color: #f5f7fa;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus,
+.navbar .navbar-nav .nav-link.active:hover,
+.navbar .navbar-nav .nav-link.active:focus {
+  color: var(--pr-accent);
+}
+
 .card {
   border: 1px solid rgba(0, 137, 123, 0.3);
   border-radius: 8px;
@@ -24,14 +37,24 @@
   background: var(--pr-primary);
 }
 
-.btn-primary {
-  background-color: var(--pr-primary);
-  border-color: var(--pr-primary);
+.btn-primary,
+.btn-default {
+  color: #fff;
+  background-color: #006f63;
+  border-color: #006f63;
 }
 
-.btn-primary:hover {
-  background-color: var(--pr-secondary);
-  border-color: var(--pr-secondary);
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-default:hover,
+.btn-default:focus {
+  color: #fff;
+  background-color: #005c52;
+  border-color: #005c52;
+}
+
+.dataTables_wrapper .page-item:not(.disabled) .page-link {
+  color: #102a2c;
 }
 
 .threshold-exceed {
@@ -44,4 +67,10 @@
 
 .threshold-ok {
   background-color: rgba(102, 187, 106, 0.1) !important;
+}
+
+/* Keep wide measurement tables scrollable within the mobile viewport. */
+.datatables.html-widget {
+  max-width: 100%;
+  overflow-x: auto;
 }

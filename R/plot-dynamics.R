@@ -4,7 +4,9 @@
 
 .add_cycle_bands <- function(p, trial) {
   cycles <- pr_calc_gait_cycles(trial)
-  if (nrow(cycles) == 0L) return(p)
+  if (nrow(cycles) == 0L) {
+    return(p)
+  }
   p + ggplot2::geom_rect(
     data = cycles,
     ggplot2::aes(
@@ -30,12 +32,20 @@ pr_plot_force_time <- function(trial, show_cycles = FALSE) {
     time = trial$time,
     force = pr_calc_force(trial)
   )
+  if (!any(is.finite(df$force))) {
+    return(ggplot2::ggplot() +
+      ggplot2::theme_void() +
+      ggplot2::annotate("text", x = 0, y = 0, label = "Force unavailable: sensor area or pressure calibration is unknown.", size = 3.5) +
+      ggplot2::labs(title = "Total force"))
+  }
   p <- ggplot2::ggplot(df, ggplot2::aes(.data$time, .data$force))
   if (show_cycles) p <- .add_cycle_bands(p, trial)
   p +
     ggplot2::geom_line(colour = "#00897B", linewidth = 0.6) +
-    ggplot2::labs(x = "Time (s)", y = "Force (N)",
-                  title = "Total force vs time") +
+    ggplot2::labs(
+      x = "Time (s)", y = "Force (N)",
+      title = "Total force vs time"
+    ) +
     ggplot2::theme_minimal(base_size = 11)
 }
 
@@ -54,11 +64,14 @@ pr_plot_pressure_time <- function(trial, show_cycles = FALSE) {
     mean = pr_calc_mean_pressure(trial)
   )
   long <- tidyr::pivot_longer(
-    df, cols = c("peak", "mean"), names_to = "metric",
+    df,
+    cols = c("peak", "mean"), names_to = "metric",
     values_to = "pressure"
   )
-  p <- ggplot2::ggplot(long,
-         ggplot2::aes(.data$time, .data$pressure, colour = .data$metric))
+  p <- ggplot2::ggplot(
+    long,
+    ggplot2::aes(.data$time, .data$pressure, colour = .data$metric)
+  )
   if (show_cycles) p <- .add_cycle_bands(p, trial)
   p +
     ggplot2::geom_line(linewidth = 0.6) +
@@ -125,13 +138,13 @@ pr_plot_cop <- function(trial, show_layout = TRUE,
         ggplot2::aes(.data$x, .data$y, colour = .data$velocity),
         linewidth = 0.7
       ) +
-      ggplot2::scale_colour_viridis_c(option = "magma", name = "Velocity (mm/s)")
+      ggplot2::scale_colour_viridis_c(option = "magma", name = sprintf("Velocity (%s/s)", .coordinate_label(trial$layout)))
   }
   p +
     ggplot2::coord_fixed() +
     ggplot2::labs(
       title = "Center of pressure",
-      x = "x (mm)", y = "y (mm)"
+      x = sprintf("x (%s)", .coordinate_label(trial$layout)), y = sprintf("y (%s)", .coordinate_label(trial$layout))
     ) +
     ggplot2::theme_minimal(base_size = 11)
 }
@@ -155,15 +168,18 @@ pr_plot_cop_butterfly <- function(trial, cycles = NULL) {
 
   if (nrow(cycles) == 0L) {
     return(pr_plot_cop(trial) +
-             ggplot2::labs(subtitle = "(no gait cycles detected)"))
+      ggplot2::labs(subtitle = "(no gait cycles detected)"))
   }
 
   rows <- lapply(seq_len(nrow(cycles)), function(i) {
     idx <- cycles$start_frame[i]:cycles$end_frame[i]
     x <- cop$x[idx]
     y <- cop$y[idx]
-    if (all(is.na(x))) return(NULL)
-    x0 <- x[1]; y0 <- y[1]
+    if (all(is.na(x))) {
+      return(NULL)
+    }
+    x0 <- x[1]
+    y0 <- y[1]
     tibble::tibble(
       cycle = as.integer(i),
       x = x - x0,
@@ -173,19 +189,22 @@ pr_plot_cop_butterfly <- function(trial, cycles = NULL) {
   rows <- rows[!vapply(rows, is.null, logical(1))]
   if (length(rows) == 0L) {
     return(pr_plot_cop(trial) +
-             ggplot2::labs(subtitle = "(no valid cycles)"))
+      ggplot2::labs(subtitle = "(no valid cycles)"))
   }
   df <- do.call(rbind, rows)
 
-  ggplot2::ggplot(df,
+  ggplot2::ggplot(
+    df,
     ggplot2::aes(.data$x, .data$y,
-                 group = .data$cycle, colour = as.factor(.data$cycle))) +
+      group = .data$cycle, colour = as.factor(.data$cycle)
+    )
+  ) +
     ggplot2::geom_path(alpha = 0.7, linewidth = 0.6) +
     ggplot2::coord_fixed() +
     ggplot2::scale_colour_viridis_d(name = "Cycle") +
     ggplot2::labs(
       title = "COP butterfly across stance phases",
-      x = "x offset (mm)", y = "y offset (mm)"
+      x = sprintf("x offset (%s)", .coordinate_label(trial$layout)), y = sprintf("y offset (%s)", .coordinate_label(trial$layout))
     ) +
     ggplot2::theme_minimal(base_size = 11)
 }

@@ -2,17 +2,15 @@
 % Please edit documentation in R/reference.R
 \name{pr_ref_diabetic_foot}
 \alias{pr_ref_diabetic_foot}
-\title{Diabetic Foot Pressure Thresholds}
+\title{Traceable Plantar Pressure Reference Observations}
 \usage{
 pr_ref_diabetic_foot()
 }
 \value{
-A \link[tibble:tibble]{tibble::tibble} with threshold values and sources.
+Reference table; only verified_source rows have usable values.
 }
 \description{
-Clinical thresholds for plantar-pressure risk assessment in patients
-with diabetic neuropathy.
-}
-\examples{
-pr_ref_diabetic_foot()
+Armstrong's 1998 case-control study reported a 70 N/cm2 (700 kPa)
+forefoot cut-point with limited discrimination using EMED measurements.
+Other previously supplied values are withdrawn pending exact provenance.
 }

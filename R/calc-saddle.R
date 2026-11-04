@@ -13,7 +13,8 @@
 #'
 #' @return A list with class `pr_saddle_bridge`:
 #'   - `bridge_ratio`: middle / mean(cranial, caudal) MVP ratio.
-#'   - `is_bridged`: logical.
+#'   - `is_bridged`: logical, or `NA` when any required region is absent,
+#'     contains no active sensors, or the end pressure is not positive.
 #'   - `regional_pressures`: tibble with MVP per region.
 #'   - `recommendation`: character.
 #' @export
@@ -22,21 +23,25 @@
 pr_calc_saddle_bridge <- function(trial, masks = NULL,
                                   bridge_threshold = 0.5) {
   .validate_trial(trial)
+  .tp_check_scalar(bridge_threshold, "bridge_threshold")
   if (is.null(masks)) masks <- pr_mask_saddle_6(trial$layout)
 
   reg <- pr_calc_regional(trial, masks, parameters = "mvp")
 
   get_mvp <- function(prefix) {
     idx <- grepl(paste0("^", prefix), reg$region)
-    if (!any(idx)) 0 else mean(reg$mvp[idx])
+    if (!any(idx) || any(vapply(masks[reg$region[idx]], function(mask) {
+      length(.mask_to_cols(mask, trial$layout)) == 0L
+    }, logical(1)))) return(NA_real_)
+    mean(reg$mvp[idx])
   }
   cranial <- get_mvp("cranial")
   middle  <- get_mvp("middle")
   caudal  <- get_mvp("caudal")
 
   end_mean <- mean(c(cranial, caudal))
-  ratio <- if (end_mean > 0) middle / end_mean else NA_real_
-  is_bridged <- !is.na(ratio) && ratio < bridge_threshold
+  ratio <- if (is.finite(end_mean) && end_mean > 0 && is.finite(middle)) middle / end_mean else NA_real_
+  is_bridged <- if (is.finite(ratio)) ratio < bridge_threshold else NA
 
   rec <- if (is.na(ratio)) {
     "Insufficient data to assess bridging."

@@ -34,15 +34,18 @@ is flagged rather than the other 430.
 \examples{
 layout <- pr_layout_mat("16")
 mk <- function() {
-  pr_trial(matrix(1, 3, layout$n_sensors), time = c(0, 0.02, 0.04),
-           layout = layout)
+  pr_trial(matrix(1, 3, layout$n_sensors),
+    time = c(0, 0.02, 0.04),
+    layout = layout
+  )
 }
 pr_validate_dataset(pr_dataset(list(mk(), mk())))
 
 # A mixed-layout cohort is reported, not silently summarised:
 odd <- pr_example_trial("insole")
 problems <- pr_validate_dataset(pr_dataset(list(mk(), mk(), odd)),
-                                strict = FALSE)
+  strict = FALSE
+)
 problems$check
 }
 \seealso{

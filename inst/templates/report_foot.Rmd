@@ -1,6 +1,8 @@
 ---
 title: "pressR foot pressure report"
 output: html_document
+header-includes:
+  - \usepackage{longtable}
 params:
   trial: NULL
   masks: NULL
@@ -20,29 +22,67 @@ trial <- params$trial
 ## Trial
 
 ```{r}
-print(trial)
+.report_table(pr_report_info(trial))
 ```
 
 ## Summary
 
 ```{r}
-pr_summary(trial)
+.report_table(pr_summary_long(trial), digits=4)
 ```
 
-## Composite report
+## Maximum pressure picture
 
-```{r, fig.width=9, fig.height=7}
-pr_plot_foot_report(trial)
+```{r, fig.alt="Maximum measured value at each sensor with the selected region boundaries."}
+panels <- pr_plot_foot_report(trial, masks=params$masks)
+panels[[1]]
+```
+
+## Regional maxima
+
+```{r, fig.alt="Maximum measured values for the selected regions, with region names below the bars."}
+panels[[2]]
+```
+
+## Force over time
+
+```{r, fig.alt="Total force over time with detected stance intervals when physical calibration is available; otherwise an explicit unavailable notice."}
+panels[[3]]
+```
+
+## Center of pressure
+
+```{r, fig.alt="Center of pressure trajectory in the recorded coordinate units, colored by recording time."}
+panels[[4]]
 ```
 
 ## Regional analysis
 
 ```{r}
-pr_calc_regional(trial)
+.report_table(.report_regional_table(trial, params$masks), digits=2)
 ```
 
 ## Gait cycles
 
+```{r, results='asis'}
+if(all(is.finite(pr_calc_force(trial)))) {
+  cycles <- pr_calc_gait_cycles(trial)
+  cat(.report_table(cycles[c("cycle", "heel_strike_time", "toe_off_time", "stance_duration")],
+    col.names=c("Cycle", "Heel strike (s)", "Toe off (s)", "Stance (s)"), digits=3), sep="\n")
+  cat("\n\nFrame indices (one-based):\n\n")
+  cat(.report_table(cycles[c("cycle", "heel_strike_frame", "toe_off_frame", "start_frame", "end_frame")],
+    col.names=c("Cycle", "Heel strike", "Toe off", "Start", "End")), sep="\n")
+} else {
+  cat("Force-based gait detection is unavailable without physical calibration.")
+}
+```
+
+## Interpretation and provenance
+
+Unavailable physical quantities are labelled explicitly. Region definitions and
+reference observations must match the acquisition and analysis context.
+Exploratory bridge, slip and concentration settings are not diagnostic rules.
+
 ```{r}
-pr_calc_gait_cycles(trial)
+if (!is.null(params$thresholds)) .report_table(params$thresholds)
 ```

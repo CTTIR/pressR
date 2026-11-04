@@ -9,28 +9,29 @@
 #'   Default `2`.
 #'
 #' @return A list with `pressure_interp` (interpolated matrix),
-#'   `x_mm`, `y_mm`.
+#'   `x_grid`, `y_grid` and `coordinate_unit = "grid_index"`. Interpolated
+#'   positions are grid indices; no physical sensor pitch is inferred.
 #' @export
 #' @examples
 #' out <- pr_interpolate(pr_example_trial("insole"), factor = 2)
 #' dim(out$pressure_interp)
 pr_interpolate <- function(trial, factor = 2L) {
   .validate_trial(trial)
+  if (!is.numeric(factor) || length(factor)!=1L || !is.finite(factor) || factor!=round(factor)) cli::cli_abort("factor must be a positive integer.")
   factor <- as.integer(factor)
   if (factor < 1L) cli::cli_abort("{.arg factor} must be a positive integer.")
 
   layout <- trial$layout
   mpp <- apply(trial$pressure, 2, max)
   grid <- matrix(0, layout$grid_rows, layout$grid_cols)
-  active_idx <- which(layout$active)
-  grid[active_idx] <- mpp
+  grid[cbind(layout$coords_mm$row,layout$coords_mm$col)] <- mpp
 
   # Bilinear interpolation using stats::approx on rows then cols
   if (factor == 1L) {
     return(list(
-      pressure_interp = grid,
-      x_mm = seq_len(ncol(grid)),
-      y_mm = seq_len(nrow(grid))
+      pressure_interp = grid, coordinate_unit="grid_index",
+      x_grid = seq_len(ncol(grid)),
+      y_grid = seq_len(nrow(grid))
     ))
   }
   nr <- nrow(grid)
@@ -38,18 +39,15 @@ pr_interpolate <- function(trial, factor = 2L) {
   nr_new <- (nr - 1) * factor + 1
   nc_new <- (nc - 1) * factor + 1
   # Interpolate each row along columns
-  mid <- t(apply(grid, 1, function(r) {
-    stats::approx(seq_len(nc), r, n = nc_new)$y
-  }))
-  # Interpolate each column along rows
-  out <- apply(mid, 2, function(c) {
-    stats::approx(seq_len(nr), c, n = nr_new)$y
-  })
+  mid <- matrix(NA_real_,nr,nc_new)
+  for(i in seq_len(nr)) mid[i,] <- if(nc==1L) grid[i,] else stats::approx(seq_len(nc),grid[i,],n=nc_new)$y
+  out <- matrix(NA_real_,nr_new,nc_new)
+  for(j in seq_len(nc_new)) out[,j] <- if(nr==1L) mid[,j] else stats::approx(seq_len(nr),mid[,j],n=nr_new)$y
 
   list(
-    pressure_interp = out,
-    x_mm = seq(1, nc, length.out = nc_new),
-    y_mm = seq(1, nr, length.out = nr_new)
+    pressure_interp = out, coordinate_unit="grid_index",
+    x_grid = seq(1, nc, length.out = nc_new),
+    y_grid = seq(1, nr, length.out = nr_new)
   )
 }
 
@@ -93,6 +91,7 @@ pr_filter_time <- function(trial, from = 0, to = Inf) {
 #' tr$n_frames
 pr_downsample <- function(trial, factor = 2L) {
   .validate_trial(trial)
+  if (!is.numeric(factor) || length(factor)!=1L || !is.finite(factor) || factor!=round(factor)) cli::cli_abort("factor must be a positive integer.")
   factor <- as.integer(factor)
   if (factor < 1L) cli::cli_abort("{.arg factor} must be a positive integer.")
   if (factor == 1L) return(trial)

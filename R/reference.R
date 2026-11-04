@@ -1,107 +1,75 @@
-#' Saddle Fit Reference Thresholds
+#' Saddle Pressure Reference Observations
 #'
-#' Returns published threshold values for equine saddle pressure
-#' assessment based on peer-reviewed studies.
-#'
-#' @param source Character. Reference source: `"vonpeinen2010"` (default),
-#'   `"monkemoller2005"`, or `"werner2002"`.
-#'
-#' @return A [tibble::tibble] with columns `region`, `parameter`,
-#'   `threshold`, `unit`, `interpretation`, `source`.
+#' Source-specific observations, not universal diagnostic cut-offs. The six
+#' values formerly attributed to von Peinen are from Nyikos (2005), abstract,
+#' p.187: 26 horses measured at trot with six bilateral Novel saddle masks.
+#' Unverified legacy entries have withdrawn numeric thresholds (NA).
+#' No reference is enabled automatically in reports.
+#' @param source Reference identifier. Default 'nyikos2005'.
+#' @return A tibble with region, parameter, threshold, unit, interpretation,
+#'   source, source_url, status, species, gait and region_scheme.
 #' @export
-#' @examples
-#' pr_ref_saddle()
-pr_ref_saddle <- function(source = c("vonpeinen2010",
-                                      "monkemoller2005",
-                                      "werner2002")) {
+pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller2005", "werner2002")) {
   source <- match.arg(source)
-
-  if (source == "vonpeinen2010") {
+  if (source == "nyikos2005") {
     return(tibble::tibble(
       region = rep(c("cranial", "middle", "caudal"), 2),
-      parameter = rep(c("mpp", "mvp"), each = 3),
-      threshold = c(34.5, 30.3, 31.0, 13.2, 11.4, 10.0),
-      unit = "kPa",
-      interpretation = rep(
-        c("Threshold above which back pain has been associated in walk/trot."),
-        6
-      ),
-      source = "von Peinen et al. (2010) Equine Vet J Suppl."
+      parameter = rep(c("mpp", "mvp"), each = 3), threshold = c(34.5, 30.3, 31, 13.2, 11.4, 10), unit = "kPa",
+      interpretation = "Association observed in 26 horses at trot; not a validated diagnostic rule.",
+      source = "Nyikos et al. (2005), Pferdeheilkunde 21:187-198, abstract p.187.",
+      source_url = "https://pferdeheilkunde.de/files/20050301.pdf", status = "verified_source",
+      species = "equine", gait = "trot", region_scheme = "nyikos_six_masks"
     ))
   }
-  if (source == "monkemoller2005") {
-    return(tibble::tibble(
-      region = c("cranial", "middle", "caudal"),
-      parameter = "mvp",
-      threshold = c(11.0, 9.0, 10.0),
-      unit = "kPa",
-      interpretation =
-        "Reference MVP values in dressage horses at working trot.",
-      source = "Moenkemoeller et al. (2005) Pferdeheilkunde."
-    ))
-  }
+  source_id <- source
+  n <- if (source == "vonpeinen2010") 6L else 3L
   tibble::tibble(
-    region = c("cranial", "middle", "caudal"),
-    parameter = "mpp",
-    threshold = c(35, 30, 30),
-    unit = "kPa",
-    interpretation =
-      "Indicative MPP ranges from the original saddle-pressure methodology study.",
-    source = "Werner et al. (2002) J Vet Med A."
+    region = rep(c("cranial", "middle", "caudal"), length.out = n),
+    parameter = if (n == 6L) rep(c("mpp", "mvp"), each = 3) else if (source == "werner2002") "mpp" else "mvp",
+    threshold = NA_real_, unit = "kPa",
+    interpretation = if (source == "vonpeinen2010") "Withdrawn attribution: use Nyikos 2005 for the six source observations." else "Withdrawn: legacy region-specific values are not verified against an exact source table.",
+    source = switch(source,
+      vonpeinen2010 = "von Peinen et al. (2010), Equine Veterinary Journal.",
+      monkemoller2005 = "Moenkemoeller et al. (2005), Pferdeheilkunde.",
+      werner2002 = "Werner et al. (2002), Pferdeheilkunde 18:125-140."
+    ),
+    source_url = switch(source_id,
+      vonpeinen2010 = "https://doi.org/10.1111/j.2042-3306.2010.00191.x",
+      monkemoller2005 = NA_character_,
+      werner2002 = "https://pferdeheilkunde.de/files/20020201.pdf"
+    ),
+    status = "withdrawn", species = "equine", gait = NA_character_, region_scheme = NA_character_
   )
 }
 
-#' Diabetic Foot Pressure Thresholds
+#' Traceable Plantar Pressure Reference Observations
 #'
-#' Clinical thresholds for plantar-pressure risk assessment in patients
-#' with diabetic neuropathy.
-#'
-#' @return A [tibble::tibble] with threshold values and sources.
+#' Armstrong's 1998 case-control study reported a 70 N/cm2 (700 kPa)
+#' forefoot cut-point with limited discrimination using EMED measurements.
+#' Other previously supplied values are withdrawn pending exact provenance.
+#' @return Reference table; only verified_source rows have usable values.
 #' @export
-#' @examples
-#' pr_ref_diabetic_foot()
 pr_ref_diabetic_foot <- function() {
   tibble::tibble(
-    region = c("any plantar", "any plantar", "forefoot", "heel"),
-    parameter = c("mpp", "pti_mean", "mpp", "mpp"),
-    threshold = c(200, 70, 400, 250),
+    region = c("forefoot", "any plantar", "forefoot", "heel"),
+    parameter = c("mpp", "pti_mean", "mpp", "mpp"), threshold = c(700, NA_real_, NA_real_, NA_real_),
     unit = c("kPa", "kPa*s", "kPa", "kPa"),
-    interpretation = c(
-      "Elevated ulceration risk (Armstrong et al. 1998).",
-      "Pressure-time integral associated with ulcer risk.",
-      "High-risk forefoot peak pressure (Veves et al. 1992).",
-      "Heel threshold reported in mixed-etiology neuropathy."
-    ),
-    source = c(
-      "Armstrong DG et al. (1998) J Am Podiatr Med Assoc.",
-      "Caselli A et al. (2002) Diabetes Care.",
-      "Veves A et al. (1992) Diabetologia.",
-      "Frykberg RG et al. (1998) Diabetes Care."
-    )
+    interpretation = c("Case-control ROC observation; sensitivity 70%, specificity 65.1%; not a universal clinical cut-off.", rep("Withdrawn: exact legacy value attribution has not been verified.", 3)),
+    source = c("Armstrong et al. (1998), J Foot Ankle Surg 37:303-307.", "Caselli et al. (2002), Diabetes Care.", "Veves et al. (1992), Diabetologia.", "Frykberg et al. (1998), Diabetes Care."),
+    source_url = c("https://pubmed.ncbi.nlm.nih.gov/9710782/", rep(NA_character_, 3)),
+    status = c("verified_source", rep("withdrawn", 3)), species = "human", gait = "walking", region_scheme = "EMED_forefoot"
   )
 }
 
-#' Wheelchair Seating Pressure Thresholds
-#'
-#' @return A [tibble::tibble] with threshold values and sources.
+#' Status of Legacy Seating Reference Values
+#' @return A reference table with withdrawn numeric values. Physiological
+#'   capillary observations do not establish universal seat-interface limits.
 #' @export
-#' @examples
-#' pr_ref_wheelchair()
 pr_ref_wheelchair <- function() {
   tibble::tibble(
-    region = c("ischial", "ischial", "any"),
-    parameter = c("mpp", "mean_pressure", "mpp"),
-    threshold = c(60, 32, 200),
-    unit = c("mmHg", "mmHg", "mmHg"),
-    interpretation = c(
-      "Elevated ischial peak pressure (cushion evaluation benchmark).",
-      "Capillary closing pressure (Landis 1930).",
-      "Very high focal pressure associated with tissue injury risk."
-    ),
-    source = c(
-      "Sprigle & Sonenblum (2011) J Rehabil Res Dev.",
-      "Landis EM (1930) Heart.",
-      "Stinson MD et al. (2003) J Rehabil Res Dev."
-    )
+    region = c("ischial", "ischial", "any"), parameter = c("mpp", "mean_pressure", "mpp"),
+    threshold = NA_real_, unit = "mmHg", interpretation = "Withdrawn: no validated universal seat-interface threshold is established by the cited legacy entry.",
+    source = c("Sprigle and Sonenblum (2011).", "Landis (1930).", "Stinson et al. (2003)."),
+    source_url = NA_character_, status = "withdrawn", species = "human", gait = "seated", region_scheme = NA_character_
   )
 }

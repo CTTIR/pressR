@@ -1,0 +1,25 @@
+pressR 0.2 successor source qualification
+Frozen manuscript baseline: 5f5b370890fafae01b78174a1cec52b4a2039ce3 (0.1.0).
+Current source milestone: 0.2.0.9000; qualification remains in progress.
+4 November checkpoint: final installed tests pass1877 assertions, but disk
+exhaustion prevents a successful final full check. Required-only check is
+incomplete; coverage and final site qualification remain pending. Source has
+not been published as a completed milestone. Restore sustained free space first.
+
+The original production branch and private study scripts/data remain preserved.
+The public integration scripts use synthetic fixtures unless an explicit data
+root is supplied. No private source recordings or study identity ledgers ship here.
+
+Source acceptance:
+- Import identities, units, calibrated/unknown measurements and strict validation.
+- Exact version2 bundle preservation, explicit version1 decimal limitations.
+- Recoverable outputs, bounded archive extraction and source-file preservation.
+- Actual Shiny workflows and real HTML/PDF rendering with truthful provenance.
+- Full/minimal package checks, reviewed successor API, coverage and hosted CI.
+
+Historical private-corpus evidence is distinct from current source qualification.
+Fresh complete study reconciliation, acquisition alias adjudication and prospective
+method validation remain separate study workstreams. Software publication does
+not replace a manuscript environment or establish clinical validity.
+
+See planning/maintenance-2026-11-03.md for observed results and remaining gates.

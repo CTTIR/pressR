@@ -26,7 +26,7 @@ test_that("pr_cop handles a single point (no trajectory)", {
 test_that("pr_cop drops NA frames for trajectory metrics", {
   cop <- pr_cop(c(NA, 0, 3), c(NA, 0, 4), c(0, 1, 2))
   expect_equal(cop$path_length, 5)
-  expect_length(cop$x, 3)  # original retained in $x
+  expect_length(cop$x, 3) # original retained in $x
 })
 
 test_that("pr_cop computes a positive sway area for >=3 points", {
@@ -35,10 +35,11 @@ test_that("pr_cop computes a positive sway area for >=3 points", {
   expect_true(cop$sway_area > 0)
 })
 
-test_that("pr_cop guards zero dt against Inf velocity", {
-  cop <- pr_cop(c(0, 1), c(0, 1), c(0, 0))
-  expect_true(is.finite(cop$velocity_mean))
-  expect_equal(cop$velocity_mean, 0)
+test_that("COP does not invent paths across missing observations", {
+  expect_error(pr_cop(c(0, 1), c(0, 1), c(0, 0)), "strictly increasing")
+  cop <- pr_cop(c(0, NA, 100, 103), c(0, NA, 0, 4), c(0, 1, 2, 4))
+  expect_equal(cop$path_length, 5)
+  expect_equal(cop$velocity_mean, 2.5)
 })
 
 test_that("print.pr_cop is invisible and prints", {

@@ -18,10 +18,12 @@ test_that("pr_export_report dispatches templates and renders (mocked)", {
   trial <- pr_example_trial("insole")
   rendered <- new.env()
   testthat::local_mocked_bindings(
-    render = function(input, output_file, output_format, ...) {
+    render = function(input, output_file, output_format, output_dir, ...) {
       rendered$input <- input
       rendered$format <- output_format
-      output_file
+      path <- file.path(output_dir, output_file)
+      writeLines("rendered test artifact", path)
+      path
     },
     .package = "rmarkdown"
   )
@@ -36,9 +38,11 @@ test_that("pr_export_report pdf format maps to pdf_document (mocked)", {
   trial <- pr_example_trial("saddle_horse")
   seen <- new.env()
   testthat::local_mocked_bindings(
-    render = function(input, output_file, output_format, ...) {
+    render = function(input, output_file, output_format, output_dir, ...) {
       seen$format <- output_format
-      output_file
+      path <- file.path(output_dir, output_file)
+      writeLines("rendered test artifact", path)
+      path
     },
     .package = "rmarkdown"
   )

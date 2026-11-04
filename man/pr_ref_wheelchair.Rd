@@ -2,16 +2,14 @@
 % Please edit documentation in R/reference.R
 \name{pr_ref_wheelchair}
 \alias{pr_ref_wheelchair}
-\title{Wheelchair Seating Pressure Thresholds}
+\title{Status of Legacy Seating Reference Values}
 \usage{
 pr_ref_wheelchair()
 }
 \value{
-A \link[tibble:tibble]{tibble::tibble} with threshold values and sources.
+A reference table with withdrawn numeric values. Physiological
+capillary observations do not establish universal seat-interface limits.
 }
 \description{
-Wheelchair Seating Pressure Thresholds
-}
-\examples{
-pr_ref_wheelchair()
+Status of Legacy Seating Reference Values
 }

@@ -1,7 +1,63 @@
-# pressR (development version)
+# pressR 0.2.0 (development)
 
 * Standardize the named v5 package logo across README, documentation pages
   and available application headers, with matching light and dark artwork.
+
+
+This is an explicitly versioned successor. Version 0.1.0 and its manuscript
+contract remain preserved at commit 5f5b370 and in the baseline audit records.
+
+* Recognize Novel Pliance content through automatic import and temporary upload
+  filenames; reject malformed numeric fields and contradictory sampling rates.
+* Make generic ASCII and CSV imports strict. Missing sensor values no longer become
+  zero; mismatched widths are no longer padded or truncated. Exported timestamps
+  and sensor IDs round-trip without default-rate substitution.
+  Inferred layouts now align named wide columns and reject incompatible long-form
+  sensor identities. Optional Pliance channel order uses exact field matching.
+* Refuse numeric text outside the supported nonzero magnitude range
+  `1e-290` to `1e290`, and conversions with gross disagreement or underflow.
+  These checks prevent observed parser corruption at extreme values and cost
+  additional import time; exact binary replay uses version 2 bundles.
+* Validate stored layout and trial dimensions before analysis. Use scaled
+  arithmetic when finite measurements would otherwise overflow or underflow,
+  and report unrepresentable results explicitly. Missing saddle regions yield
+  an unknown bridge result instead of a negative finding.
+* Add checksum-verified bundles preserving typed metadata and full layout context.
+  Version 2 additionally preserves exact binary measurements and timing; the CSV
+  remains an inspection/exchange view. Version 1 reading retains its decimal
+  precision limitations. Bundle input must come from a trusted source.
+* Preserve existing CSV/report outputs after reported replacement failures,
+  including on Windows; retain and report a backup if restoration fails. Refuse
+  symbolic-link destinations using the portable `fs` dependency. Archive member
+  aliases no longer silently overwrite an earlier selected member.
+* Correct force-sensor units, unknown calibration, grid-coordinate plots, mask
+  indexing, and all-zero summaries. Coordinate exports use `x`, `y` and an explicit
+  unit; rollover uses `cop_x`, `cop_y` and `coordinate_unit`. Interpolation exposes
+  `x_grid`/`y_grid`, not fictitious millimetres. COP paths use adjacent valid frames;
+  mean velocity is weighted by observed time. Duplicate COP timestamps are rejected.
+* Preserve declared cohort factor levels and reject conflicting contracts.
+* Separate corrected temporal analysis, historical-method re-execution and
+  measurement-bound reference replay. Corrected sampling and numerical plateau
+  handling intentionally change some historical cycles. Exact replay requires
+  saved cycle boundaries; legacy execution alone cannot promise it.
+* Correct attribution of the six saddle observations to Nyikos (2005), and withdraw
+  unsupported legacy numbers. Reference overlays require source-compatible units,
+  species, gait and mask definitions; reports enable no overlay by default.
+* Add HR/RR workbook import with original cells and source positions, image metadata
+  registration without invented temperatures, bounded archive extraction, source
+  inventories and explicit-key modality linking. Identical files retain identities.
+* Add Shiny comparison uploads, temporal profile selection, real report downloads,
+  selected-mask CSV/report exports, failed-upload state clearing and a configurable
+  128 MiB upload default. Application launch restores previous options.
+* Render reports in isolated temporary directories and replace completed outputs
+  only after success. Add unit/availability tables and provenance.
+  Treat recording names and metadata as literal report text. Foot report plots
+  and timing tables use separate readable panels; missing provenance is explicit.
+* Add `jsonlite`, `digest` and `fs` imports; `readxl`, `archive` and fixture-only `writexl`
+  are optional dependencies. The successor API snapshot is reviewed independently
+  of the frozen 0.1.0 contract.
+  Declare Shiny 1.6.0, bslib 0.5.0 and testthat 3.2.0 minimums for the application
+  accessibility and test mocking APIs used by this version.
 
 # pressR 0.1.0
 

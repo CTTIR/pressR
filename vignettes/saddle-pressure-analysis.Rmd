@@ -53,10 +53,8 @@ knitr::opts_chunk$set(
 library(pressR)
 ```
 
-Saddle-pressure mapping using capacitive sensor mats has been used
-extensively in the equine back-health literature (Werner et al. 2002;
-Moenkemoeller et al. 2005; von Peinen et al. 2010). This vignette
-walks through a typical analysis.
+This vignette demonstrates descriptive saddle-pressure analysis using synthetic
+measurements. Source-specific observations are not universal diagnostic limits.
 
 ## Load the saddle layout
 
@@ -78,7 +76,7 @@ trial
 pr_plot_heatmap_masked(trial)
 ```
 
-## Regional analysis with reference thresholds
+## Regional analysis
 
 ```{r}
 masks <- pr_mask_saddle_6(layout)
@@ -87,7 +85,7 @@ reg
 ```
 
 ```{r, fig.alt="Regional mean-pressure bar chart"}
-pr_plot_regional_bar(reg, "mvp", thresholds = pr_ref_saddle())
+pr_plot_regional_bar(reg, "mvp")
 ```
 
 ## Bridge detection
@@ -111,8 +109,26 @@ slip$dominant_side
 pr_plot_saddle_report(trial)
 ```
 
-## References
+## Reference context and reproducibility
 
-* Werner D, et al. (2002). *J Vet Med A Physiol Pathol Clin Med* 49(9): 460-465.
-* Moenkemoeller S, et al. (2005). *Pferdeheilkunde* 21(2): 102-108.
-* von Peinen K, et al. (2010). *Equine Vet J Suppl* 42: 650-653.
+`pr_ref_saddle()` now attributes the six source observations to Nyikos (2005).
+An overlay requires matching species, gait and mask definitions recorded in
+`trial$metadata$reference_context`; synthetic examples do not establish that
+context. Unsupported legacy numeric entries are withdrawn.
+
+Novel Pliance files are detected by their header, including files with a temporary
+upload name. The Novel layout retains grid coordinates and unknown sensor area:
+force, physical contact area and millimetre distances cannot be inferred.
+`pr_summary_long()` states units and availability explicitly.
+
+Use `pr_temporal_profile(trial, "corrected")` for measured sampling and stable
+plateau handling. `legacy_method` repeats the historical 50 Hz assumptions but
+cannot guarantee identical cycles across numerical environments. Exact historical
+cycles must be bound to the recording with `pr_lock_cycles()` and replayed with
+`pr_temporal_profile(trial, "reference", locked_cycles)`. Reference phase maps
+use the central 80 percent of saved cycles and an untrimmed mean.
+
+## Source
+
+Nyikos S, et al. (2005). *Pferdeheilkunde* 21:187-198, abstract p.187.
+[Original article](https://pferdeheilkunde.de/files/20050301.pdf).
