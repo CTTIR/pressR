@@ -7,6 +7,13 @@
 #' @param hash Compute SHA-256 content identifiers (default TRUE).
 #' @return A tibble with paths, sizes, roles, hashes and duplicate flags.
 #' @export
+#' @examples
+#' src <- tempfile("pressr-study-")
+#' dir.create(src)
+#' writeLines(c("time,s1", "0,1"), file.path(src, "trial.csv"))
+#' writeLines("Trial notes", file.path(src, "notes.txt"))
+#' pr_inventory(src)
+#' unlink(src, recursive = TRUE)
 pr_inventory <- function(path, hash = TRUE) {
   if (!dir.exists(path)) cli::cli_abort("Source directory does not exist.")
   .tp_check_flag(hash, "hash")
@@ -61,6 +68,15 @@ pr_inventory <- function(path, hash = TRUE) {
 #'   unavailable. Set 'seconds' or 'excel_days' only with source evidence.
 #' @return A list with sheets, heart_rate, rr_intervals and a sheet manifest.
 #' @export
+#' @examplesIf requireNamespace("readxl", quietly = TRUE) && requireNamespace("writexl", quietly = TRUE)
+#' hr <- data.frame(Time = c("00:00:01", "00:00:02", "00:00:03"), HR = c(92, 95, 97))
+#' names(hr)[2] <- "HR (bpm)"
+#' path <- tempfile(fileext = ".xlsx")
+#' writexl::write_xlsx(list(session = hr), path)
+#' workbook <- pr_read_workbook(path)
+#' workbook$manifest
+#' workbook$heart_rate[c("time_s", "hr_bpm")]
+#' unlink(path)
 pr_read_workbook <- function(path, numeric_time_unit = NULL) {
   .require_optional("readxl")
   if (!file.exists(path)) cli::cli_abort("Workbook does not exist.")
@@ -159,6 +175,14 @@ pr_read_workbook <- function(path, numeric_time_unit = NULL) {
 #' @param exiftool ExifTool executable, or an empty string for basic registration.
 #' @return Source identity, embedded metadata and calibration availability.
 #' @export
+#' @examples
+#' path <- tempfile(fileext = ".txt")
+#' writeLines("Session protocol", path)
+#' # An empty `exiftool` registers the file without reading embedded metadata.
+#' asset <- pr_read_asset(path, exiftool = "")
+#' asset$metadata_status
+#' asset$temperature_status
+#' unlink(path)
 pr_read_asset <- function(path, exiftool = Sys.which("exiftool")) {
   if (!file.exists(path) || dir.exists(path)) cli::cli_abort("Asset must be an existing file.")
   metadata <- list()
@@ -185,6 +209,14 @@ pr_read_asset <- function(path, exiftool = Sys.which("exiftool")) {
 #' @param path Archive path supported by libarchive, including 7z.
 #' @return A tibble containing archive member names, sizes and dates.
 #' @export
+#' @examplesIf requireNamespace("archive", quietly = TRUE)
+#' src <- tempfile("pressr-src-")
+#' dir.create(src)
+#' writeLines(c("time,s1", "0,1", "0.02,3"), file.path(src, "trial.csv"))
+#' zip <- tempfile(fileext = ".zip")
+#' archive::archive_write_dir(zip, src)
+#' pr_list_archive(zip)
+#' unlink(c(src, zip), recursive = TRUE)
 pr_list_archive <- function(path) {
   .require_optional("archive")
   archive::archive(path)
@@ -200,6 +232,15 @@ pr_list_archive <- function(path) {
 #' spaces or periods are refused. Aliases cannot overwrite an earlier member.
 #' @return An inventory of extracted files with computed SHA-256 identifiers.
 #' @export
+#' @examplesIf requireNamespace("archive", quietly = TRUE)
+#' src <- tempfile("pressr-src-")
+#' dir.create(src)
+#' writeLines(c("time,s1", "0,1", "0.02,3"), file.path(src, "trial.csv"))
+#' zip <- tempfile(fileext = ".zip")
+#' archive::archive_write_dir(zip, src)
+#' dest <- tempfile("pressr-extract-")
+#' pr_extract_archive(zip, members = "trial.csv", destination = dest)
+#' unlink(c(src, dest, zip), recursive = TRUE)
 pr_extract_archive <- function(path, members, destination, max_bytes = 1024^3) {
   listing <- pr_list_archive(path)
   if (!is.character(members) || !length(members) || anyNA(members) ||

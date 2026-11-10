@@ -104,6 +104,10 @@ pr_calc_gait_cycles <- function(trial, force_threshold = 20,
 #'   `cop_x`, `cop_y`, `cop_velocity` and `coordinate_unit`. Velocity uses
 #'   the stated coordinate unit per second.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("insole")
+#' rollover <- pr_calc_rollover(trial, n_points = 11)
+#' head(rollover)
 pr_calc_rollover <- function(trial, cycles = NULL, n_points = 51L) {
   .validate_trial(trial)
   .tp_check_scalar(n_points,"n_points")

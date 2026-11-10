@@ -17,3 +17,8 @@ Numeric vector of contact area (cm^2) per frame.
 \description{
 Number of sensors above \code{threshold} times the per-sensor area (cm^2).
 }
+\examples{
+trial <- pr_example_trial("insole")
+area <- pr_calc_contact_area(trial, threshold = 5)
+range(area)
+}

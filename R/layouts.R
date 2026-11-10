@@ -190,6 +190,10 @@ pr_layout_platform <- function(model = c("st", "xl", "cl")) {
 #'
 #' @return A [pr_layout] with no predefined regions.
 #' @export
+#' @examples
+#' mat <- pr_layout_mat("16")
+#' mat$n_sensors
+#' pr_layout_mat("32")$n_sensors
 pr_layout_mat <- function(size = c("16", "32")) {
   size <- match.arg(size)
   n <- as.integer(size)
@@ -344,6 +348,9 @@ pr_layout_saddle <- function(type = c("horse", "bicycle")) {
 #'
 #' @return A [pr_layout] object.
 #' @export
+#' @examples
+#' seat <- pr_layout_seat("wheelchair")
+#' names(seat$regions)
 pr_layout_seat <- function(type = c("wheelchair", "car", "office")) {
   type <- match.arg(type)
   active <- matrix(TRUE, 32, 32)
@@ -389,6 +396,9 @@ pr_layout_seat <- function(type = c("wheelchair", "car", "office")) {
 #'
 #' @return A [pr_layout] object.
 #' @export
+#' @examples
+#' glove <- pr_layout_glove()
+#' glove$n_sensors
 pr_layout_glove <- function() {
   active <- .glove_active_mask()
   coords <- .layout_build_coords(active, spacing_mm = 20)

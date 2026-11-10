@@ -18,3 +18,9 @@ rule. Result is in the measurement unit multiplied by seconds.
 Overflowing endpoint sums use a finite midpoint calculation. Unrepresentable
 interval areas or totals raise an error instead of returning infinity.
 }
+\examples{
+trial <- pr_example_trial("insole")
+pti <- pr_calc_pti(trial)
+length(pti) == trial$n_sensors
+max(pti)
+}

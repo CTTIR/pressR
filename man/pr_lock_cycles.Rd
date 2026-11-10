@@ -17,3 +17,10 @@ A reference object for \code{\link[=pr_temporal_profile]{pr_temporal_profile()}}
 \description{
 Bind Historical Cycles to Their Exact Measurements
 }
+\examples{
+trial <- pr_example_trial("saddle_horse")
+cycles <- pr_calc_stride_cycles(trial)
+locked <- pr_lock_cycles(trial, cycles)
+locked$schema
+nrow(locked$cycles)
+}

@@ -43,6 +43,11 @@ pr_calc_peak_pressure <- function(trial, threshold = 0) {
 #' @inheritParams pr_calc_peak_pressure
 #' @return Numeric vector of length `n_frames`.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("insole")
+#' mp <- pr_calc_mean_pressure(trial)
+#' length(mp) == trial$n_frames
+#' summary(mp)
 pr_calc_mean_pressure <- function(trial, threshold = 0) {
   .validate_trial(trial)
   P <- trial$pressure
@@ -64,6 +69,10 @@ pr_calc_mean_pressure <- function(trial, threshold = 0) {
 #' @param trial A [pr_trial] object.
 #' @return Numeric vector of length `n_frames`.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("insole")
+#' force <- pr_calc_force(trial)
+#' max(force)
 pr_calc_force <- function(trial) {
   .validate_trial(trial)
   .force_rows(trial$pressure, trial)
@@ -78,6 +87,10 @@ pr_calc_force <- function(trial) {
 #'
 #' @return Numeric vector of contact area (cm^2) per frame.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("insole")
+#' area <- pr_calc_contact_area(trial, threshold = 5)
+#' range(area)
 pr_calc_contact_area <- function(trial, threshold = 0) {
   .validate_trial(trial)
   a <- trial$layout$sensor_area_cm2
@@ -91,6 +104,10 @@ pr_calc_contact_area <- function(trial, threshold = 0) {
 #'
 #' @return Numeric vector in `[0, 1]` of length `n_frames`.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("insole")
+#' rate <- pr_calc_loaded_rate(trial, threshold = 5)
+#' all(rate >= 0 & rate <= 1)
 pr_calc_loaded_rate <- function(trial, threshold = 0) {
   .validate_trial(trial)
   n <- trial$layout$n_sensors
@@ -148,6 +165,11 @@ pr_calc_cop <- function(trial, threshold = 0) {
 #'
 #' @return Numeric vector of length `n_sensors`.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("insole")
+#' pti <- pr_calc_pti(trial)
+#' length(pti) == trial$n_sensors
+#' max(pti)
 pr_calc_pti <- function(trial) {
   .validate_trial(trial)
   t <- trial$time
@@ -167,6 +189,8 @@ pr_calc_pti <- function(trial) {
 #'
 #' @return Numeric scalar.
 #' @export
+#' @examples
+#' pr_calc_impulse(pr_example_trial("insole"))
 pr_calc_impulse <- function(trial) {
   .validate_trial(trial)
   f <- pr_calc_force(trial)
@@ -188,6 +212,9 @@ pr_calc_impulse <- function(trial) {
 #'
 #' @return Numeric scalar (s).
 #' @export
+#' @examples
+#' trial <- pr_example_trial("platform")
+#' pr_calc_contact_time(trial, threshold = 5)
 pr_calc_contact_time <- function(trial, threshold = 0) {
   .validate_trial(trial)
   any_load <- rowSums(trial$pressure > threshold) > 0
@@ -208,6 +235,8 @@ pr_calc_contact_time <- function(trial, threshold = 0) {
 #'
 #' @return Numeric scalar in the layout coordinate unit.
 #' @export
+#' @examples
+#' pr_calc_cop_path(pr_example_trial("platform"))
 pr_calc_cop_path <- function(trial, threshold = 0) {
   pr_calc_cop(trial, threshold)$path_length
 }
@@ -220,6 +249,8 @@ pr_calc_cop_path <- function(trial, threshold = 0) {
 #' @return Named numeric vector with `ap` (y-range) and `ml` (x-range),
 #'   both in the layout coordinate unit.
 #' @export
+#' @examples
+#' pr_calc_cop_excursion(pr_example_trial("platform"))
 pr_calc_cop_excursion <- function(trial, threshold = 0) {
   cop <- pr_calc_cop(trial, threshold)
   c(ap = cop$range_y, ml = cop$range_x)

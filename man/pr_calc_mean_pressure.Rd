@@ -19,3 +19,9 @@ Numeric vector of length \code{n_frames}.
 Mean of loaded sensors per frame (sensors at or below \code{threshold}
 are excluded).
 }
+\examples{
+trial <- pr_example_trial("insole")
+mp <- pr_calc_mean_pressure(trial)
+length(mp) == trial$n_frames
+summary(mp)
+}

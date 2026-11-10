@@ -18,3 +18,8 @@ Returns a \link{pr_layout} for a generic capacitive pressure sensor mat.
 These general-purpose sensor arrays are used in research, seating,
 sports, and ergonomics applications.
 }
+\examples{
+mat <- pr_layout_mat("16")
+mat$n_sensors
+pr_layout_mat("32")$n_sensors
+}

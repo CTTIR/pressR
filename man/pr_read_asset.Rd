@@ -19,3 +19,12 @@ Reads embedded metadata when ExifTool is installed. Radiometric payload and
 calibration presence are reported separately; display colours are never
 interpreted as temperatures. No source files are written.
 }
+\examples{
+path <- tempfile(fileext = ".txt")
+writeLines("Session protocol", path)
+# An empty `exiftool` registers the file without reading embedded metadata.
+asset <- pr_read_asset(path, exiftool = "")
+asset$metadata_status
+asset$temperature_status
+unlink(path)
+}

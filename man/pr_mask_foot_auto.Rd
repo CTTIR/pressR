@@ -25,3 +25,9 @@ raw pressure matrix. Uses the maximum pressure picture (MPP) to
 identify the foot outline, then segments into anatomical regions based
 on proportional geometry.
 }
+\examples{
+trial <- pr_example_trial("platform")
+masks <- pr_mask_foot_auto(trial, n_regions = 3)
+names(masks)
+names(pr_mask_foot_auto(trial))
+}

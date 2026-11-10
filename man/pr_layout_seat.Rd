@@ -16,3 +16,7 @@ A \link{pr_layout} object.
 Returns a \link{pr_layout} for seating pressure assessment. Uses a 32x32
 grid (1024 sensors) with application-specific regions.
 }
+\examples{
+seat <- pr_layout_seat("wheelchair")
+names(seat$regions)
+}

@@ -13,3 +13,6 @@ capillary observations do not establish universal seat-interface limits.
 \description{
 Status of Legacy Seating Reference Values
 }
+\examples{
+pr_ref_wheelchair()
+}

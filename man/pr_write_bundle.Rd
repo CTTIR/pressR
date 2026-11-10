@@ -25,3 +25,10 @@ The RDS measurements are authoritative. The CSV is a nonbinding preview;
 reading verifies its checksum, columns and frame identifiers, but does not
 use its decimal measurements. Recreate the bundle to change its contents.
 }
+\examples{
+trial <- pr_example_trial("custom")
+path <- tempfile("pressr-bundle-")
+pr_write_bundle(trial, path)
+list.files(path)
+unlink(path, recursive = TRUE)
+}

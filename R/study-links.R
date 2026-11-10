@@ -13,6 +13,18 @@
 #' @return One row per asset, with recording_id, asset_id, acquisition keys,
 #'   link_status and duplicate_content. Unused recording IDs are an attribute.
 #' @export
+#' @examples
+#' recordings <- data.frame(
+#'   recording_id = c("R1", "R2"),
+#'   subject = c("S01", "S02"),
+#'   session = c(1, 1)
+#' )
+#' assets <- data.frame(
+#'   asset_id = c("A1", "A2"),
+#'   subject = c("S02", "S01"),
+#'   session = c(1, 1)
+#' )
+#' pr_link_assets(recordings, assets, by = c("subject", "session"))
 pr_link_assets <- function(recordings, assets, by, relationship = c("one-to-one", "one-to-many"), allow_unmatched = FALSE) {
   relationship <- match.arg(relationship)
   .tp_check_flag(allow_unmatched, "allow_unmatched")

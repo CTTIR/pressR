@@ -40,6 +40,12 @@
 #' @param cycles Historical cycle table with frame indices and timing.
 #' @return A reference object for [pr_temporal_profile()].
 #' @export
+#' @examples
+#' trial <- pr_example_trial("saddle_horse")
+#' cycles <- pr_calc_stride_cycles(trial)
+#' locked <- pr_lock_cycles(trial, cycles)
+#' locked$schema
+#' nrow(locked$cycles)
 pr_lock_cycles <- function(trial, cycles) {
   .validate_trial(trial)
   .tp_check_cycles(cycles, trial$n_frames)
@@ -68,6 +74,15 @@ pr_lock_cycles <- function(trial, cycles) {
 #' @return A list with cycles, spectrum, dominant frequency, phase map and
 #'   explicit analysis settings.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("saddle_horse")
+#' profile <- pr_temporal_profile(trial, "corrected")
+#' profile$dominant_frequency
+#'
+#' # Replay cycles that are bound to this exact recording:
+#' locked <- pr_lock_cycles(trial, profile$cycles)
+#' replay <- pr_temporal_profile(trial, "reference", reference = locked)
+#' identical(replay$cycles, profile$cycles)
 pr_temporal_profile <- function(trial, profile = c("corrected", "legacy_method", "reference"), reference = NULL) {
   .validate_trial(trial)
   profile <- match.arg(profile)

@@ -34,3 +34,16 @@ Duplicate content retains separate identities and is flagged for review.
 A recording must be unique on the supplied keys; multiple assets require
 an explicit one-to-many relationship. Missing keys are always rejected.
 }
+\examples{
+recordings <- data.frame(
+  recording_id = c("R1", "R2"),
+  subject = c("S01", "S02"),
+  session = c(1, 1)
+)
+assets <- data.frame(
+  asset_id = c("A1", "A2"),
+  subject = c("S02", "S01"),
+  session = c(1, 1)
+)
+pr_link_assets(recordings, assets, by = c("subject", "session"))
+}

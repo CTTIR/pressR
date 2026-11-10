@@ -214,6 +214,8 @@ pr_plot_cop_butterfly <- function(trial, cycles = NULL) {
 #' @inheritParams pr_plot_force_time
 #' @return A `ggplot2` object.
 #' @export
+#' @examples
+#' pr_plot_contact_area(pr_example_trial("insole"))
 pr_plot_contact_area <- function(trial, show_cycles = FALSE) {
   .validate_trial(trial)
   df <- tibble::tibble(

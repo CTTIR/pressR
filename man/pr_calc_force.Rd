@@ -19,3 +19,8 @@ When the unscaled sum overflows, conversion is applied before summation.
 Results outside the finite numeric range are refused; unknown calibration
 continues to produce \code{NA}.
 }
+\examples{
+trial <- pr_example_trial("insole")
+force <- pr_calc_force(trial)
+max(force)
+}
