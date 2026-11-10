@@ -25,18 +25,18 @@ assessment, and barefoot pedography.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/cttir/pressR}
+  \item \url{https://github.com/CTTIR/pressR}
   \item \url{https://cttir.github.io/pressR/}
-  \item Report bugs at \url{https://github.com/cttir/pressR/issues}
+  \item Report bugs at \url{https://github.com/CTTIR/pressR/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: R. Heller \email{raban.heller@charite.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+\strong{Maintainer}: R. Heller \email{raban.heller@uni-ulm.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
 
 Authors:
 \itemize{
-  \item R. Heller \email{raban.heller@charite.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+  \item R. Heller \email{raban.heller@uni-ulm.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
 }
 
 }

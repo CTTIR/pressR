@@ -3,10 +3,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
-[![CRAN status](https://www.r-pkg.org/badges/version/pressR)](https://CRAN.R-project.org/package=pressR)
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![CRAN downloads](https://cranlogs.r-pkg.org/badges/pressR)](https://cran.r-project.org/package=pressR)
-[![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/pressR)](https://cran.r-project.org/package=pressR)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
@@ -19,8 +16,8 @@ interactive Shiny application for data exploration.
 
 ## Successor release status
 
-The 0.2.0 development line corrects audited import, unit and reproducibility
-problems. The manuscript baseline remains at commit `5f5b370` (0.1.0).
+Version 0.3.0 (developed as 0.2.0.9000) corrects audited import, unit and
+reproducibility problems. The manuscript baseline remains at commit `5f5b370` (0.1.0).
 Do not replace a manuscript environment silently: retain its version and saved
 cycle references, and review the migration notes in `NEWS.md`.
 
@@ -44,7 +41,7 @@ Use R 4.1 or newer. Install the development source and its required dependencies
 
 ```r
 install.packages("pak")
-pak::pak("cttir/pressR")
+pak::pak("CTTIR/pressR")
 ```
 
 HTML reports additionally need `rmarkdown` and Pandoc (included with RStudio).

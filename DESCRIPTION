@@ -1,7 +1,7 @@
 Package: pressR
 Title: Pressure Distribution Analysis for Capacitive Sensor Systems
-Version: 0.2.0.9000
-Authors@R: person("R.", "Heller", email = "raban.heller@charite.de",
+Version: 0.3.0
+Authors@R: person("R.", "Heller", email = "raban.heller@uni-ulm.de",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Parse, analyze, and visualize pressure distribution data from
     capacitive sensor systems. Provides predefined sensor coordinate layouts
@@ -9,12 +9,13 @@ Description: Parse, analyze, and visualize pressure distribution data from
     bicycle), seating assessment, and barefoot pedography. Includes functions
     for peak pressure, center of pressure, pressure-time integrals, regional
     analysis with anatomical masks, symmetry indices, and gait cycle
-    detection. Ships with an interactive Shiny application for data
+    detection. Ships with an interactive 'shiny' application for data
     exploration and report generation.
 License: MIT + file LICENSE
-URL: https://github.com/cttir/pressR, https://cttir.github.io/pressR/
-BugReports: https://github.com/cttir/pressR/issues
+URL: https://github.com/CTTIR/pressR, https://cttir.github.io/pressR/
+BugReports: https://github.com/CTTIR/pressR/issues
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 Depends:
@@ -39,20 +40,15 @@ Imports:
     digest,
     fs
 Suggests:
-    gganimate,
-    gifski,
     withr,
     testthat (>= 3.2.0),
     knitr,
     rmarkdown,
     htmltools,
-    pkgdown,
-    covr,
     shinytest2,
-    vdiffr,
     readxl,
     archive,
     writexl
 VignetteBuilder: knitr
 Config/Needs/website: CTTIR/themakR
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

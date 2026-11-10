@@ -135,5 +135,7 @@ export(pr_validate_layout)
 export(pr_validate_summary)
 export(pr_verify_lock)
 export(pr_write_bundle)
-importFrom(rlang,.data)
-importFrom(rlang,.env)
+importFrom(rlang,
+  .data,
+  .env
+)

@@ -1,4 +1,16 @@
-# pressR 0.2.0 (development)
+# pressR 0.3.0
+
+This is the first release of the successor line developed as 0.2.0.9000;
+version 0.2.0 itself was never released. It prepares the package for a first
+CRAN submission:
+
+* The maintainer address is now raban.heller@uni-ulm.de, the documentation
+  language is declared as American English (`Language: en-US`) and the
+  repository URLs use the canonical `CTTIR` organization name.
+* The README and vignettes no longer show CRAN status and download badges,
+  which pointed to pages that do not exist before acceptance.
+* Unused suggested packages ('gganimate', 'gifski', 'vdiffr', 'covr',
+  'pkgdown') are no longer listed in Suggests.
 
 * Standardize the named v5 package logo across README, documentation pages
   and available application headers, with matching light and dark artwork.
