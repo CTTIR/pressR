@@ -13,3 +13,14 @@ pr_ref_diabetic_foot()
 ## Value
 
 Reference table; only verified_source rows have usable values.
+
+## Examples
+
+``` r
+ref <- pr_ref_diabetic_foot()
+ref[ref$status == "verified_source", c("region", "parameter", "threshold", "unit")]
+#> # A tibble: 1 × 4
+#>   region   parameter threshold unit 
+#>   <chr>    <chr>         <dbl> <chr>
+#> 1 forefoot mpp             700 kPa  
+```

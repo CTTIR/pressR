@@ -25,3 +25,15 @@ pr_read_bundle(path)
 
 A validated
 [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md) object.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("custom")
+path <- tempfile("pressr-bundle-")
+pr_write_bundle(trial, path)
+restored <- pr_read_bundle(path)
+identical(restored$pressure, trial$pressure)
+#> [1] TRUE
+unlink(path, recursive = TRUE)
+```

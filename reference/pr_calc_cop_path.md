@@ -22,3 +22,10 @@ pr_calc_cop_path(trial, threshold = 0)
 ## Value
 
 Numeric scalar in the layout coordinate unit.
+
+## Examples
+
+``` r
+pr_calc_cop_path(pr_example_trial("platform"))
+#> [1] 206.2333
+```

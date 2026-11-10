@@ -31,3 +31,14 @@ pr_write_bundle(trial, path)
 ## Value
 
 Invisibly the bundle directory.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("custom")
+path <- tempfile("pressr-bundle-")
+pr_write_bundle(trial, path)
+list.files(path)
+#> [1] "manifest.json"    "measurements.rds" "metadata.rds"     "pressure.csv"    
+unlink(path, recursive = TRUE)
+```

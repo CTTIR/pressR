@@ -22,3 +22,12 @@ pr_calc_loaded_rate(trial, threshold = 0)
 ## Value
 
 Numeric vector in `[0, 1]` of length `n_frames`.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("insole")
+rate <- pr_calc_loaded_rate(trial, threshold = 5)
+all(rate >= 0 & rate <= 1)
+#> [1] TRUE
+```

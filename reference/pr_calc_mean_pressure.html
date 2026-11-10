@@ -71,6 +71,17 @@ as unloaded and excluded. Default <code>0</code>.</p></dd>
     <p>Numeric vector of length <code>n_frames</code>.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="pr_example_trial.html">pr_example_trial</a></span><span class="op">(</span><span class="st">"insole"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu">pr_calc_mean_pressure</span><span class="op">(</span><span class="va">trial</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span> <span class="op">==</span> <span class="va">trial</span><span class="op">$</span><span class="va">n_frames</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mp</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.000   0.000   4.897  26.121  38.663 128.318 </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

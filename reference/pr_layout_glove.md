@@ -15,3 +15,11 @@ pr_layout_glove()
 
 A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 object.
+
+## Examples
+
+``` r
+glove <- pr_layout_glove()
+glove$n_sensors
+#> [1] 32
+```

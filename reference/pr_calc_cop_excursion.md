@@ -23,3 +23,11 @@ pr_calc_cop_excursion(trial, threshold = 0)
 
 Named numeric vector with `ap` (y-range) and `ml` (x-range), both in the
 layout coordinate unit.
+
+## Examples
+
+``` r
+pr_calc_cop_excursion(pr_example_trial("platform"))
+#>        ap        ml 
+#> 55.682236  4.426538 
+```

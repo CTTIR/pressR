@@ -22,3 +22,11 @@ pr_calc_contact_time(trial, threshold = 0)
 ## Value
 
 Numeric scalar (s).
+
+## Examples
+
+``` r
+trial <- pr_example_trial("platform")
+pr_calc_contact_time(trial, threshold = 5)
+#> [1] 1.6
+```

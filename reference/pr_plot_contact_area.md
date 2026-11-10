@@ -22,3 +22,9 @@ pr_plot_contact_area(trial, show_cycles = FALSE)
 ## Value
 
 A `ggplot2` object.
+
+## Examples
+
+``` r
+pr_plot_contact_area(pr_example_trial("insole"))
+```

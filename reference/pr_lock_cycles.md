@@ -23,3 +23,15 @@ pr_lock_cycles(trial, cycles)
 
 A reference object for
 [`pr_temporal_profile()`](https://cttir.github.io/pressR/reference/pr_temporal_profile.md).
+
+## Examples
+
+``` r
+trial <- pr_example_trial("saddle_horse")
+cycles <- pr_calc_stride_cycles(trial)
+locked <- pr_lock_cycles(trial, cycles)
+locked$schema
+#> [1] "pressR-reference-cycles"
+nrow(locked$cycles)
+#> [1] 13
+```

@@ -37,3 +37,21 @@ pr_temporal_profile(
 
 A list with cycles, spectrum, dominant frequency, phase map and explicit
 analysis settings.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("saddle_horse")
+profile <- pr_temporal_profile(trial, "corrected")
+profile$dominant_frequency
+#> # A tibble: 1 × 2
+#>   stride_freq_Hz peak_power
+#>            <dbl>      <dbl>
+#> 1            1.4      5902.
+
+# Replay cycles that are bound to this exact recording:
+locked <- pr_lock_cycles(trial, profile$cycles)
+replay <- pr_temporal_profile(trial, "reference", reference = locked)
+identical(replay$cycles, profile$cycles)
+#> [1] TRUE
+```

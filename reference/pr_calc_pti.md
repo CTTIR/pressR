@@ -22,3 +22,14 @@ pr_calc_pti(trial)
 ## Value
 
 Numeric vector of length `n_sensors`.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("insole")
+pti <- pr_calc_pti(trial)
+length(pti) == trial$n_sensors
+#> [1] TRUE
+max(pti)
+#> [1] 511.0623
+```

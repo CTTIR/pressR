@@ -21,3 +21,12 @@ pr_layout_seat(type = c("wheelchair", "car", "office"))
 
 A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 object.
+
+## Examples
+
+``` r
+seat <- pr_layout_seat("wheelchair")
+names(seat$regions)
+#> [1] "left_ischial"  "right_ischial" "sacral"        "left_thigh"   
+#> [5] "right_thigh"  
+```

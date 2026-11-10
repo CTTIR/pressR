@@ -22,3 +22,12 @@ pr_calc_force(trial)
 ## Value
 
 Numeric vector of length `n_frames`.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("insole")
+force <- pr_calc_force(trial)
+max(force)
+#> [1] 1442.449
+```

@@ -23,3 +23,17 @@ pr_read_asset(path, exiftool = Sys.which("exiftool"))
 ## Value
 
 Source identity, embedded metadata and calibration availability.
+
+## Examples
+
+``` r
+path <- tempfile(fileext = ".txt")
+writeLines("Session protocol", path)
+# An empty `exiftool` registers the file without reading embedded metadata.
+asset <- pr_read_asset(path, exiftool = "")
+asset$metadata_status
+#> [1] "metadata_tool_unavailable"
+asset$temperature_status
+#> [1] "unavailable"
+unlink(path)
+```

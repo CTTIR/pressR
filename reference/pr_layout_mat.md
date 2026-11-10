@@ -23,3 +23,13 @@ pr_layout_mat(size = c("16", "32"))
 
 A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
 with no predefined regions.
+
+## Examples
+
+``` r
+mat <- pr_layout_mat("16")
+mat$n_sensors
+#> [1] 256
+pr_layout_mat("32")$n_sensors
+#> [1] 1024
+```

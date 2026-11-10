@@ -73,6 +73,19 @@ interpreted as temperatures. No source files are written.</p>
     <p>Source identity, embedded metadata and calibration availability.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="st">"Session protocol"</span>, <span class="va">path</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># An empty `exiftool` registers the file without reading embedded metadata.</span></span></span>
+<span class="r-in"><span><span class="va">asset</span> <span class="op">&lt;-</span> <span class="fu">pr_read_asset</span><span class="op">(</span><span class="va">path</span>, exiftool <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">asset</span><span class="op">$</span><span class="va">metadata_status</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "metadata_tool_unavailable"</span>
+<span class="r-in"><span><span class="va">asset</span><span class="op">$</span><span class="va">temperature_status</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "unavailable"</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

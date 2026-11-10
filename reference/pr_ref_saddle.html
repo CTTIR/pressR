@@ -78,6 +78,24 @@ No reference is enabled automatically in reports.</p>
 source, source_url, status, species, gait and region_scheme.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">pr_ref_saddle</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   region  parameter threshold unit  interpretation      source source_url status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> cranial mpp            34.5 kPa   Association observ… Nyiko… https://p… verif…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> middle  mpp            30.3 kPa   Association observ… Nyiko… https://p… verif…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> caudal  mpp            31   kPa   Association observ… Nyiko… https://p… verif…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> cranial mvp            13.2 kPa   Association observ… Nyiko… https://p… verif…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> middle  mvp            11.4 kPa   Association observ… Nyiko… https://p… verif…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> caudal  mvp            10   kPa   Association observ… Nyiko… https://p… verif…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: species &lt;chr&gt;, gait &lt;chr&gt;, region_scheme &lt;chr&gt;</span></span>
+<span class="r-in"><span><span class="co"># Withdrawn legacy entries carry no numeric threshold:</span></span></span>
+<span class="r-in"><span><span class="fu">pr_ref_saddle</span><span class="op">(</span><span class="st">"werner2002"</span><span class="op">)</span><span class="op">$</span><span class="va">threshold</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA NA NA</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

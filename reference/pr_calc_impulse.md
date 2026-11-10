@@ -18,3 +18,10 @@ pr_calc_impulse(trial)
 ## Value
 
 Numeric scalar.
+
+## Examples
+
+``` r
+pr_calc_impulse(pr_example_trial("insole"))
+#> [1] 1447.263
+```

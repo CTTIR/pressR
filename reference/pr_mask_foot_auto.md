@@ -32,3 +32,15 @@ pr_mask_foot_auto(trial, n_regions = 7L, threshold = 1)
 
 Named list of
 [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("platform")
+masks <- pr_mask_foot_auto(trial, n_regions = 3)
+names(masks)
+#> [1] "heel"     "midfoot"  "forefoot"
+names(pr_mask_foot_auto(trial))
+#> [1] "heel"           "midfoot"        "metatarsal_1"   "metatarsal_2_3"
+#> [5] "metatarsal_4_5" "hallux"         "lesser_toes"   
+```
