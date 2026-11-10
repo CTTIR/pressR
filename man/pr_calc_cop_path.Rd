@@ -17,3 +17,6 @@ Numeric scalar in the layout coordinate unit.
 \description{
 Total COP Path Length
 }
+\examples{
+pr_calc_cop_path(pr_example_trial("platform"))
+}

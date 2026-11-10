@@ -17,3 +17,11 @@ A tibble with paths, sizes, roles, hashes and duplicate flags.
 \description{
 Inventory Study Source Files Without Changing Them
 }
+\examples{
+src <- tempfile("pressr-study-")
+dir.create(src)
+writeLines(c("time,s1", "0,1"), file.path(src, "trial.csv"))
+writeLines("Trial notes", file.path(src, "notes.txt"))
+pr_inventory(src)
+unlink(src, recursive = TRUE)
+}

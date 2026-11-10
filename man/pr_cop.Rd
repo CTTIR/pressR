@@ -23,3 +23,9 @@ velocity is total distance divided by observed segment duration.
 Construct a \code{pr_cop} object from x/y coordinates and time. Normally
 created by \code{\link[=pr_calc_cop]{pr_calc_cop()}} rather than called directly.
 }
+\examples{
+t <- seq(0, 1, by = 0.1)
+cop <- pr_cop(x = 10 * sin(2 * pi * t), y = 50 * t, time = t)
+cop
+cop$path_length
+}

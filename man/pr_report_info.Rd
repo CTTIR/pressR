@@ -15,3 +15,6 @@ A field/value tibble suitable for reports.
 \description{
 Report Source and Analysis Provenance
 }
+\examples{
+pr_report_info(pr_example_trial("insole"))
+}

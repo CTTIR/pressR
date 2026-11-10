@@ -29,3 +29,13 @@ reference replays cycles bound to the measurements by \code{\link[=pr_lock_cycle
 Its phase map uses the source workflow's central 80 percent of cycles and
 an untrimmed mean. No historical analysis is silently substituted.
 }
+\examples{
+trial <- pr_example_trial("saddle_horse")
+profile <- pr_temporal_profile(trial, "corrected")
+profile$dominant_frequency
+
+# Replay cycles that are bound to this exact recording:
+locked <- pr_lock_cycles(trial, profile$cycles)
+replay <- pr_temporal_profile(trial, "reference", reference = locked)
+identical(replay$cycles, profile$cycles)
+}

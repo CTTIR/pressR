@@ -15,3 +15,6 @@ A long table with parameter, value, unit and status.
 \description{
 Summarize Measurements With Explicit Units and Availability
 }
+\examples{
+pr_summary_long(pr_example_trial("insole"))
+}

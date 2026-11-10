@@ -9,6 +9,10 @@
 #' @return A tibble with region, parameter, threshold, unit, interpretation,
 #'   source, source_url, status, species, gait and region_scheme.
 #' @export
+#' @examples
+#' pr_ref_saddle()
+#' # Withdrawn legacy entries carry no numeric threshold:
+#' pr_ref_saddle("werner2002")$threshold
 pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller2005", "werner2002")) {
   source <- match.arg(source)
   if (source == "nyikos2005") {
@@ -49,6 +53,9 @@ pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller
 #' Other previously supplied values are withdrawn pending exact provenance.
 #' @return Reference table; only verified_source rows have usable values.
 #' @export
+#' @examples
+#' ref <- pr_ref_diabetic_foot()
+#' ref[ref$status == "verified_source", c("region", "parameter", "threshold", "unit")]
 pr_ref_diabetic_foot <- function() {
   tibble::tibble(
     region = c("forefoot", "any plantar", "forefoot", "heel"),
@@ -65,6 +72,8 @@ pr_ref_diabetic_foot <- function() {
 #' @return A reference table with withdrawn numeric values. Physiological
 #'   capillary observations do not establish universal seat-interface limits.
 #' @export
+#' @examples
+#' pr_ref_wheelchair()
 pr_ref_wheelchair <- function() {
   tibble::tibble(
     region = c("ischial", "ischial", "any"), parameter = c("mpp", "mean_pressure", "mpp"),

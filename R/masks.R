@@ -158,6 +158,11 @@ pr_mask_saddle_6 <- function(layout) {
 #'
 #' @return Named list of [pr_mask] objects.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("platform")
+#' masks <- pr_mask_foot_auto(trial, n_regions = 3)
+#' names(masks)
+#' names(pr_mask_foot_auto(trial))
 pr_mask_foot_auto <- function(trial, n_regions = 7L, threshold = 1.0) {
   .validate_trial(trial)
   layout <- trial$layout

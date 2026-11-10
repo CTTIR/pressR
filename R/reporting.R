@@ -2,6 +2,8 @@
 #' @param trial A [pr_trial] object.
 #' @return A long table with parameter, value, unit and status.
 #' @export
+#' @examples
+#' pr_summary_long(pr_example_trial("insole"))
 pr_summary_long <- function(trial) {
   s <- pr_summary(trial)
   values <- as.numeric(s[1, ])
@@ -15,6 +17,8 @@ pr_summary_long <- function(trial) {
 #' @param trial A [pr_trial] object.
 #' @return A field/value tibble suitable for reports.
 #' @export
+#' @examples
+#' pr_report_info(pr_example_trial("insole"))
 pr_report_info <- function(trial) {
   .validate_trial(trial)
   md <- trial$metadata

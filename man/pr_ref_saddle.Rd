@@ -22,3 +22,8 @@ p.187: 26 horses measured at trot with six bilateral Novel saddle masks.
 Unverified legacy entries have withdrawn numeric thresholds (NA).
 No reference is enabled automatically in reports.
 }
+\examples{
+pr_ref_saddle()
+# Withdrawn legacy entries carry no numeric threshold:
+pr_ref_saddle("werner2002")$threshold
+}

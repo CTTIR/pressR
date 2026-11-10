@@ -18,3 +18,6 @@ A \code{ggplot2} object.
 \description{
 Plot Contact Area vs Time
 }
+\examples{
+pr_plot_contact_area(pr_example_trial("insole"))
+}

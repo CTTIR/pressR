@@ -14,3 +14,7 @@ Armstrong's 1998 case-control study reported a 70 N/cm2 (700 kPa)
 forefoot cut-point with limited discrimination using EMED measurements.
 Other previously supplied values are withdrawn pending exact provenance.
 }
+\examples{
+ref <- pr_ref_diabetic_foot()
+ref[ref$status == "verified_source", c("region", "parameter", "threshold", "unit")]
+}

@@ -18,3 +18,6 @@ both in the layout coordinate unit.
 \description{
 COP Excursion (Anterior-Posterior and Medial-Lateral Range)
 }
+\examples{
+pr_calc_cop_excursion(pr_example_trial("platform"))
+}

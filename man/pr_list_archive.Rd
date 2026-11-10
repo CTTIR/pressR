@@ -15,3 +15,14 @@ A tibble containing archive member names, sizes and dates.
 \description{
 List a Study Archive
 }
+\examples{
+\dontshow{if (requireNamespace("archive", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+src <- tempfile("pressr-src-")
+dir.create(src)
+writeLines(c("time,s1", "0,1", "0.02,3"), file.path(src, "trial.csv"))
+zip <- tempfile(fileext = ".zip")
+archive::archive_write_dir(zip, src)
+pr_list_archive(zip)
+unlink(c(src, zip), recursive = TRUE)
+\dontshow{\}) # examplesIf}
+}

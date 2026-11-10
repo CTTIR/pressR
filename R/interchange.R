@@ -13,6 +13,12 @@
 #' @param path New bundle directory.
 #' @return Invisibly the bundle directory.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("custom")
+#' path <- tempfile("pressr-bundle-")
+#' pr_write_bundle(trial, path)
+#' list.files(path)
+#' unlink(path, recursive = TRUE)
 pr_write_bundle <- function(trial, path) {
   .validate_trial(trial)
   .validate_output_path(path, new = TRUE)
@@ -49,6 +55,13 @@ pr_write_bundle <- function(trial, path) {
 #' @param path Bundle directory written by [pr_write_bundle()].
 #' @return A validated [pr_trial] object.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("custom")
+#' path <- tempfile("pressr-bundle-")
+#' pr_write_bundle(trial, path)
+#' restored <- pr_read_bundle(path)
+#' identical(restored$pressure, trial$pressure)
+#' unlink(path, recursive = TRUE)
 pr_read_bundle <- function(path) {
   if (!is.character(path) || length(path) != 1L || is.na(path) || !nzchar(path)) {
     cli::cli_abort("Bundle path must be one nonempty character string.")

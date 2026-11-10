@@ -20,3 +20,11 @@ readable, but their decimal CSV cannot guarantee exact numeric/reference replay.
 Version 2 uses authoritative RDS measurements; the CSV is a nonbinding preview
 checked for integrity and structure, not used as a second measurement source.
 }
+\examples{
+trial <- pr_example_trial("custom")
+path <- tempfile("pressr-bundle-")
+pr_write_bundle(trial, path)
+restored <- pr_read_bundle(path)
+identical(restored$pressure, trial$pressure)
+unlink(path, recursive = TRUE)
+}

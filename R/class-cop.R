@@ -12,6 +12,11 @@
 #'   `sway_area`. Trajectory segments require adjacent valid frames; the mean
 #'   velocity is total distance divided by observed segment duration.
 #' @export
+#' @examples
+#' t <- seq(0, 1, by = 0.1)
+#' cop <- pr_cop(x = 10 * sin(2 * pi * t), y = 50 * t, time = t)
+#' cop
+#' cop$path_length
 pr_cop <- function(x, y, time) {
   if (!is.numeric(x) || !is.numeric(y) || !is.numeric(time) ||
     length(x) != length(y) || length(x) != length(time)) {

@@ -13,3 +13,7 @@ A \link{pr_layout} object.
 Returns a \link{pr_layout} for a glove-style hand pressure sensor
 (32 sensors across palm and fingertips).
 }
+\examples{
+glove <- pr_layout_glove()
+glove$n_sensors
+}

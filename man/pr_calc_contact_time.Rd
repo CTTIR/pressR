@@ -17,3 +17,7 @@ Numeric scalar (s).
 \description{
 Duration for which at least one sensor exceeds \code{threshold}.
 }
+\examples{
+trial <- pr_example_trial("platform")
+pr_calc_contact_time(trial, threshold = 5)
+}

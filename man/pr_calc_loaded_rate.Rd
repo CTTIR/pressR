@@ -17,3 +17,8 @@ Numeric vector in \verb{[0, 1]} of length \code{n_frames}.
 \description{
 Calculate Fraction of Loaded Sensors Per Frame
 }
+\examples{
+trial <- pr_example_trial("insole")
+rate <- pr_calc_loaded_rate(trial, threshold = 5)
+all(rate >= 0 & rate <= 1)
+}

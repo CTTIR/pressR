@@ -21,3 +21,15 @@ observations. Recognizes Polar-style HR headers, including headers below
 session metadata, and duration/offline RR exports. Unknown sheets remain
 available as attachments. No observations are silently removed or aligned.
 }
+\examples{
+\dontshow{if (requireNamespace("readxl", quietly = TRUE) && requireNamespace("writexl", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+hr <- data.frame(Time = c("00:00:01", "00:00:02", "00:00:03"), HR = c(92, 95, 97))
+names(hr)[2] <- "HR (bpm)"
+path <- tempfile(fileext = ".xlsx")
+writexl::write_xlsx(list(session = hr), path)
+workbook <- pr_read_workbook(path)
+workbook$manifest
+workbook$heart_rate[c("time_s", "hr_bpm")]
+unlink(path)
+\dontshow{\}) # examplesIf}
+}

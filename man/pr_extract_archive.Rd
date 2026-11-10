@@ -26,3 +26,15 @@ Selected names must be portable relative file paths. Traversal,
 Windows device names and stream syntax, control characters and trailing
 spaces or periods are refused. Aliases cannot overwrite an earlier member.
 }
+\examples{
+\dontshow{if (requireNamespace("archive", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+src <- tempfile("pressr-src-")
+dir.create(src)
+writeLines(c("time,s1", "0,1", "0.02,3"), file.path(src, "trial.csv"))
+zip <- tempfile(fileext = ".zip")
+archive::archive_write_dir(zip, src)
+dest <- tempfile("pressr-extract-")
+pr_extract_archive(zip, members = "trial.csv", destination = dest)
+unlink(c(src, dest, zip), recursive = TRUE)
+\dontshow{\}) # examplesIf}
+}

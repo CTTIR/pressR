@@ -15,3 +15,6 @@ Numeric scalar.
 \description{
 Integrates total force over time. Result is in N*s.
 }
+\examples{
+pr_calc_impulse(pr_example_trial("insole"))
+}

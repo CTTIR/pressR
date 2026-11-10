@@ -24,3 +24,8 @@ the stated coordinate unit per second.
 Computes the center of pressure progression during the stance phase
 of each gait cycle, resampled to percent of stance (0-100).
 }
+\examples{
+trial <- pr_example_trial("insole")
+rollover <- pr_calc_rollover(trial, n_points = 11)
+head(rollover)
+}
