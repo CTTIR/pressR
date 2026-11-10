@@ -112,6 +112,8 @@ test_that("actual HTML reports preserve literal metadata through Pandoc", {
 
 
 test_that("actual PDF reports include the escaped-table dependency", {
+  # A LaTeX run is slow and may try to fetch missing LaTeX packages.
+  skip_on_cran()
   skip_if_not_installed("rmarkdown")
   skip_if_not(rmarkdown::pandoc_available(), "Pandoc is required for report rendering")
   skip_if(!nzchar(Sys.which("pdflatex")), "A LaTeX installation is required for PDF reports")
