@@ -40,8 +40,14 @@ Completed reports replace existing outputs with recovery on reported failures;
 process termination or concurrent writers are outside this guarantee.
 }
 \examples{
-\dontrun{
-tmp <- tempfile(fileext = ".html")
-pr_export_report(pr_example_trial("insole"), tmp, template = "foot")
+\donttest{
+# Rendering needs 'rmarkdown' and a pandoc installation.
+if (requireNamespace("rmarkdown", quietly = TRUE) &&
+  rmarkdown::pandoc_available()) {
+  tmp <- tempfile(fileext = ".html")
+  pr_export_report(pr_example_trial("insole"), tmp, template = "foot")
+  print(file.exists(tmp))
+  unlink(tmp)
+}
 }
 }
