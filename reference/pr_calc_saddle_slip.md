@@ -37,7 +37,7 @@ pr_calc_saddle_slip(pr_example_trial("saddle_horse"))
 #> ── Saddle Slip / Asymmetry Analysis ──
 #> 
 #> • Mean symmetry index: 10.97%
-#> • Max |SI|: 121.4%
+#> • Max |SI|: 122.54%
 #> • Dominant side: "balanced"
 #> • Asymmetric: FALSE
 ```

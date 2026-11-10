@@ -4,14 +4,8 @@
 
 [![R-CMD-check](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/pressR)](https://CRAN.R-project.org/package=pressR)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/pressR)](https://cran.r-project.org/package=pressR)
-[![CRAN downloads
-total](https://cranlogs.r-pkg.org/badges/grand-total/pressR)](https://cran.r-project.org/package=pressR)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
@@ -35,11 +29,11 @@ trial
 #> • System: "insole"
 #> • Layout: "insole_standard"
 #> • Frames: 250
-#> • Duration: 5 s
+#> • Duration: 4.98 s
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-10-29"
+#> • Date: "2026-11-10"
 #> • Condition: "walking"
 ```
 
@@ -52,11 +46,11 @@ cycles
 #> # A tibble: 5 × 8
 #>   cycle heel_strike_frame toe_off_frame heel_strike_time toe_off_time
 #>   <int>             <int>         <int>            <dbl>        <dbl>
-#> 1     1                 1            30             0           0.582
-#> 2     2                51            80             1.00        1.59 
-#> 3     3               101           130             2.01        2.59 
-#> 4     4               151           180             3.01        3.59 
-#> 5     5               201           230             4.02        4.60 
+#> 1     1                 1            31                0         0.6 
+#> 2     2                51            80                1         1.58
+#> 3     3               101           130                2         2.58
+#> 4     4               151           180                3         3.58
+#> 5     5               201           231                4         4.6 
 #> # ℹ 3 more variables: stance_duration <dbl>, start_frame <int>, end_frame <int>
 ```
 
@@ -96,35 +90,74 @@ pr_calc_regional(trial)
 #> # A tibble: 7 × 6
 #>   region           mpp   mvp max_force contact_area pti_mean
 #>   <chr>          <dbl> <dbl>     <dbl>        <dbl>    <dbl>
-#> 1 heel            220.  15.0     357.          42       40.2
-#> 2 midfoot         646.  59.6    1248.          61.5    155. 
-#> 3 metatarsal_1    130.  23.0      41.9          6       65.4
-#> 4 metatarsal_2_3  224.  43.3     116.           9      127. 
-#> 5 metatarsal_4_5  137.  15.9      49.1          9       43.8
-#> 6 hallux          265.  29.9     120.           6       83.8
-#> 7 lesser_toes     190.  12.9      73.1         12       30.0
+#> 1 heel            219.  15.0     349.          42       40.3
+#> 2 midfoot         643.  59.5    1234.          61.5    155. 
+#> 3 metatarsal_1    127.  23.0      41.7          6       65.1
+#> 4 metatarsal_2_3  215.  43.0     113.           9      126. 
+#> 5 metatarsal_4_5  135.  16.0      48.5          9       43.9
+#> 6 hallux          258.  29.4     118.           6       82.5
+#> 7 lesser_toes     190.  12.7      71.8         12       29.6
 ```
 
-## Diabetic foot thresholds
+## Plantar-pressure reference observations
+
+These source-specific observations are not universal clinical cut-offs.
+The synthetic insole example does not establish equivalent acquisition
+or patient context. Rows marked withdrawn have no verified numeric
+value.
 
 ``` r
 
 pr_ref_diabetic_foot()
-#> # A tibble: 4 × 6
-#>   region      parameter threshold unit  interpretation                    source
-#>   <chr>       <chr>         <dbl> <chr> <chr>                             <chr> 
-#> 1 any plantar mpp             200 kPa   Elevated ulceration risk (Armstr… Armst…
-#> 2 any plantar pti_mean         70 kPa*s Pressure-time integral associate… Casel…
-#> 3 forefoot    mpp             400 kPa   High-risk forefoot peak pressure… Veves…
-#> 4 heel        mpp             250 kPa   Heel threshold reported in mixed… Frykb…
+#> # A tibble: 4 × 11
+#>   region      parameter threshold unit  interpretation  source source_url status
+#>   <chr>       <chr>         <dbl> <chr> <chr>           <chr>  <chr>      <chr> 
+#> 1 forefoot    mpp             700 kPa   Case-control R… Armst… https://p… verif…
+#> 2 any plantar pti_mean         NA kPa*s Withdrawn: exa… Casel… NA         withd…
+#> 3 forefoot    mpp              NA kPa   Withdrawn: exa… Veves… NA         withd…
+#> 4 heel        mpp              NA kPa   Withdrawn: exa… Frykb… NA         withd…
+#> # ℹ 3 more variables: species <chr>, gait <chr>, region_scheme <chr>
 ```
 
 ## Composite foot report
 
+[`pr_plot_foot_report()`](https://cttir.github.io/pressR/reference/pr_plot_foot_report.md)
+returns four component plots. Display them separately here so labels and
+legends remain readable at the article width. The HTML/PDF report from
+`pr_export_report(trial, path, template = "foot")` uses these same
+components.
+
 ``` r
 
-pr_plot_foot_report(trial)
+panels <- pr_plot_foot_report(trial)
+panels[[1]]
 ```
 
-![Foot-pressure composite
-report](foot-pressure-analysis_files/figure-html/unnamed-chunk-9-1.png)
+![Maximum measured value at each insole sensor with the selected region
+boundaries.](foot-pressure-analysis_files/figure-html/unnamed-chunk-9-1.png)
+
+``` r
+
+panels[[2]]
+```
+
+![Maximum measured values by insole region, with the region names on the
+horizontal
+axis.](foot-pressure-analysis_files/figure-html/unnamed-chunk-10-1.png)
+
+``` r
+
+panels[[3]]
+```
+
+![Total force over time with detected stance intervals
+shaded.](foot-pressure-analysis_files/figure-html/unnamed-chunk-11-1.png)
+
+``` r
+
+panels[[4]]
+```
+
+![Center of pressure trajectory in millimetres, colored by recording
+time in
+seconds.](foot-pressure-analysis_files/figure-html/unnamed-chunk-12-1.png)

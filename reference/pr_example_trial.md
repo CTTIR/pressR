@@ -53,10 +53,10 @@ print(trial)
 #> • System: "insole"
 #> • Layout: "insole_standard"
 #> • Frames: 250
-#> • Duration: 5 s
+#> • Duration: 4.98 s
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-10-29"
+#> • Date: "2026-11-10"
 #> • Condition: "walking"
 ```

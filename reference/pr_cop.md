@@ -29,3 +29,5 @@ pr_cop(x, y, time)
 
 A `pr_cop` S3 object with fields `x`, `y`, `time`, `path_length`,
 `velocity_mean`, `velocity_max`, `range_x`, `range_y`, `sway_area`.
+Trajectory segments require adjacent valid frames; the mean velocity is
+total distance divided by observed segment duration.

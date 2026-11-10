@@ -48,10 +48,10 @@ cycles
 #> # A tibble: 5 × 8
 #>   cycle heel_strike_frame toe_off_frame heel_strike_time toe_off_time
 #>   <int>             <int>         <int>            <dbl>        <dbl>
-#> 1     1                 1            30             0           0.582
-#> 2     2                51            80             1.00        1.59 
-#> 3     3               101           130             2.01        2.59 
-#> 4     4               151           180             3.01        3.59 
-#> 5     5               201           230             4.02        4.60 
+#> 1     1                 1            31                0         0.6 
+#> 2     2                51            80                1         1.58
+#> 3     3               101           130                2         2.58
+#> 4     4               151           180                3         3.58
+#> 5     5               201           231                4         4.6 
 #> # ℹ 3 more variables: stance_duration <dbl>, start_frame <int>, end_frame <int>
 ```

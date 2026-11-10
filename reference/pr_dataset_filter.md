@@ -73,13 +73,19 @@ Other cohort functions:
 ``` r
 layout <- pr_layout_mat("16")
 mk <- function(id, mode) {
-  pr_trial(matrix(1, 3, layout$n_sensors), time = c(0, 0.02, 0.04),
-           layout = layout, metadata = list(ID = id, Mode = mode))
+  pr_trial(matrix(1, 3, layout$n_sensors),
+    time = c(0, 0.02, 0.04),
+    layout = layout, metadata = list(ID = id, Mode = mode)
+  )
 }
-ds <- pr_dataset(list(mk("ID001", "MS"), mk("ID001", "MH"),
-                      mk("ID002", "MS")))
-walk <- pr_dataset_filter(ds, ~ .x$Mode == "MS", label = "walk",
-                          n_units = 2, n_subjects = 2)
+ds <- pr_dataset(list(
+  mk("ID001", "MS"), mk("ID001", "MH"),
+  mk("ID002", "MS")
+))
+walk <- pr_dataset_filter(ds, ~ .x$Mode == "MS",
+  label = "walk",
+  n_units = 2, n_subjects = 2
+)
 walk$filter_label
 #> [1] "walk"
 ```

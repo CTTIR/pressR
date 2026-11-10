@@ -58,19 +58,25 @@ load varies over time, and the cohort summaries use the former.
 ## See also
 
 Other whole-grid frame metrics:
-[`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md),
-[`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md),
-[`pr_calc_mean_pressure_grid()`](https://cttir.github.io/pressR/reference/pr_calc_mean_pressure_grid.md),
-[`pr_calc_total_pressure()`](https://cttir.github.io/pressR/reference/pr_calc_total_pressure.md),
-[`pr_frame_metrics()`](https://cttir.github.io/pressR/reference/pr_frame_metrics.md),
-[`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
+
+- [`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md)
+
+- [`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md)
+
+- [`pr_calc_mean_pressure_grid()`](https://cttir.github.io/pressR/reference/pr_calc_mean_pressure_grid.md)
+
+- [`pr_calc_total_pressure()`](https://cttir.github.io/pressR/reference/pr_calc_total_pressure.md)
+
+- [`pr_frame_metrics()`](https://cttir.github.io/pressR/reference/pr_frame_metrics.md)
+
+- [`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
 
 ## Examples
 
 ``` r
 trial <- pr_example_trial("saddle_horse")
 pr_calc_pci(trial)
-#> [1] 10.11783
+#> [1] 10.12385
 # The loaded-cells-only denominator is larger, so the index is smaller:
 pr_calc_pci(trial, denominator = "loaded") < pr_calc_pci(trial)
 #> [1] TRUE

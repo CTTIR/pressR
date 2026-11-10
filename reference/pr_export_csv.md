@@ -37,6 +37,17 @@ pr_export_csv(
 
 Invisibly returns the written file path.
 
+## Details
+
+Existing outputs are replaced only after writing succeeds. Reported
+replacement failures restore the old output or report a retained backup
+path. Source recordings, directories and symbolic-link destinations are
+refused. This does not provide a transaction against process termination
+or concurrent writers. Use
+[`pr_write_bundle()`](https://cttir.github.io/pressR/reference/pr_write_bundle.md)
+for exact numeric preservation; decimal CSV is an exchange format and
+may change the last bits of floating-point values.
+
 ## Examples
 
 ``` r

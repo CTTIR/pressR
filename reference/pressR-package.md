@@ -34,18 +34,18 @@ bicycle), seating assessment, and barefoot pedography.
 
 Useful links:
 
-- <https://github.com/cttir/pressR>
+- <https://github.com/CTTIR/pressR>
 
 - <https://cttir.github.io/pressR/>
 
-- Report bugs at <https://github.com/cttir/pressR/issues>
+- Report bugs at <https://github.com/CTTIR/pressR/issues>
 
 ## Author
 
-**Maintainer**: R. Heller <raban.heller@charite.de>
+**Maintainer**: R. Heller <raban.heller@uni-ulm.de>
 ([ORCID](https://orcid.org/0000-0001-8006-9742))
 
 Authors:
 
-- R. Heller <raban.heller@charite.de>
+- R. Heller <raban.heller@uni-ulm.de>
   ([ORCID](https://orcid.org/0000-0001-8006-9742))

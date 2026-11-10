@@ -177,5 +177,5 @@ table(pr_sensor_quality(ds, saturation_kpa = cut)$flag)
 c(declared = ds$trials[[1]]$layout$pressure_range[2],
   observed = max(q$max_across_files))
 #>  declared  observed 
-#> 120.00000  18.94237 
+#> 120.00000  19.03135 
 ```

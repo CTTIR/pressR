@@ -78,7 +78,7 @@ pr_calc_dominant_freq(trial)
 #> # A tibble: 1 × 2
 #>   stride_freq_Hz peak_power
 #>            <dbl>      <dbl>
-#> 1            1.4      5881.
+#> 1            1.4      5902.
 
 # A stride frequency and a mean stride duration are reciprocals:
 f <- pr_calc_dominant_freq(trial)$stride_freq_Hz

@@ -6,7 +6,7 @@ parser.
 ## Usage
 
 ``` r
-pr_read_auto(path, layout = NULL, verbose = TRUE)
+pr_read_auto(path, layout = NULL, verbose = TRUE, filename = basename(path))
 ```
 
 ## Arguments
@@ -23,6 +23,11 @@ pr_read_auto(path, layout = NULL, verbose = TRUE)
 - verbose:
 
   Logical. Default `TRUE`.
+
+- filename:
+
+  Original filename when path is an upload temporary file. Only the
+  extension and recording identity are used; content is read from path.
 
 ## Value
 

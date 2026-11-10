@@ -52,10 +52,10 @@ pr_calc_regional(trial)
 #> # A tibble: 6 × 6
 #>   region          mpp   mvp max_force contact_area pti_mean
 #>   <chr>         <dbl> <dbl>     <dbl>        <dbl>    <dbl>
-#> 1 cranial_left   18.4  2.41     105.           330     17.7
-#> 2 cranial_right  16.5  2.13      94.7          320     15.5
-#> 3 middle_left    12.0  1.57      91.4          440     11.5
-#> 4 middle_right   10.4  1.41      79.5          420     10.2
+#> 1 cranial_left   18.2  2.41     105.           320     17.7
+#> 2 cranial_right  16.5  2.13      94.5          320     15.4
+#> 3 middle_left    11.9  1.57      91.4          440     11.5
+#> 4 middle_right   10.5  1.41      78.3          420     10.1
 #> 5 caudal_left    18.3  2.27     106.           350     16.1
-#> 6 caudal_right   15.6  2.00      91.9          360     14.2
+#> 6 caudal_right   15.4  2.00      91.5          360     14.1
 ```

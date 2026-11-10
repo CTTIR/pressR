@@ -110,29 +110,17 @@ in the device's pressure unit. It is an excursion above the local
 baseline, not a raw frame total: on the reference recording the frame
 totals run 383-434 kPa while `peak_total` runs 2.5-13.8 kPa.
 
-## Agreement with the source study
+## Reproducibility
 
-On the 869-frame reference recording `ID052_K_K_KG00_MS`, the defaults
-reproduce the study's own segmentation exactly: 14 cycles, identical
-`cycle`, `start_idx`, `end_idx`, `duration_s`, `peak_total` and
-`stride_freq` to machine precision. Rerun over the study's whole cohort,
-all 323 of its 50 Hz recordings match cycle for cycle — 137,761 cycles,
-no differences.
-
-The remaining 108 recordings were sampled at 10 Hz, and there the two
-disagree. The study hard-coded its running-median width at 251 samples
-and its minimum peak separation at 15 samples, which are 5 s and 0.3 s
-only at 50 Hz; the parameters here are in seconds and scale with the
-trial's own sampling rate. Passing `hp_window_s = 25.1` and
-`min_period_s = 1.5` reproduces the study's fixed sample counts on a 10
-Hz recording.
-
-That difference shows up in the published cohort means. All 34,095 of
-the study's slow-gait (`MG`) cycles come from 50 Hz recordings, and this
-function returns their published mean duration of 0.719 s exactly. The
-`MH` and `MS` means, 0.748 s and 0.773 s, mix in 10 Hz recordings; on
-the 50 Hz half alone both this function and the study give 0.650 s and
-0.726 s.
+The corrected detector treats differences below floating-point
+resolution as ties and chooses the first sample of a plateau
+deterministically. Historical strict-maximum detection can select
+different cycles after rounding differences around 1e-13. The former
+claim of exact agreement across all study recordings has been withdrawn.
+Use
+[`pr_temporal_profile()`](https://cttir.github.io/pressR/reference/pr_temporal_profile.md)
+to distinguish corrected analysis, the historical method, and verified
+replay of saved reference cycles.
 
 ## See also
 

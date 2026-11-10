@@ -116,5 +116,5 @@ pr_cop_shape(cop[cycles$start_idx[1]:cycles$end_idx[1], ])
 #> # A tibble: 1 × 6
 #>   n_points path_length closure_dist closure_ratio self_intersects n_crossings
 #>      <int>       <dbl>        <dbl>         <dbl> <lgl>                 <int>
-#> 1       33        8.77        0.375        0.0427 TRUE                      9
+#> 1       33        8.76        0.371        0.0424 TRUE                      7
 ```

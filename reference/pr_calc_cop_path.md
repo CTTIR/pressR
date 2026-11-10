@@ -21,4 +21,4 @@ pr_calc_cop_path(trial, threshold = 0)
 
 ## Value
 
-Numeric scalar (mm).
+Numeric scalar in the layout coordinate unit.

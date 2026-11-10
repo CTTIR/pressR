@@ -51,6 +51,16 @@ pr_read_ascii(
 A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
 object.
 
+## Numeric text
+
+Numeric text is qualified for nonzero magnitudes from `1e-290` to
+`1e290`. Values outside this range, or inconsistent decimal conversions,
+are refused. CSV does not carry layout calibration or promise bit-exact
+doubles; provide the original layout, or use
+[`pr_write_bundle()`](https://cttir.github.io/pressR/reference/pr_write_bundle.md)
+for a self-contained round trip. The actual source path, basename and
+SHA-256 are retained in trial metadata.
+
 ## Examples
 
 ``` r

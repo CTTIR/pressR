@@ -120,7 +120,7 @@ first <- pm$mean_kPa[pm$phase_bin == 1]
 mid <- pm$mean_kPa[pm$phase_bin == 5]
 round(c(bin1 = max(first), bin5 = max(mid)), 2)
 #>  bin1  bin5 
-#> 16.27 14.34 
+#> 16.28 14.65 
 
 # Averaged over all bins, the phase map returns the recording's own
 # per-sensor mean to within the trimming:

@@ -1,8 +1,8 @@
 # Launch the Interactive Pressure Data Explorer
 
 Opens a Shiny application for importing, analyzing, and visualizing
-pressure measurement data. The app has six tabs: Import, Heatmap,
-Regions, Dynamics, Comparison, and Report.
+pressure measurement data. The app has seven tabs: Import, Heatmap,
+Regions, Dynamics, Temporal, Compare, and Report.
 
 ## Usage
 
@@ -27,6 +27,19 @@ pr_run_app(trial = NULL, ...)
 
 Invisible `NULL`. Called for side effects: launches the Shiny
 application.
+
+## Details
+
+Examples are synthetic. Uploads retain the original filename; a failed
+replacement clears the affected recording and its derived results.
+Reports and regional CSV exports use the masks selected in Regions. HTML
+reports require the optional package rmarkdown and Pandoc. PDF reports
+additionally require a working LaTeX installation. Pressure CSV
+preserves measurements and timestamps as decimal text, but not the
+layout or calibration. Use
+[`pr_write_bundle()`](https://cttir.github.io/pressR/reference/pr_write_bundle.md)
+from R for an exact, self-contained trial roundtrip. Launch options are
+restored when the app exits.
 
 ## Examples
 

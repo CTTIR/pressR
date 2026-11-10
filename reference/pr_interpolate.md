@@ -23,7 +23,9 @@ pr_interpolate(trial, factor = 2L)
 
 ## Value
 
-A list with `pressure_interp` (interpolated matrix), `x_mm`, `y_mm`.
+A list with `pressure_interp` (interpolated matrix), `x_grid`, `y_grid`
+and `coordinate_unit = "grid_index"`. Interpolated positions are grid
+indices; no physical sensor pitch is inferred.
 
 ## Examples
 

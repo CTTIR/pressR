@@ -74,9 +74,9 @@ dim(X)
 #> [1]   3 248
 X[, 1:4]
 #>                sensor_1  sensor_2  sensor_3  sensor_4
-#> saddle_walk   0.2571023 0.2493830 0.2095750 0.2118923
-#> saddle_walk_1 0.2367435 0.2504103 0.2300383 0.2532296
-#> saddle_walk_2 0.2356181 0.2478820 0.2221043 0.2501159
+#> saddle_walk   0.2571023 0.2493835 0.2095739 0.2118952
+#> saddle_walk_1 0.2367435 0.2504105 0.2300372 0.2532353
+#> saddle_walk_2 0.2356182 0.2478817 0.2221042 0.2501177
 
 # Straight into a PCA of pressure distribution shape:
 pc <- stats::prcomp(X)

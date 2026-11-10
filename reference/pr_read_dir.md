@@ -118,16 +118,20 @@ hdr <- c(
 )
 writeLines(hdr, file.path(dir, "ID001_K_KG00.asc"))
 writeLines(hdr, file.path(dir, "ID002_K_KG40.asc"))
-writeLines(hdr, file.path(dir, "ID002_K_KG40_R01.asc"))  # repeat take
+writeLines(hdr, file.path(dir, "ID002_K_KG40_R01.asc")) # repeat take
 
 lay <- pr_layout(
   2, 2, matrix(TRUE, 2, 2),
-  data.frame(sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
-             col = c(1L, 1L, 2L, 2L),
-             x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1))
+  data.frame(
+    sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
+    col = c(1L, 1L, 2L, 2L),
+    x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1)
+  )
 )
-ds <- pr_read_dir(dir, layout = lay,
-                  meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE)
+ds <- pr_read_dir(dir,
+  layout = lay,
+  meta_fields = c("ID", "Saddle", "Weight"), quiet = TRUE
+)
 length(ds)
 #> [1] 2
 attr(ds, "read_report")$status

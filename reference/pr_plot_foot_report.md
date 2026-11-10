@@ -6,7 +6,7 @@ chart, force-time curve, COP trajectory.
 ## Usage
 
 ``` r
-pr_plot_foot_report(trial)
+pr_plot_foot_report(trial, masks = NULL)
 ```
 
 ## Arguments
@@ -15,6 +15,10 @@ pr_plot_foot_report(trial)
 
   A [pr_trial](https://cttir.github.io/pressR/reference/pr_trial.md)
   object from an insole or platform recording.
+
+- masks:
+
+  Optional explicit region masks.
 
 ## Value
 

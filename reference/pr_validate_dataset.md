@@ -52,8 +52,10 @@ Other cohort functions:
 ``` r
 layout <- pr_layout_mat("16")
 mk <- function() {
-  pr_trial(matrix(1, 3, layout$n_sensors), time = c(0, 0.02, 0.04),
-           layout = layout)
+  pr_trial(matrix(1, 3, layout$n_sensors),
+    time = c(0, 0.02, 0.04),
+    layout = layout
+  )
 }
 pr_validate_dataset(pr_dataset(list(mk(), mk())))
 #> # A tibble: 0 × 6
@@ -63,7 +65,8 @@ pr_validate_dataset(pr_dataset(list(mk(), mk())))
 # A mixed-layout cohort is reported, not silently summarised:
 odd <- pr_example_trial("insole")
 problems <- pr_validate_dataset(pr_dataset(list(mk(), mk(), odd)),
-                                strict = FALSE)
+  strict = FALSE
+)
 #> Warning: 2 cohort problems in 1 of 3 trials.
 #> ✖ Trial 3 (insole_gait) - n_sensors: sensor count differs from the cohort (99
 #>   vs 256)

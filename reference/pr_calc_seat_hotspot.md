@@ -1,7 +1,7 @@
 # Identify Pressure Hotspots
 
-Finds sensors exceeding a clinical pressure threshold — relevant for
-pressure ulcer risk assessment in wheelchair seating.
+Finds sensors exceeding an exploratory pressure level. This descriptive
+calculation is not a clinical risk classifier.
 
 ## Usage
 
@@ -18,9 +18,9 @@ pr_calc_seat_hotspot(trial, threshold = 4.7, duration_s = 0)
 
 - threshold:
 
-  Numeric. Pressure threshold (kPa) above which a sensor is considered a
-  hotspot. Default `4.7` (equivalent to 32 mmHg, the capillary closing
-  pressure).
+  Numeric. Pressure threshold (kPa) above which a sensor is flagged. The
+  legacy default `4.7` is an exploratory setting, not a validated
+  tissue-injury or capillary-closing threshold.
 
 - duration_s:
 

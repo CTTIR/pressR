@@ -89,17 +89,22 @@ are kept fixed so a cohort table has one schema.
 
 ## See also
 
+Other regional symmetry functions:
+
+- [`pr_calc_cop_masked()`](https://cttir.github.io/pressR/reference/pr_calc_cop_masked.md)
+
+- [`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md)
+
+- [`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md)
+
+- [`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md)
+
+- [`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
+
 [`pr_sensor_map()`](https://cttir.github.io/pressR/reference/pr_sensor_map.md)
 for the map being reduced,
 [`pr_calc_regional()`](https://cttir.github.io/pressR/reference/pr_calc_regional.md)
 for the frame-first counterpart.
-
-Other regional symmetry functions:
-[`pr_calc_cop_masked()`](https://cttir.github.io/pressR/reference/pr_calc_cop_masked.md),
-[`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md),
-[`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md),
-[`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md),
-[`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
 
 ## Examples
 

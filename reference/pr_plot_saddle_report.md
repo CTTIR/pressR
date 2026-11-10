@@ -6,7 +6,7 @@ chart, COP trajectory, and left/right symmetry summary.
 ## Usage
 
 ``` r
-pr_plot_saddle_report(trial, thresholds = NULL)
+pr_plot_saddle_report(trial, thresholds = NULL, masks = NULL)
 ```
 
 ## Arguments
@@ -20,7 +20,11 @@ pr_plot_saddle_report(trial, thresholds = NULL)
 
   A reference threshold tibble (typically from
   [`pr_ref_saddle()`](https://cttir.github.io/pressR/reference/pr_ref_saddle.md)).
-  If `NULL`, uses the von Peinen 2010 defaults.
+  If `NULL`, no reference overlay is drawn.
+
+- masks:
+
+  Explicit region masks. NULL uses the historical six-mask layout.
 
 ## Value
 

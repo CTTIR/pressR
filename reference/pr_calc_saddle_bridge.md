@@ -35,7 +35,8 @@ A list with class `pr_saddle_bridge`:
 
 - `bridge_ratio`: middle / mean(cranial, caudal) MVP ratio.
 
-- `is_bridged`: logical.
+- `is_bridged`: logical, or `NA` when any required region is absent,
+  contains no active sensors, or the end pressure is not positive.
 
 - `regional_pressures`: tibble with MVP per region.
 
@@ -48,7 +49,7 @@ pr_calc_saddle_bridge(pr_example_trial("saddle_horse"))
 #> 
 #> ── Saddle Bridge Analysis ──
 #> 
-#> • Bridge ratio: 0.773
+#> • Bridge ratio: 0.774
 #> • Bridging: FALSE
 #> Pressure distribution appears continuous across the saddle (ratio = 0.77).
 ```

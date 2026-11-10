@@ -27,9 +27,9 @@ A one-row
 [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
 with columns:
 
-- `mpp`: maximum peak pressure (kPa)
+- `mpp`: maximum peak pressure (measurement unit)
 
-- `mvp`: mean of per-frame mean pressures (kPa)
+- `mvp`: mean of per-frame mean pressures (measurement unit)
 
 - `max_force`: maximum total force (N)
 
@@ -41,19 +41,19 @@ with columns:
 
 - `contact_time`: total contact duration (s)
 
-- `pti_max`: maximum PTI across sensors (kPa\*s)
+- `pti_max`: maximum PTI across sensors (measurement unit\*s)
 
-- `pti_mean`: mean PTI across loaded sensors (kPa\*s)
+- `pti_mean`: mean PTI across loaded sensors (measurement unit\*s)
 
 - `impulse`: force-time integral (N\*s)
 
-- `cop_path_length`: total COP trajectory length (mm)
+- `cop_path_length`: total COP trajectory length (coordinate unit)
 
-- `cop_velocity_mean`: mean COP velocity (mm/s)
+- `cop_velocity_mean`: mean COP velocity (coordinate unit/s)
 
-- `cop_range_ap`: anterior-posterior COP range (mm)
+- `cop_range_ap`: anterior-posterior COP range (coordinate unit)
 
-- `cop_range_ml`: medial-lateral COP range (mm)
+- `cop_range_ml`: medial-lateral COP range (coordinate unit)
 
 ## Examples
 
@@ -63,7 +63,7 @@ pr_summary(trial)
 #> # A tibble: 1 × 14
 #>     mpp   mvp max_force mean_force max_contact_area mean_contact_area
 #>   <dbl> <dbl>     <dbl>      <dbl>            <dbl>             <dbl>
-#> 1  646.  43.0     1466.       289.             128.              60.9
+#> 1  643.  43.0     1442.       290.             128.              61.1
 #> # ℹ 8 more variables: contact_time <dbl>, pti_max <dbl>, pti_mean <dbl>,
 #> #   impulse <dbl>, cop_path_length <dbl>, cop_velocity_mean <dbl>,
 #> #   cop_range_ap <dbl>, cop_range_ml <dbl>

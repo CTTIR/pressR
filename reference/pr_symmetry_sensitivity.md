@@ -75,15 +75,20 @@ that came from the mask rather than from the recording.
 
 ## See also
 
+Other regional symmetry functions:
+
+- [`pr_calc_cop_masked()`](https://cttir.github.io/pressR/reference/pr_calc_cop_masked.md)
+
+- [`pr_calc_regional_map()`](https://cttir.github.io/pressR/reference/pr_calc_regional_map.md)
+
+- [`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md)
+
+- [`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md)
+
+- [`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md)
+
 [`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md)
 for a single scheme.
-
-Other regional symmetry functions:
-[`pr_calc_cop_masked()`](https://cttir.github.io/pressR/reference/pr_calc_cop_masked.md),
-[`pr_calc_regional_map()`](https://cttir.github.io/pressR/reference/pr_calc_regional_map.md),
-[`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md),
-[`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md),
-[`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md)
 
 ## Examples
 

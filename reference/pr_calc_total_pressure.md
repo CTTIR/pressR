@@ -34,12 +34,18 @@ use. It is the unscaled counterpart of
 ## See also
 
 Other whole-grid frame metrics:
-[`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md),
-[`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md),
-[`pr_calc_mean_pressure_grid()`](https://cttir.github.io/pressR/reference/pr_calc_mean_pressure_grid.md),
-[`pr_calc_pci()`](https://cttir.github.io/pressR/reference/pr_calc_pci.md),
-[`pr_frame_metrics()`](https://cttir.github.io/pressR/reference/pr_frame_metrics.md),
-[`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
+
+- [`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md)
+
+- [`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md)
+
+- [`pr_calc_mean_pressure_grid()`](https://cttir.github.io/pressR/reference/pr_calc_mean_pressure_grid.md)
+
+- [`pr_calc_pci()`](https://cttir.github.io/pressR/reference/pr_calc_pci.md)
+
+- [`pr_frame_metrics()`](https://cttir.github.io/pressR/reference/pr_frame_metrics.md)
+
+- [`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
 
 ## Examples
 
@@ -47,5 +53,5 @@ Other whole-grid frame metrics:
 trial <- pr_example_trial("saddle_horse")
 tot <- pr_calc_total_pressure(trial)
 round(max(tot), 1)
-#> [1] 376.1
+#> [1] 376.3
 ```

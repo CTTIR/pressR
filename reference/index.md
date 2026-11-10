@@ -91,6 +91,8 @@ Predefined and custom sensor coordinate layouts
 
 - [`pr_summary()`](https://cttir.github.io/pressR/reference/pr_summary.md)
   : Summarize Trial Pressure Parameters
+- [`pr_summary_long()`](https://cttir.github.io/pressR/reference/pr_summary_long.md)
+  : Summarize Measurements With Explicit Units and Availability
 - [`pr_calc_symmetry_index()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_index.md)
   : Symmetry Index
 
@@ -112,14 +114,14 @@ Predefined and custom sensor coordinate layouts
 - [`pr_calc_seat_hotspot()`](https://cttir.github.io/pressR/reference/pr_calc_seat_hotspot.md)
   : Identify Pressure Hotspots
 
-## Reference Thresholds
+## Reference Observations
 
 - [`pr_ref_saddle()`](https://cttir.github.io/pressR/reference/pr_ref_saddle.md)
-  : Saddle Fit Reference Thresholds
+  : Saddle Pressure Reference Observations
 - [`pr_ref_diabetic_foot()`](https://cttir.github.io/pressR/reference/pr_ref_diabetic_foot.md)
-  : Diabetic Foot Pressure Thresholds
+  : Traceable Plantar Pressure Reference Observations
 - [`pr_ref_wheelchair()`](https://cttir.github.io/pressR/reference/pr_ref_wheelchair.md)
-  : Wheelchair Seating Pressure Thresholds
+  : Status of Legacy Seating Reference Values
 
 ## Visualization
 
@@ -160,6 +162,12 @@ Predefined and custom sensor coordinate layouts
   : Export Analysis Results to CSV
 - [`pr_export_report()`](https://cttir.github.io/pressR/reference/pr_export_report.md)
   : Generate an Analysis Report
+- [`pr_report_info()`](https://cttir.github.io/pressR/reference/pr_report_info.md)
+  : Report Source and Analysis Provenance
+- [`pr_write_bundle()`](https://cttir.github.io/pressR/reference/pr_write_bundle.md)
+  : Export a Versioned Trial Bundle
+- [`pr_read_bundle()`](https://cttir.github.io/pressR/reference/pr_read_bundle.md)
+  : Read a Verified Trial Bundle
 
 ## Batch Processing
 
@@ -299,6 +307,10 @@ sensors that never unload between contacts.
   : Sensor Map Averaged Over the Stride Cycle
 - [`pr_cop_shape()`](https://cttir.github.io/pressR/reference/pr_cop_shape.md)
   : Loop Geometry of a COP Trajectory
+- [`pr_temporal_profile()`](https://cttir.github.io/pressR/reference/pr_temporal_profile.md)
+  : Analyze Temporal Structure With an Explicit Reproducibility Profile
+- [`pr_lock_cycles()`](https://cttir.github.io/pressR/reference/pr_lock_cycles.md)
+  : Bind Historical Cycles to Their Exact Measurements
 
 ## Provenance and Design Integrity
 
@@ -312,3 +324,21 @@ sensors that never unload between contacts.
   : Assert the Level Sets of Design Factors
 - [`pr_design_gaps()`](https://cttir.github.io/pressR/reference/pr_design_gaps.md)
   : Observed Design Cells Against the Full Crossing
+
+## Study Attachments
+
+Inventory and explicitly selected ancillary files, with source
+identities retained.
+
+- [`pr_inventory()`](https://cttir.github.io/pressR/reference/pr_inventory.md)
+  : Inventory Study Source Files Without Changing Them
+- [`pr_read_workbook()`](https://cttir.github.io/pressR/reference/pr_read_workbook.md)
+  : Import a Study Workbook and Its HR/RR Series
+- [`pr_read_asset()`](https://cttir.github.io/pressR/reference/pr_read_asset.md)
+  : Register an Image or Other Study Attachment
+- [`pr_link_assets()`](https://cttir.github.io/pressR/reference/pr_link_assets.md)
+  : Link Study Assets Using Explicit Acquisition Keys
+- [`pr_list_archive()`](https://cttir.github.io/pressR/reference/pr_list_archive.md)
+  : List a Study Archive
+- [`pr_extract_archive()`](https://cttir.github.io/pressR/reference/pr_extract_archive.md)
+  : Extract Selected Archive Members Without Overwriting Files

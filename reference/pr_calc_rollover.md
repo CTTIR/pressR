@@ -30,5 +30,6 @@ pr_calc_rollover(trial, cycles = NULL, n_points = 51L)
 ## Value
 
 A [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
-with columns `cycle`, `percent_stance`, `cop_x_mm`, `cop_y_mm`,
-`cop_velocity`.
+with columns `cycle`, `percent_stance`, `cop_x`, `cop_y`, `cop_velocity`
+and `coordinate_unit`. Velocity uses the stated coordinate unit per
+second.

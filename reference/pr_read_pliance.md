@@ -68,13 +68,15 @@ pr_read_pliance(
 
 - sampling_hz:
 
-  Numeric. Overrides the rate recorded in the header. `NULL` (default)
-  uses the header, or the timestamps when the header is silent.
+  Numeric. Declared rate; must agree with measured timestamps. `NULL`
+  (default) uses the header, or the timestamps when the header is
+  silent.
 
 - metadata:
 
-  Named list merged over the parsed metadata, so callers can override
-  any field.
+  Named list merged over the parsed metadata, so callers can attach
+  study fields. The actual source path, filename and checksum cannot be
+  replaced by this argument.
 
 ## Value
 
@@ -111,6 +113,16 @@ frame whose *timestamp* is missing is always dropped, since it cannot be
 placed on the time axis. The counts land in `metadata$n_frames_raw` and
 `metadata$n_frames_dropped`.
 
+## Numeric text
+
+Numeric text is qualified for nonzero magnitudes from `1e-290` to
+`1e290`. Values outside this range, or inconsistent decimal conversions,
+are refused. CSV does not carry layout calibration or promise bit-exact
+doubles; provide the original layout, or use
+[`pr_write_bundle()`](https://cttir.github.io/pressR/reference/pr_write_bundle.md)
+for a self-contained round trip. The actual source path, basename and
+SHA-256 are retained in trial metadata.
+
 ## See also
 
 Other Pliance ingest functions:
@@ -136,9 +148,11 @@ writeLines(c(
 
 lay <- pr_layout(
   2, 2, matrix(TRUE, 2, 2),
-  data.frame(sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
-             col = c(1L, 1L, 2L, 2L),
-             x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1))
+  data.frame(
+    sensor_id = 1:4, row = c(1L, 2L, 1L, 2L),
+    col = c(1L, 1L, 2L, 2L),
+    x_mm = c(0, 0, 1, 1), y_mm = c(0, 1, 0, 1)
+  )
 )
 
 # Device channel 1 sits at grid (row 1, col 2), channel 2 at (1, 1).

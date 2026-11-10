@@ -70,12 +70,18 @@ and total always describe the frame as recorded.
 ## See also
 
 Other whole-grid frame metrics:
-[`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md),
-[`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md),
-[`pr_calc_mean_pressure_grid()`](https://cttir.github.io/pressR/reference/pr_calc_mean_pressure_grid.md),
-[`pr_calc_pci()`](https://cttir.github.io/pressR/reference/pr_calc_pci.md),
-[`pr_calc_total_pressure()`](https://cttir.github.io/pressR/reference/pr_calc_total_pressure.md),
-[`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
+
+- [`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md)
+
+- [`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md)
+
+- [`pr_calc_mean_pressure_grid()`](https://cttir.github.io/pressR/reference/pr_calc_mean_pressure_grid.md)
+
+- [`pr_calc_pci()`](https://cttir.github.io/pressR/reference/pr_calc_pci.md)
+
+- [`pr_calc_total_pressure()`](https://cttir.github.io/pressR/reference/pr_calc_total_pressure.md)
+
+- [`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
 
 ## Examples
 

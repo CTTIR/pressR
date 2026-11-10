@@ -83,17 +83,22 @@ and
 
 ## See also
 
+Other regional symmetry functions:
+
+- [`pr_calc_cop_masked()`](https://cttir.github.io/pressR/reference/pr_calc_cop_masked.md)
+
+- [`pr_calc_regional_map()`](https://cttir.github.io/pressR/reference/pr_calc_regional_map.md)
+
+- [`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md)
+
+- [`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md)
+
+- [`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
+
 [`pr_calc_symmetry_index()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_index.md)
 for the frame-first version,
 [`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
 to vary the mask.
-
-Other regional symmetry functions:
-[`pr_calc_cop_masked()`](https://cttir.github.io/pressR/reference/pr_calc_cop_masked.md),
-[`pr_calc_regional_map()`](https://cttir.github.io/pressR/reference/pr_calc_regional_map.md),
-[`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md),
-[`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md),
-[`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
 
 ## Examples
 
@@ -115,5 +120,5 @@ pr_calc_symmetry_map(trial, bands$cranial)
 
 # Intensity-only comparison, ignoring how much area each side loaded:
 pr_calc_symmetry_map(trial, denominator = "loaded")$asymmetry_pct
-#> [1] 13.07347
+#> [1] 13.07516
 ```

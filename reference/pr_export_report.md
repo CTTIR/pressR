@@ -47,6 +47,12 @@ pr_export_report(
 
 Invisibly returns the generated file path.
 
+## Details
+
+Source recordings and symbolic-link destinations are refused. Completed
+reports replace existing outputs with recovery on reported failures;
+process termination or concurrent writers are outside this guarantee.
+
 ## Examples
 
 ``` r

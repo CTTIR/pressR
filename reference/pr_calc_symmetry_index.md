@@ -32,5 +32,5 @@ Numeric scalar. Positive values indicate left dominance.
 
 ``` r
 pr_calc_symmetry_index(pr_example_trial("saddle_horse"))
-#> [1] 10.75746
+#> [1] 10.65773
 ```

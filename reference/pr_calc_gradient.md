@@ -113,7 +113,7 @@ g[which.max(g$gradient), ]
 #> # A tibble: 1 × 4
 #>   sensor   row   col gradient
 #>    <int> <int> <int>    <dbl>
-#> 1     84     4     6     5.01
+#> 1     84     4     6     5.00
 
 # The default leaves the border -- and the layout's inactive gullet
 # cells -- missing ...
@@ -128,5 +128,5 @@ sum(gz$gradient == 0, na.rm = TRUE)
 c(interior = mean(g$gradient, na.rm = TRUE),
   filled = mean(gz$gradient, na.rm = TRUE))
 #> interior   filled 
-#> 1.660206 1.276026 
+#> 1.660202 1.276023 
 ```

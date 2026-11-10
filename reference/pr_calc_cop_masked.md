@@ -84,19 +84,24 @@ velocity are in index units and index units per second.
 
 ## See also
 
+Other regional symmetry functions:
+
+- [`pr_calc_regional_map()`](https://cttir.github.io/pressR/reference/pr_calc_regional_map.md)
+
+- [`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md)
+
+- [`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md)
+
+- [`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md)
+
+- [`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
+
 [`pr_calc_cop()`](https://cttir.github.io/pressR/reference/pr_calc_cop.md)
 and
 [`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md)
 for the whole mat,
 [`pr_calc_cop_excursion()`](https://cttir.github.io/pressR/reference/pr_calc_cop_excursion.md)
 for the range summary.
-
-Other regional symmetry functions:
-[`pr_calc_regional_map()`](https://cttir.github.io/pressR/reference/pr_calc_regional_map.md),
-[`pr_calc_symmetry_map()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_map.md),
-[`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md),
-[`pr_mask_rowbands()`](https://cttir.github.io/pressR/reference/pr_mask_rowbands.md),
-[`pr_symmetry_sensitivity()`](https://cttir.github.io/pressR/reference/pr_symmetry_sensitivity.md)
 
 ## Examples
 
@@ -117,11 +122,11 @@ round(vapply(cops, function(c) mean(c$y, na.rm = TRUE), numeric(1)), 2)
 # The full pr_cop vocabulary works unchanged:
 round(vapply(cops, function(c) c$path_length, numeric(1)), 3)
 #>  cranial_left cranial_right   middle_left  middle_right   caudal_left 
-#>        72.419        84.384       104.211       119.473        75.375 
+#>        72.582        84.459       104.202       119.497        75.445 
 #>  caudal_right 
-#>        90.145 
+#>        90.152 
 
 # This layout has a real sensor pitch, so millimetres are honest:
 round(pr_calc_cop_masked(trial, units = "mm")$cranial_left$range_x, 1)
-#> [1] 26.8
+#> [1] 26.6
 ```

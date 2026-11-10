@@ -96,7 +96,7 @@ mpp[which.max(mpp$value), ]
 #> # A tibble: 1 × 4
 #>   sensor   row   col value
 #>    <int> <int> <int> <dbl>
-#> 1     68     4     5  18.4
+#> 1     77    13     5  18.3
 
 # The mean map is never above the peak map, sensor for sensor:
 avg <- pr_sensor_map(trial, "mean")
