@@ -16,3 +16,5 @@ memory/
 *.bak
 *.orig
 _coverage/
+/planning/maintenance-2026-11-03.md
+/dev/production/STATUS.txt
