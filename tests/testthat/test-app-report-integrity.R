@@ -135,3 +135,20 @@ test_that("the empty app state does not print a stray NULL", {
     expect_false(grepl("NULL", output$trial_info, fixed = TRUE))
   })
 })
+
+test_that("on-screen tables round floating-point residue but downloads do not", {
+  trial <- pr_example_trial("saddle_horse")
+  withr::local_options(list(pressR.preloaded_trial = trial,
+    shiny.maxRequestSize = NULL, sass.cache = FALSE))
+  env <- new.env(parent = globalenv())
+  sys.source(system.file("shiny", "pressR", "app.R", package = "pressR"), env)
+  shiny::testServer(env$server, {
+    shown <- display_table(data.frame(a = 72.57000000000001, b = 3L, c = "x"))
+    expect_identical(shown$a, 72.57)
+    expect_identical(shown$b, 3L)
+    expect_identical(shown$c, "x")
+    session$setInputs(mask_set = "saddle_6", region_param = "mpp")
+    expect_true(nzchar(output$region_table))
+    expect_true(nzchar(output$summary_table))
+  })
+})

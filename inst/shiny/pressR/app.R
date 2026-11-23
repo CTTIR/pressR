@@ -342,13 +342,22 @@ server <- function(input, output, session) {
       "masks. Numeric values are in the regional table.")
   })
 
+  # On-screen tables show six significant digits; binary floating-point
+  # residue such as 72.57000000000001 is display noise. Downloads and
+  # reports keep full precision.
+  display_table <- function(x) {
+    x <- as.data.frame(x)
+    for (nm in names(x)) if (is.double(x[[nm]])) x[[nm]] <- signif(x[[nm]], 6)
+    x
+  }
+
   output$region_table <- DT::renderDT({
     tr <- trial_rv()
     m <- masks_for()
     if (is.null(tr) || length(m) == 0L) {
       return(NULL)
     }
-    pressR::pr_calc_regional(tr, m)
+    display_table(pressR::pr_calc_regional(tr, m))
   })
 
   output$force_plot <- shiny::renderPlot({
@@ -426,7 +435,7 @@ server <- function(input, output, session) {
     }
   })
   output$cycle_table <- DT::renderDT({
-    shiny::req(temporal_result())$cycles
+    display_table(shiny::req(temporal_result())$cycles)
   })
 
   output$summary_table <- DT::renderDT({
@@ -434,7 +443,7 @@ server <- function(input, output, session) {
     if (is.null(tr)) {
       return(NULL)
     }
-    pressR::pr_summary_long(tr)
+    display_table(pressR::pr_summary_long(tr))
   })
 
   export_current <- function(file, writer) {
