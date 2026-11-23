@@ -116,6 +116,10 @@ summary.pr_trial <- function(object, ...) {
 #'
 #' @return A `ggplot2` object.
 #' @export
+#' @examples
+#' trial <- pr_example_trial("saddle_horse")
+#' plot(trial)
+#' plot(trial, type = "pti")
 plot.pr_trial <- function(x, ...) {
   pr_plot_heatmap(x, ...)
 }

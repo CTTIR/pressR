@@ -7,9 +7,11 @@
 pr_cop(x, y, time)
 }
 \arguments{
-\item{x}{Numeric vector of COP x-coordinates (mm).}
+\item{x}{Numeric vector of COP x-coordinates. \code{\link[=pr_calc_cop]{pr_calc_cop()}} records the
+layout's coordinate unit in \code{coordinate_unit}; a directly constructed
+object is labelled \code{"mm"}.}
 
-\item{y}{Numeric vector of COP y-coordinates (mm).}
+\item{y}{Numeric vector of COP y-coordinates, in the same unit as \code{x}.}
 
 \item{time}{Numeric vector of timestamps (s).}
 }

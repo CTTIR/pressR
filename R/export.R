@@ -8,7 +8,8 @@
 #' @param path Character. Output file path.
 #' @param what Character. `"summary"` (default), `"regional"`,
 #'   `"pressure"`, or `"cop"`.
-#' @param masks Named list of masks. Required for `what = "regional"`.
+#' @param masks Named list of masks, used for `what = "regional"`. `NULL`
+#'   (default) uses the layout's default regions.
 #' @details Existing outputs are replaced only after writing succeeds. Reported
 #' replacement failures restore the old output or report a retained backup path.
 #' Source recordings, directories and symbolic-link destinations are refused.

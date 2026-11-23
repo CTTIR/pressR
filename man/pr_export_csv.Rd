@@ -19,7 +19,8 @@ pr_export_csv(
 \item{what}{Character. \code{"summary"} (default), \code{"regional"},
 \code{"pressure"}, or \code{"cop"}.}
 
-\item{masks}{Named list of masks. Required for \code{what = "regional"}.}
+\item{masks}{Named list of masks, used for \code{what = "regional"}. \code{NULL}
+(default) uses the layout's default regions.}
 }
 \value{
 Invisibly returns the written file path.

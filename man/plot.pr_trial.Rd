@@ -18,3 +18,8 @@ A \code{ggplot2} object.
 Default plot method for \code{pr_trial} — shows the maximum pressure picture
 (MPP) as a heatmap.
 }
+\examples{
+trial <- pr_example_trial("saddle_horse")
+plot(trial)
+plot(trial, type = "pti")
+}

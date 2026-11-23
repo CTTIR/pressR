@@ -3,8 +3,10 @@
 #' Construct a `pr_cop` object from x/y coordinates and time. Normally
 #' created by [pr_calc_cop()] rather than called directly.
 #'
-#' @param x Numeric vector of COP x-coordinates (mm).
-#' @param y Numeric vector of COP y-coordinates (mm).
+#' @param x Numeric vector of COP x-coordinates. [pr_calc_cop()] records the
+#'   layout's coordinate unit in `coordinate_unit`; a directly constructed
+#'   object is labelled `"mm"`.
+#' @param y Numeric vector of COP y-coordinates, in the same unit as `x`.
 #' @param time Numeric vector of timestamps (s).
 #'
 #' @return A `pr_cop` S3 object with fields `x`, `y`, `time`,
@@ -39,7 +41,9 @@ pr_cop <- function(x, y, time) {
   range_x <- if (length(xv) > 0L) diff(range(xv)) else 0
   range_y <- if (length(yv) > 0L) diff(range(yv)) else 0
 
-  # Sway area: approximated as 95% confidence ellipse area
+  # Sway area: 95% prediction ellipse of the bivariate normal COP cloud.
+  # 2.4477 is sqrt(qchisq(0.95, df = 2)) = 2.447747 to four decimals, so the
+  # semi-axes are 2.4477 * sqrt(eigenvalue) of the sample covariance.
   sway_area <- 0
   if (length(xv) >= 3L) {
     cx <- mean(xv)
