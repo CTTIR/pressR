@@ -15,7 +15,9 @@ pr_calc_contact_time(trial, threshold = 0)
 Numeric scalar (s).
 }
 \description{
-Duration for which at least one sensor exceeds \code{threshold}.
+Duration for which at least one sensor exceeds \code{threshold}: the sum of the
+sampling intervals whose start and end frames are both loaded. An isolated
+loaded frame therefore adds no duration.
 }
 \examples{
 trial <- pr_example_trial("platform")

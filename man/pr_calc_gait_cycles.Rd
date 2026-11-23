@@ -17,13 +17,16 @@ pr_calc_gait_cycles(
 \item{force_threshold}{Numeric. Force threshold (N) for foot contact
 detection. Default \code{20}.}
 
-\item{min_stance_ms}{Numeric. Minimum stance duration (ms). Shorter
-contacts are rejected. Default \code{200}.}
+\item{min_stance_ms}{Numeric. Non-negative minimum stance duration (ms).
+Shorter contacts are rejected. Default \code{200}.}
 
-\item{min_swing_ms}{Numeric. Minimum swing duration (ms). Default \code{100}.}
+\item{min_swing_ms}{Numeric. Non-negative minimum swing duration (ms).
+Default \code{100}.}
 }
 \value{
-A \link[tibble:tibble]{tibble::tibble} with one row per detected cycle.
+A \link[tibble:tibble]{tibble::tibble} with one row per detected cycle and columns
+\code{cycle}, \code{heel_strike_frame}, \code{toe_off_frame}, \code{heel_strike_time} (s),
+\code{toe_off_time} (s), \code{stance_duration} (s), \code{start_frame} and \code{end_frame}.
 }
 \description{
 Identifies heel-strike and toe-off events from the total force curve

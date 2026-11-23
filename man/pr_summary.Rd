@@ -15,7 +15,8 @@ pr_summary(trial, threshold = 0)
 A one-row \link[tibble:tibble]{tibble::tibble} with columns:
 \itemize{
 \item \code{mpp}: maximum peak pressure (measurement unit)
-\item \code{mvp}: mean of per-frame mean pressures (measurement unit)
+\item \code{mvp}: mean of the per-frame mean pressures, over frames with at
+least one loaded sensor (measurement unit)
 \item \code{max_force}: maximum total force (N)
 \item \code{mean_force}: mean total force (N)
 \item \code{max_contact_area}: maximum contact area (cm^2)

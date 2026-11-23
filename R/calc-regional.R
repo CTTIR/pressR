@@ -25,6 +25,7 @@ pr_calc_regional <- function(trial, masks = NULL,
                              ),
                              threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   valid <- c(
     "mpp", "mvp", "max_force", "mean_force", "contact_area",
     "pti_max", "pti_mean"
@@ -82,7 +83,7 @@ pr_calc_regional <- function(trial, masks = NULL,
 
     tibble::tibble(
       region = nm,
-      mpp = max(per_frame_peak, na.rm = TRUE),
+      mpp = .safe_max(per_frame_peak),
       mvp = {
         v <- per_frame_mean[per_frame_mean > 0]
         if (length(v) > 0L) mean(v) else 0

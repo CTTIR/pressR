@@ -71,3 +71,61 @@ test_that("pr_calc_cop applies threshold", {
   cop <- pr_calc_cop(tr, threshold = 10)  # 5 < 10 -> no load -> NA
   expect_true(is.na(cop$x[1]))
 })
+
+test_that("threshold arguments must be single finite numbers", {
+  tr <- pr_example_trial("insole")
+  # A character threshold used to be compared as text and returned zeros.
+  bad <- list("a", NA_real_, c(1, 2), Inf, NULL)
+  for (value in bad) {
+    expect_error(pr_calc_peak_pressure(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_mean_pressure(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_contact_area(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_loaded_rate(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_cop(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_contact_time(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_cop_path(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_cop_excursion(tr, threshold = value), "single finite number")
+    expect_error(pr_summary(tr, threshold = value), "single finite number")
+    expect_error(pr_calc_regional(tr, threshold = value), "single finite number")
+  }
+  # The error names the function the user called.
+  err <- tryCatch(pr_calc_peak_pressure(tr, threshold = NA_real_), error = identity)
+  expect_match(deparse(conditionCall(err)), "pr_calc_peak_pressure")
+  # Valid thresholds are unchanged, negative values included.
+  expect_identical(pr_calc_peak_pressure(tr, threshold = 0L), pr_calc_peak_pressure(tr))
+  expect_length(pr_calc_contact_area(tr, threshold = -1), tr$n_frames)
+})
+
+test_that("gait, hotspot and slip arguments are validated", {
+  ins <- pr_example_trial("insole")
+  expect_error(pr_calc_gait_cycles(ins, force_threshold = "x"), "single finite number")
+  expect_error(pr_calc_gait_cycles(ins, force_threshold = NA_real_), "single finite number")
+  expect_error(pr_calc_gait_cycles(ins, min_stance_ms = -5), "non-negative")
+  expect_error(pr_calc_gait_cycles(ins, min_swing_ms = c(1, 2)), "single finite number")
+  seat <- pr_example_trial("wheelchair")
+  expect_error(pr_calc_seat_hotspot(seat, threshold = NA_real_), "single finite number")
+  expect_error(pr_calc_seat_hotspot(seat, duration_s = -1), "non-negative")
+  sad <- pr_example_trial("saddle_horse")
+  expect_error(pr_calc_saddle_slip(sad, slip_threshold = NA_real_), "single finite number")
+  expect_error(pr_calc_saddle_slip(sad, slip_threshold = c(1, 2)), "single finite number")
+  expect_error(pr_calc_saddle_slip(sad, slip_threshold = -1), "non-negative")
+})
+
+test_that("recordings without frames give no hotspots and a clear interpolation error", {
+  layout <- pr_layout_seat("wheelchair")
+  empty <- pr_trial(matrix(numeric(0), 0, layout$n_sensors), numeric(0), layout)
+  expect_no_warning(hot <- pr_calc_seat_hotspot(empty))
+  expect_equal(nrow(hot), 0L)
+  expect_error(pr_interpolate(empty), "no frames")
+  expect_no_warning(reg <- pr_calc_regional(empty, pr_mask_symmetry(layout)))
+  expect_true(all(is.na(reg$mpp)))
+})
+
+test_that("contact time sums intervals bounded by two loaded frames", {
+  layout <- pr_layout_mat("16")
+  P <- matrix(0, 6, layout$n_sensors)
+  P[c(2, 3, 4, 6), 1] <- 10
+  tr <- pr_trial(P, time = c(0, 0.1, 0.2, 0.4, 0.5, 0.6), layout = layout)
+  # Intervals 2-3 (0.1 s) and 3-4 (0.2 s); frame 6 is loaded alone.
+  expect_equal(pr_calc_contact_time(tr), 0.3)
+})

@@ -13,7 +13,8 @@
 #'
 #' @return A one-row [tibble::tibble] with columns:
 #'   - `mpp`: maximum peak pressure (measurement unit)
-#'   - `mvp`: mean of per-frame mean pressures (measurement unit)
+#'   - `mvp`: mean of the per-frame mean pressures, over frames with at
+#'     least one loaded sensor (measurement unit)
 #'   - `max_force`: maximum total force (N)
 #'   - `mean_force`: mean total force (N)
 #'   - `max_contact_area`: maximum contact area (cm^2)
@@ -32,6 +33,7 @@
 #' pr_summary(trial)
 pr_summary <- function(trial, threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
 
   pp <- pr_calc_peak_pressure(trial, threshold)
   mp <- pr_calc_mean_pressure(trial, threshold)

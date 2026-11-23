@@ -7,8 +7,8 @@
 #' @param threshold Numeric. Pressure threshold (kPa) above which a
 #'   sensor is flagged. The legacy default `4.7` is an exploratory setting,
 #'   not a validated tissue-injury or capillary-closing threshold.
-#' @param duration_s Numeric. Minimum sustained duration (s) above
-#'   threshold for a hotspot to be flagged. Default `0`.
+#' @param duration_s Numeric. Non-negative minimum sustained duration (s)
+#'   above threshold for a hotspot to be flagged. Default `0`.
 #'
 #' @return A [tibble::tibble] with columns `sensor_id`, `row`, `col`,
 #'   `x_mm`, `y_mm`, `max_pressure`, `mean_pressure`, `duration_above_s`.
@@ -17,13 +17,17 @@
 #' pr_calc_seat_hotspot(pr_example_trial("wheelchair"))
 pr_calc_seat_hotspot <- function(trial, threshold = 4.7, duration_s = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
+  .tp_check_scalar(duration_s, "duration_s")
+  if (duration_s < 0) cli::cli_abort("{.arg duration_s} must be non-negative.")
   coords <- trial$layout$coords_mm
   P <- trial$pressure
   t <- trial$time
   n_frames <- nrow(P)
 
-  max_p <- apply(P, 2, max)
-  mean_p <- apply(P, 2, mean)
+  # A recording without frames has no sensor maxima and therefore no hotspot.
+  max_p <- if (n_frames) apply(P, 2, max) else rep(-Inf, ncol(P))
+  mean_p <- if (n_frames) apply(P, 2, mean) else rep(NA_real_, ncol(P))
 
   above <- P > threshold
   dur <- if (n_frames >= 2L) {

@@ -20,6 +20,9 @@ pr_interpolate <- function(trial, factor = 2L) {
   if (!is.numeric(factor) || length(factor)!=1L || !is.finite(factor) || factor!=round(factor)) cli::cli_abort("factor must be a positive integer.")
   factor <- as.integer(factor)
   if (factor < 1L) cli::cli_abort("{.arg factor} must be a positive integer.")
+  if (trial$n_frames == 0L) {
+    cli::cli_abort("{.arg trial} has no frames, so there is no maximum pressure picture to interpolate.")
+  }
 
   layout <- trial$layout
   mpp <- apply(trial$pressure, 2, max)

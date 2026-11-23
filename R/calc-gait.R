@@ -7,11 +7,14 @@
 #' @param trial A [pr_trial] object from an insole or platform recording.
 #' @param force_threshold Numeric. Force threshold (N) for foot contact
 #'   detection. Default `20`.
-#' @param min_stance_ms Numeric. Minimum stance duration (ms). Shorter
-#'   contacts are rejected. Default `200`.
-#' @param min_swing_ms Numeric. Minimum swing duration (ms). Default `100`.
+#' @param min_stance_ms Numeric. Non-negative minimum stance duration (ms).
+#'   Shorter contacts are rejected. Default `200`.
+#' @param min_swing_ms Numeric. Non-negative minimum swing duration (ms).
+#'   Default `100`.
 #'
-#' @return A [tibble::tibble] with one row per detected cycle.
+#' @return A [tibble::tibble] with one row per detected cycle and columns
+#'   `cycle`, `heel_strike_frame`, `toe_off_frame`, `heel_strike_time` (s),
+#'   `toe_off_time` (s), `stance_duration` (s), `start_frame` and `end_frame`.
 #' @export
 #' @examples
 #' cycles <- pr_calc_gait_cycles(pr_example_trial("insole"))
@@ -19,6 +22,12 @@
 pr_calc_gait_cycles <- function(trial, force_threshold = 20,
                                 min_stance_ms = 200, min_swing_ms = 100) {
   .validate_trial(trial)
+  .tp_check_scalar(force_threshold, "force_threshold")
+  .tp_check_scalar(min_stance_ms, "min_stance_ms")
+  .tp_check_scalar(min_swing_ms, "min_swing_ms")
+  if (min_stance_ms < 0 || min_swing_ms < 0) {
+    cli::cli_abort("{.arg min_stance_ms} and {.arg min_swing_ms} must be non-negative.")
+  }
   f <- pr_calc_force(trial)
   if (length(f) && !any(is.finite(f))) cli::cli_abort("Force-based gait detection requires a calibrated force measurement; use pressure stride analysis for an uncalibrated saddle mat.")
   t <- trial$time

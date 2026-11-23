@@ -27,6 +27,7 @@
 #' length(pp) == trial$n_frames
 pr_calc_peak_pressure <- function(trial, threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   P <- trial$pressure
   vapply(seq_len(nrow(P)), function(i) {
     row <- P[i, ]
@@ -50,6 +51,7 @@ pr_calc_peak_pressure <- function(trial, threshold = 0) {
 #' summary(mp)
 pr_calc_mean_pressure <- function(trial, threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   P <- trial$pressure
   vapply(seq_len(nrow(P)), function(i) {
     row <- P[i, ]
@@ -93,6 +95,7 @@ pr_calc_force <- function(trial) {
 #' range(area)
 pr_calc_contact_area <- function(trial, threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   a <- trial$layout$sensor_area_cm2
   rowSums(trial$pressure > threshold) * a
 }
@@ -110,6 +113,7 @@ pr_calc_contact_area <- function(trial, threshold = 0) {
 #' all(rate >= 0 & rate <= 1)
 pr_calc_loaded_rate <- function(trial, threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   n <- trial$layout$n_sensors
   rowSums(trial$pressure > threshold) / n
 }
@@ -132,6 +136,7 @@ pr_calc_loaded_rate <- function(trial, threshold = 0) {
 #' print(cop)
 pr_calc_cop <- function(trial, threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   coords <- trial$layout$coords_mm
   P <- trial$pressure
   x <- rep(NA_real_, nrow(P))
@@ -205,7 +210,9 @@ pr_calc_impulse <- function(trial) {
 
 #' Total Contact Time
 #'
-#' Duration for which at least one sensor exceeds `threshold`.
+#' Duration for which at least one sensor exceeds `threshold`: the sum of the
+#' sampling intervals whose start and end frames are both loaded. An isolated
+#' loaded frame therefore adds no duration.
 #'
 #' @param trial A [pr_trial] object.
 #' @param threshold Numeric. Default `0`.
@@ -217,15 +224,15 @@ pr_calc_impulse <- function(trial) {
 #' pr_calc_contact_time(trial, threshold = 5)
 pr_calc_contact_time <- function(trial, threshold = 0) {
   .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   any_load <- rowSums(trial$pressure > threshold) > 0
   if (!any(any_load) || length(trial$time) < 2L) {
     return(0)
   }
-  # Use bin widths (dt) to estimate contact duration
+  # Count each sampling interval whose two bounding frames are loaded.
   dt <- diff(trial$time)
-  mid_loaded <- any_load[-1] & any_load[-length(any_load)]
-  sum(dt[mid_loaded]) +
-    sum(dt[any_load[-length(any_load)] & !mid_loaded]) * 0 # keep simple
+  both_loaded <- any_load[-1] & any_load[-length(any_load)]
+  sum(dt[both_loaded])
 }
 
 #' Total COP Path Length
@@ -238,6 +245,8 @@ pr_calc_contact_time <- function(trial, threshold = 0) {
 #' @examples
 #' pr_calc_cop_path(pr_example_trial("platform"))
 pr_calc_cop_path <- function(trial, threshold = 0) {
+  .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   pr_calc_cop(trial, threshold)$path_length
 }
 
@@ -252,6 +261,8 @@ pr_calc_cop_path <- function(trial, threshold = 0) {
 #' @examples
 #' pr_calc_cop_excursion(pr_example_trial("platform"))
 pr_calc_cop_excursion <- function(trial, threshold = 0) {
+  .validate_trial(trial)
+  .tp_check_scalar(threshold, "threshold")
   cop <- pr_calc_cop(trial, threshold)
   c(ap = cop$range_y, ml = cop$range_x)
 }

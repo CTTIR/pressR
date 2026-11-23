@@ -13,8 +13,8 @@ pr_calc_seat_hotspot(trial, threshold = 4.7, duration_s = 0)
 sensor is flagged. The legacy default \code{4.7} is an exploratory setting,
 not a validated tissue-injury or capillary-closing threshold.}
 
-\item{duration_s}{Numeric. Minimum sustained duration (s) above
-threshold for a hotspot to be flagged. Default \code{0}.}
+\item{duration_s}{Numeric. Non-negative minimum sustained duration (s)
+above threshold for a hotspot to be flagged. Default \code{0}.}
 }
 \value{
 A \link[tibble:tibble]{tibble::tibble} with columns \code{sensor_id}, \code{row}, \code{col},
