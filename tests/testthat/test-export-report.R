@@ -63,3 +63,12 @@ test_that("pr_export_csv pressure layout includes frame/time columns", {
 test_that("pr_export_csv rejects non-trial", {
   expect_error(pr_export_csv(list(), tempfile()))
 })
+
+test_that("the saddle report scales its 9-inch composite to the text width", {
+  tpl <- readLines(system.file("templates", "report_saddle.Rmd", package = "pressR"))
+  chunk <- grep("pr_plot_saddle_report", tpl, fixed = TRUE)
+  header <- tpl[max(grep("^```\\{r", tpl[seq_len(chunk)]))]
+  # Without out.width the 9-inch figure ran off a PDF page and was clipped.
+  expect_match(header, "fig.width=9", fixed = TRUE)
+  expect_match(header, 'out.width="100%"', fixed = TRUE)
+})

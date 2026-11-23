@@ -34,7 +34,7 @@ masks <- if (is.null(params$masks)) pr_mask_saddle_6(trial$layout) else params$m
 
 ## Composite report
 
-```{r, fig.width=9, fig.height=7, fig.alt="Four panels show the maximum sensor map with selected regions, regional maxima, centre of pressure trajectory, and left/right peak-measurement symmetry."}
+```{r, fig.width=9, fig.height=7, out.width="100%", fig.alt="Four panels show the maximum sensor map with selected regions, regional maxima, centre of pressure trajectory, and left/right peak-measurement symmetry."}
 pr_plot_saddle_report(trial, thresholds = params$thresholds, masks = masks)
 ```
 
