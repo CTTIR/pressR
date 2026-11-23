@@ -29,7 +29,8 @@ CRAN submission:
 * Threshold and duration arguments of the per-frame, summary, regional,
   gait, hotspot and slip functions must be single finite numbers (durations
   and `slip_threshold` non-negative). A character threshold was previously
-  compared as text and silently returned zeros; `NA` returned missing values.
+  compared as text and silently gave wrong results; `NA` returned missing
+  values.
 * `pr_mask_saddle_6()` refuses grids with fewer than three rows or two
   columns, where its regions used to overlap, and `pr_mask_symmetry()`
   refuses an axis with a single grid line. Their handling of odd grid sizes
@@ -37,14 +38,18 @@ CRAN submission:
 * `pr_read_mask()` rejects non-numeric tokens inside the mask matrix instead
   of returning missing cells.
 * Recordings without frames no longer produce warnings in
-  `pr_calc_seat_hotspot()` and `pr_calc_regional()`; `pr_interpolate()`
-  explains that there is nothing to interpolate.
+  `pr_calc_seat_hotspot()` and `pr_calc_regional()` (whose regional maxima
+  are now `NA` instead of `-Inf`); `pr_interpolate()` and
+  `pr_calc_saddle_slip()` explain that there is nothing to interpolate or
+  compare instead of failing with an internal error.
 * Region overlays on pressure maps are drawn as region boundaries instead of
   one outlined tile per sensor, which hid the pressure picture on platforms
   and seat mats. `pr_plot_foot_report()` gives the regional bar chart and the
   force curve the full width (panel order unchanged), and the composite
   reports place their map legends side by side so they no longer overlap
-  panel titles.
+  panel titles. `pr_plot_heatmap_masked()` refuses unnamed masks, which it
+  used to skip without drawing them; an empty mask list still draws the plain
+  heatmap.
 * The synthetic insole example loads the forefoot in the layout's metatarsal
   rows; its peak previously fell into the midfoot region.
 * `pr_read_ascii()` and `pr_read_auto()` infer the horse (248 sensors) and

@@ -80,7 +80,7 @@ test_that("threshold arguments must be single finite numbers", {
     pr_calc_cop_excursion, pr_summary, pr_calc_regional
   )
   msg <- "single finite number"
-  # A character threshold used to be compared as text and returned zeros.
+  # A character threshold used to be compared as text, giving wrong results.
   bad <- list("a", NA_real_, c(1, 2), Inf, NULL)
   for (fn in fns) {
     for (value in bad) expect_error(fn(tr, threshold = value), msg)
