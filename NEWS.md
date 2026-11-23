@@ -5,8 +5,10 @@ version 0.2.0 itself was never released. It prepares the package for a first
 CRAN submission:
 
 * The maintainer address is now raban.heller@uni-ulm.de, the documentation
-  language is declared as American English (`Language: en-US`) and the
-  repository URLs use the canonical `CTTIR` organisation name.
+  is written in British English (`Language: en-GB`) and the repository URLs
+  use the canonical `CTTIR` organisation name. The citation metadata
+  (README, `CITATION.cff`, `.zenodo.json`) names the author as R. Heller and
+  uses the title from `citation("pressR")`.
 * The README and vignettes no longer show CRAN status and download badges,
   which pointed to pages that do not exist before acceptance.
 * Unused suggested packages ('gganimate', 'gifski', 'vdiffr', 'covr',
@@ -14,6 +16,29 @@ CRAN submission:
 
 * Standardise the named v5 package logo across README, documentation pages
   and available application headers, with matching light and dark artwork.
+
+* Reference observations cite their DOI and page: Nyikos et al. (2005),
+  doi:10.21836/PEM20050301, and Armstrong et al. (1998),
+  doi:10.1016/S1067-2516(98)80066-5; the withdrawn legacy entries also carry
+  their DOI. The six-region saddle mask follows the scheme of Nyikos et al.
+  (2005, Fig. 1, p.189) and is no longer attributed to Werner et al. (2002).
+* `pr_calc_saddle_slip()` decides `dominant_side` and `is_asymmetric` from
+  the same comparison: a mean symmetry index exactly at `slip_threshold` is
+  now `"balanced"` instead of naming a side while reporting no asymmetry.
+  Its return value is documented field by field.
+* Threshold and duration arguments of the per-frame, summary, regional,
+  gait, hotspot and slip functions must be single finite numbers (durations
+  and `slip_threshold` non-negative). A character threshold was previously
+  compared as text and silently returned zeros; `NA` returned missing values.
+* `pr_mask_saddle_6()` refuses grids with fewer than three rows or two
+  columns, where its regions used to overlap, and `pr_mask_symmetry()`
+  refuses an axis with a single grid line. Their handling of odd grid sizes
+  is documented and unchanged.
+* `pr_read_mask()` rejects non-numeric tokens inside the mask matrix instead
+  of returning missing cells.
+* Recordings without frames no longer produce warnings in
+  `pr_calc_seat_hotspot()` and `pr_calc_regional()`; `pr_interpolate()`
+  explains that there is nothing to interpolate.
 
 
 This is an explicitly versioned successor. Version 0.1.0 and its manuscript
