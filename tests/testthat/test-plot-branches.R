@@ -172,6 +172,22 @@ test_that("composite reports keep their panel order", {
   expect_match(foot[[4]]$labels$title, "Centre of pressure")
 })
 
+test_that("composite map and COP panels use compact top-aligned legends", {
+  # At the default 7 x 4.5 inch device (the reference pages) the legends of
+  # the map and COP panels used to overflow into the panel titles, and the
+  # narrow fixed-aspect panels ran their x labels together.
+  foot <- pr_plot_foot_report(pr_example_trial("insole"))
+  saddle <- pr_plot_saddle_report(pr_example_trial("saddle_horse"))
+  panels <- list(foot[[1]], foot[[4]], saddle[[1]], saddle[[3]])
+  for (p in panels) {
+    expect_identical(p$theme$legend.justification, "top")
+    expect_identical(p$theme$legend.box, "horizontal")
+    expect_true(isTRUE(p$guides$guides$x$params$check.overlap))
+  }
+  # The bar and force panels keep the standard theme.
+  expect_false(identical(foot[[2]]$theme$legend.justification, "top"))
+})
+
 test_that("region outlines handle one-row, empty and transposed grids", {
   co <- data.frame(sensor_id = 1:4, row = 1L, col = 1:4)
   co$x_mm <- (co$col - 1) * 10

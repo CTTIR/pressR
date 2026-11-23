@@ -46,8 +46,10 @@ CRAN submission:
   one outlined tile per sensor, which hid the pressure picture on platforms
   and seat mats. `pr_plot_foot_report()` gives the regional bar chart and the
   force curve the full width (panel order unchanged), and the composite
-  reports place their map legends side by side so they no longer overlap
-  panel titles. `pr_plot_heatmap_masked()` refuses unnamed masks, which it
+  reports set compact, top-aligned legends side by side on their map and
+  centre-of-pressure panels and drop overlapping map axis labels, so legends
+  no longer overlap panel titles, also at the default figure size of the
+  reference pages. `pr_plot_heatmap_masked()` refuses unnamed masks, which it
   used to skip without drawing them; an empty mask list still draws the plain
   heatmap.
 * The synthetic insole example loads the forefoot in the layout's metatarsal

@@ -2,15 +2,18 @@
 # Composite report-style plots.
 # ---------------------------------------------------------------------------
 
-# Internal: a map panel with its fill and region legends side by side, so the
-# legend column stays within the panel height of a 2 x 2 composite.
+# Internal: a map panel (heatmap or COP) with compact legends set side by side
+# and aligned with the top of the panel, so the legend column stays within the
+# panel height of a composite even at the default 7 x 4.5 inch device size.
+# Fixed-aspect maps get narrow there, so overlapping x labels are dropped.
 .compact_map_legends <- function(p) {
   p + ggplot2::theme(
     legend.box = "horizontal",
-    legend.key.size = ggplot2::unit(0.9, "lines"),
-    legend.title = ggplot2::element_text(size = 9),
-    legend.text = ggplot2::element_text(size = 8)
-  )
+    legend.justification = "top",
+    legend.key.size = ggplot2::unit(0.7, "lines"),
+    legend.title = ggplot2::element_text(size = 8),
+    legend.text = ggplot2::element_text(size = 7)
+  ) + ggplot2::guides(x = ggplot2::guide_axis(check.overlap = TRUE))
 }
 
 #' Saddle Fit Report Panel
@@ -37,7 +40,7 @@ pr_plot_saddle_report <- function(trial, thresholds = NULL, masks = NULL) {
     title = "MPP with selected regions"
   ))
   p_bar <- pr_plot_regional_bar(reg, "mpp", thresholds)
-  p_cop <- pr_plot_cop(trial)
+  p_cop <- .compact_map_legends(pr_plot_cop(trial))
   p_sym <- pr_plot_symmetry(trial, "peak_pressure")
 
   patchwork::wrap_plots(p_hm, p_bar, p_cop, p_sym, ncol = 2) +
@@ -89,7 +92,7 @@ pr_plot_foot_report <- function(trial, masks = NULL) {
     )
   }
   p_force <- pr_plot_force_time(trial, show_cycles = TRUE)
-  p_cop <- pr_plot_cop(trial)
+  p_cop <- .compact_map_legends(pr_plot_cop(trial))
 
   # The two maps share the first row, where their fixed aspect ratio costs the
   # least width; the bar chart and the force curve each span the full width
