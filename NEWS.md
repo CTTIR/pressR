@@ -47,6 +47,13 @@ CRAN submission:
   panel titles.
 * The synthetic insole example loads the forefoot in the layout's metatarsal
   rows; its peak previously fell into the midfoot region.
+* `pr_read_ascii()` and `pr_read_auto()` infer the horse (248 sensors) and
+  bicycle (192 sensors) saddle layouts from a `System: saddle_mat` header, so
+  the file written by `pr_example_files("saddle")` reads back, including as an
+  upload in the app.
+* The app no longer prints a stray `NULL` before a recording is loaded, and
+  its on-screen tables show six significant digits; downloads and reports
+  keep full precision.
 
 
 This is an explicitly versioned successor. Version 0.1.0 and its manuscript
