@@ -17,8 +17,12 @@ source, source_url, status, species, gait and region_scheme.
 }
 \description{
 Source-specific observations, not universal diagnostic cut-offs. The six
-values formerly attributed to von Peinen are from Nyikos (2005), abstract,
-p.187: 26 horses measured at trot with six bilateral Novel saddle masks.
+values formerly attributed to von Peinen are from Nyikos et al. (2005),
+Pferdeheilkunde 21:187-198, \doi{10.21836/PEM20050301}, abstract, p.187:
+26 horses measured at trot with six bilateral Novel saddle masks. The
+abstract gives maximal (MPP) and mean (MVP) pressures in N/cm2
+(3.45/3.03/3.10 and 1.32/1.14/1.00 for the cranial/middle/caudal masks),
+stored here in kPa (1 N/cm2 = 10 kPa).
 Unverified legacy entries have withdrawn numeric thresholds (NA).
 No reference is enabled automatically in reports.
 }

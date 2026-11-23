@@ -1,8 +1,12 @@
 #' Saddle Pressure Reference Observations
 #'
 #' Source-specific observations, not universal diagnostic cut-offs. The six
-#' values formerly attributed to von Peinen are from Nyikos (2005), abstract,
-#' p.187: 26 horses measured at trot with six bilateral Novel saddle masks.
+#' values formerly attributed to von Peinen are from Nyikos et al. (2005),
+#' Pferdeheilkunde 21:187-198, \doi{10.21836/PEM20050301}, abstract, p.187:
+#' 26 horses measured at trot with six bilateral Novel saddle masks. The
+#' abstract gives maximal (MPP) and mean (MVP) pressures in N/cm2
+#' (3.45/3.03/3.10 and 1.32/1.14/1.00 for the cranial/middle/caudal masks),
+#' stored here in kPa (1 N/cm2 = 10 kPa).
 #' Unverified legacy entries have withdrawn numeric thresholds (NA).
 #' No reference is enabled automatically in reports.
 #' @param source Reference identifier. Default 'nyikos2005'.
@@ -20,7 +24,7 @@ pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller
       region = rep(c("cranial", "middle", "caudal"), 2),
       parameter = rep(c("mpp", "mvp"), each = 3), threshold = c(34.5, 30.3, 31, 13.2, 11.4, 10), unit = "kPa",
       interpretation = "Association observed in 26 horses at trot; not a validated diagnostic rule.",
-      source = "Nyikos et al. (2005), Pferdeheilkunde 21:187-198, abstract p.187.",
+      source = "Nyikos et al. (2005), Pferdeheilkunde 21:187-198, doi:10.21836/PEM20050301, abstract p.187.",
       source_url = "https://pferdeheilkunde.de/files/20050301.pdf", status = "verified_source",
       species = "equine", gait = "trot", region_scheme = "nyikos_six_masks"
     ))
@@ -33,13 +37,13 @@ pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller
     threshold = NA_real_, unit = "kPa",
     interpretation = if (source == "vonpeinen2010") "Withdrawn attribution: use Nyikos 2005 for the six source observations." else "Withdrawn: legacy region-specific values are not verified against an exact source table.",
     source = switch(source,
-      vonpeinen2010 = "von Peinen et al. (2010), Equine Veterinary Journal.",
-      monkemoller2005 = "Moenkemoeller et al. (2005), Pferdeheilkunde.",
-      werner2002 = "Werner et al. (2002), Pferdeheilkunde 18:125-140."
+      vonpeinen2010 = "von Peinen et al. (2010), Equine Veterinary Journal 42:650-653, doi:10.1111/j.2042-3306.2010.00191.x.",
+      monkemoller2005 = "Moenkemoeller et al. (2005), Pferdeheilkunde 21:102-114, doi:10.21836/PEM20050201.",
+      werner2002 = "Werner et al. (2002), Pferdeheilkunde 18:125-140, doi:10.21836/PEM20020201."
     ),
     source_url = switch(source_id,
       vonpeinen2010 = "https://doi.org/10.1111/j.2042-3306.2010.00191.x",
-      monkemoller2005 = NA_character_,
+      monkemoller2005 = "https://doi.org/10.21836/PEM20050201",
       werner2002 = "https://pferdeheilkunde.de/files/20020201.pdf"
     ),
     status = "withdrawn", species = "equine", gait = NA_character_, region_scheme = NA_character_
@@ -48,8 +52,10 @@ pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller
 
 #' Traceable Plantar Pressure Reference Observations
 #'
-#' Armstrong's 1998 case-control study reported a 70 N/cm2 (700 kPa)
-#' forefoot cut-point with limited discrimination using EMED measurements.
+#' Armstrong et al. (1998), J Foot Ankle Surg 37:303-307,
+#' \doi{10.1016/S1067-2516(98)80066-5}, abstract, p.303, reported a
+#' 70 N/cm2 (700 kPa) peak plantar forefoot cut-point (sensitivity 70.0%,
+#' specificity 65.1%) with limited discrimination using EMED measurements.
 #' Other previously supplied values are withdrawn pending exact provenance.
 #' @return Reference table; only verified_source rows have usable values.
 #' @export
@@ -62,7 +68,7 @@ pr_ref_diabetic_foot <- function() {
     parameter = c("mpp", "pti_mean", "mpp", "mpp"), threshold = c(700, NA_real_, NA_real_, NA_real_),
     unit = c("kPa", "kPa*s", "kPa", "kPa"),
     interpretation = c("Case-control ROC observation; sensitivity 70%, specificity 65.1%; not a universal clinical cut-off.", rep("Withdrawn: exact legacy value attribution has not been verified.", 3)),
-    source = c("Armstrong et al. (1998), J Foot Ankle Surg 37:303-307.", "Caselli et al. (2002), Diabetes Care.", "Veves et al. (1992), Diabetologia.", "Frykberg et al. (1998), Diabetes Care."),
+    source = c("Armstrong et al. (1998), J Foot Ankle Surg 37:303-307, doi:10.1016/S1067-2516(98)80066-5, abstract p.303.", "Caselli et al. (2002), Diabetes Care.", "Veves et al. (1992), Diabetologia.", "Frykberg et al. (1998), Diabetes Care."),
     source_url = c("https://pubmed.ncbi.nlm.nih.gov/9710782/", rep(NA_character_, 3)),
     status = c("verified_source", rep("withdrawn", 3)), species = "human", gait = "walking", region_scheme = "EMED_forefoot"
   )

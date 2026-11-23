@@ -265,8 +265,9 @@ pr_layout_mat <- function(size = c("16", "32")) {
 #' published research protocols.
 #'
 #' @param type Character. `"horse"` (default) for equine saddle fitting
-#'   with 6-region mask (cranial / middle / caudal x left / right per
-#'   Werner et al. 2002), or `"bicycle"` for bicycle saddle with
+#'   with 6-region mask (cranial / middle / caudal x left / right, the
+#'   six-mask scheme of Nyikos et al. 2005, \doi{10.21836/PEM20050301},
+#'   p.189), or `"bicycle"` for bicycle saddle with
 #'   ischial/perineal regions.
 #'
 #' @return A [pr_layout] with application-specific region masks.

@@ -127,5 +127,8 @@ use the central 80 percent of saved cycles and an untrimmed mean.
 
 ## Source
 
-Nyikos S, et al. (2005). *Pferdeheilkunde* 21:187-198, abstract p.187.
+Nyikos S, et al. (2005). Measurements of saddle pressure in conjunction with
+back problems in horses. *Pferdeheilkunde* 21:187-198, abstract p.187; six-mask
+scheme in Methods and Fig. 1, p.189.
+[doi:10.21836/PEM20050301](https://doi.org/10.21836/PEM20050301).
 [Original article](https://pferdeheilkunde.de/files/20050301.pdf).

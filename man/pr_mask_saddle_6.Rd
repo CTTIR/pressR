@@ -16,8 +16,10 @@ Named list of 6 \link{pr_mask} objects.
 \description{
 Creates the 6-region saddle pressure analysis mask dividing the sensor
 mat into cranial / middle / caudal thirds crossed with left / right
-halves, as established by Werner et al. (2002) and used in subsequent
-equine back-pressure studies.
+halves. This follows the six-mask scheme of Nyikos et al. (2005),
+Pferdeheilkunde 21:187-198, \doi{10.21836/PEM20050301}, Methods and
+Fig. 1, p.189 (a cranial, middle and caudal third on each half of the
+mat), the scheme behind the observations in \code{\link[=pr_ref_saddle]{pr_ref_saddle()}}.
 }
 \examples{
 pr_mask_saddle_6(pr_layout_saddle("horse"))
