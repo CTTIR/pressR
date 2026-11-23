@@ -1,4 +1,4 @@
-# Summarize Trial Pressure Parameters
+# Summarise Trial Pressure Parameters
 
 Computes a comprehensive set of pressure distribution parameters for an
 entire trial. Returns a single-row tibble suitable for row-binding
@@ -29,7 +29,8 @@ with columns:
 
 - `mpp`: maximum peak pressure (measurement unit)
 
-- `mvp`: mean of per-frame mean pressures (measurement unit)
+- `mvp`: mean of the per-frame mean pressures, over frames with at least
+  one loaded sensor (measurement unit)
 
 - `max_force`: maximum total force (N)
 
@@ -63,7 +64,7 @@ pr_summary(trial)
 #> # A tibble: 1 × 14
 #>     mpp   mvp max_force mean_force max_contact_area mean_contact_area
 #>   <dbl> <dbl>     <dbl>      <dbl>            <dbl>             <dbl>
-#> 1  643.  43.0     1442.       290.             128.              61.1
+#> 1  615.  47.2     1544.       307.              129              59.9
 #> # ℹ 8 more variables: contact_time <dbl>, pti_max <dbl>, pti_mean <dbl>,
 #> #   impulse <dbl>, cop_path_length <dbl>, cop_velocity_mean <dbl>,
 #> #   cop_range_ap <dbl>, cop_range_ml <dbl>

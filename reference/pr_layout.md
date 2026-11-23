@@ -42,7 +42,7 @@ pr_layout(
 
   Data frame with columns `sensor_id` (integer), `row` (integer), `col`
   (integer), `x_mm` (numeric), `y_mm` (numeric). Physical coordinates of
-  each active sensor in millimeters.
+  each active sensor in millimetres.
 
 - regions:
 

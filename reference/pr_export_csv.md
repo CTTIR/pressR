@@ -31,7 +31,8 @@ pr_export_csv(
 
 - masks:
 
-  Named list of masks. Required for `what = "regional"`.
+  Named list of masks, used for `what = "regional"`. `NULL` (default)
+  uses the layout's default regions.
 
 ## Value
 

@@ -1,4 +1,4 @@
-# Calculate Center of Pressure
+# Calculate Centre of Pressure
 
 Computes the pressure-weighted centroid of active sensors for each
 frame. Frames with no loaded sensors return `NA` for x and y.

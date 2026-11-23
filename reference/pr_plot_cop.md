@@ -1,6 +1,6 @@
-# Plot Center of Pressure Trajectory
+# Plot Centre of Pressure Trajectory
 
-Plot Center of Pressure Trajectory
+Plot Centre of Pressure Trajectory
 
 ## Usage
 

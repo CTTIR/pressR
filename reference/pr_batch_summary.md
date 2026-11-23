@@ -36,8 +36,8 @@ pr_batch_summary(ds)
 #> # A tibble: 2 × 20
 #>   subject_id trial_id   condition system n_frames duration   mpp   mvp max_force
 #>   <chr>      <chr>      <chr>     <chr>     <int>    <dbl> <dbl> <dbl>     <dbl>
-#> 1 EX01       insole_ga… walking   insole      250     4.98  650.  43.3     1443.
-#> 2 EX01       insole_ga… walking   insole      250     4.98  641.  42.9     1443.
+#> 1 EX01       insole_ga… walking   insole      250     4.98  614.  47.4     1547.
+#> 2 EX01       insole_ga… walking   insole      250     4.98  616.  47.4     1549.
 #> # ℹ 11 more variables: mean_force <dbl>, max_contact_area <dbl>,
 #> #   mean_contact_area <dbl>, contact_time <dbl>, pti_max <dbl>, pti_mean <dbl>,
 #> #   impulse <dbl>, cop_path_length <dbl>, cop_velocity_mean <dbl>,

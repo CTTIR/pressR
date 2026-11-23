@@ -1,6 +1,8 @@
 # Total Contact Time
 
-Duration for which at least one sensor exceeds `threshold`.
+Duration for which at least one sensor exceeds `threshold`: the sum of
+the sampling intervals whose start and end frames are both loaded. An
+isolated loaded frame therefore adds no duration.
 
 ## Usage
 

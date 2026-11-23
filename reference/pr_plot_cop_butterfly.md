@@ -1,6 +1,6 @@
 # COP Butterfly Plot Across Gait Cycles
 
-Overlays COP trajectories from each detected stance phase, centered on
+Overlays COP trajectories from each detected stance phase, centred on
 heel strike.
 
 ## Usage

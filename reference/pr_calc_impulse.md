@@ -23,5 +23,5 @@ Numeric scalar.
 
 ``` r
 pr_calc_impulse(pr_example_trial("insole"))
-#> [1] 1447.263
+#> [1] 1532.188
 ```

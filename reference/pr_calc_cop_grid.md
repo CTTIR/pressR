@@ -1,4 +1,4 @@
-# Center of Pressure in Grid Index Units
+# Centre of Pressure in Grid Index Units
 
 Pressure-weighted centroid of each frame expressed in grid indices: a
 `cop_row` of 1 is the first sensor row, a `cop_col` of 16 the sixteenth

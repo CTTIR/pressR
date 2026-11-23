@@ -39,7 +39,7 @@ pr_read_csv(
 - time_col:
 
   Character. Name of the time column. If `NULL`, the exported `time`
-  column is recognized automatically; otherwise timestamps are generated
+  column is recognised automatically; otherwise timestamps are generated
   from `sampling_hz`.
 
 - sampling_hz:
@@ -59,7 +59,7 @@ object.
 
 ## Numeric text
 
-Numeric text is qualified for nonzero magnitudes from `1e-290` to
+Numeric text is qualified for non-zero magnitudes from `1e-290` to
 `1e290`. Values outside this range, or inconsistent decimal conversions,
 are refused. CSV does not carry layout calibration or promise bit-exact
 doubles; provide the original layout, or use

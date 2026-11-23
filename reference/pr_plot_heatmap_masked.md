@@ -29,7 +29,8 @@ pr_plot_heatmap_masked(
 
   Named list of
   [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects
-  or logical matrices. If `NULL`, uses layout regions.
+  or logical matrices. If `NULL`, uses layout regions. An empty list
+  draws the heatmap without outlines.
 
 - frame:
 

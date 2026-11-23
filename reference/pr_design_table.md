@@ -41,7 +41,7 @@ with one row per trial and columns `fields`, `n_frames` (integer) and
 ## Details
 
 `duration_s` is the trial's `duration` field, i.e. `diff(range(time))`,
-so a 23432-frame recording at 50 Hz gives 468.62 s (not 468.64 s).
+so a 12000-frame recording at 50 Hz gives 239.98 s (not 240 s).
 
 ## See also
 

@@ -1,6 +1,6 @@
 # Detect Saddle Slip / Asymmetric Loading
 
-Analyzes left/right pressure asymmetry over time to detect saddle slip
+Analyses left/right pressure asymmetry over time to detect saddle slip
 or systematic asymmetric loading.
 
 ## Usage
@@ -23,11 +23,26 @@ pr_calc_saddle_slip(trial, masks = NULL, slip_threshold = 15)
 
 - slip_threshold:
 
-  Numeric. SI% above which asymmetry is flagged. Default `15`.
+  Numeric. Non-negative SI% above which asymmetry is flagged. Default
+  `15`.
 
 ## Value
 
-A list with class `pr_saddle_slip`.
+A list with class `pr_saddle_slip`:
+
+- `symmetry_index_mean`: mean per-frame symmetry index (%),
+  `(L - R) / (0.5 * (L + R)) * 100`; positive values mean left
+  dominance. Frames without load on either side contribute `0`.
+
+- `symmetry_index_max`: largest absolute per-frame symmetry index (%).
+
+- `dominant_side`: `"left"` or `"right"` when the recording is flagged
+  as asymmetric, otherwise `"balanced"`.
+
+- `is_asymmetric`: `TRUE` when `abs(symmetry_index_mean)` exceeds
+  `slip_threshold`.
+
+- `si_timeseries`: the per-frame symmetry index (%).
 
 ## Examples
 

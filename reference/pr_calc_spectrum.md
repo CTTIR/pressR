@@ -76,16 +76,15 @@ recordings of the same length analysed the same way.
 The axis is built as `(0:(n %/% 2)) * fs / n`, which is the exact centre
 frequency of FFT bin `k` for both odd and even `n`.
 
-The study this function reproduces built it as
-`seq(0, fs / 2, length.out = length(power))` instead. For even `n` the
-two agree exactly. For odd `n` they do not: that sequence has spacing
+A common alternative builds it as
+`seq(0, fs / 2, length.out = length(power))`. For even `n` the two agree
+exactly. For odd `n` they do not: that sequence has spacing
 `fs / (n - 1)` rather than `fs / n`, and it places its last value at
 `fs / 2`, which for odd `n` is not an FFT bin at all — the highest real
-bin is at `((n - 1) / 2) * fs / n`, just below Nyquist. On the 869-frame
-reference recording the error is a uniform stretch of `n / (n - 1)`,
-about 0.12%: the study reports a stride at 0.7488 Hz where the exact
-axis puts it at 0.7480 Hz. `power` is unaffected — only the labels move.
-**This function implements the exact axis.**
+bin is at `((n - 1) / 2) * fs / n`, just below Nyquist. The error is a
+uniform stretch of `n / (n - 1)`, about 0.1% for a 1001-frame recording.
+`power` is unaffected — only the labels move. **This function implements
+the exact axis.**
 
 ## See also
 

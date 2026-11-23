@@ -29,5 +29,5 @@ Numeric vector of length `n_frames`.
 trial <- pr_example_trial("insole")
 force <- pr_calc_force(trial)
 max(force)
-#> [1] 1442.449
+#> [1] 1543.748
 ```

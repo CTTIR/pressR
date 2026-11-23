@@ -1,6 +1,6 @@
-# Analyze COP Rollover Pattern
+# Analyse COP Rollover Pattern
 
-Computes the center of pressure progression during the stance phase of
+Computes the centre of pressure progression during the stance phase of
 each gait cycle, resampled to percent of stance (0-100).
 
 ## Usage
@@ -46,7 +46,7 @@ head(rollover)
 #> 1     1              0  32.1  78.0          0   mm             
 #> 2     1             10  31.0  27.4        842.  mm             
 #> 3     1             20  30.3  28.0         16.5 mm             
-#> 4     1             30  36.9  87.7       1000.  mm             
-#> 5     1             40  33.8  96.0        148.  mm             
-#> 6     1             50  33.8 112.         274.  mm             
+#> 4     1             30  36.9  87.8       1002.  mm             
+#> 5     1             40  33.4  99.4        203.  mm             
+#> 6     1             50  33.0 130.         512.  mm             
 ```

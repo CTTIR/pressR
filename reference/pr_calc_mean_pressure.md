@@ -34,5 +34,5 @@ length(mp) == trial$n_frames
 #> [1] TRUE
 summary(mp)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   0.000   0.000   4.897  26.121  38.663 128.318 
+#>   0.000   0.000   5.049  28.694  39.332 147.848 
 ```

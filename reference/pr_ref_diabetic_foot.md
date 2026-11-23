@@ -1,8 +1,11 @@
 # Traceable Plantar Pressure Reference Observations
 
-Armstrong's 1998 case-control study reported a 70 N/cm2 (700 kPa)
-forefoot cut-point with limited discrimination using EMED measurements.
-Other previously supplied values are withdrawn pending exact provenance.
+Armstrong et al. (1998), J Foot Ankle Surg 37:303-307,
+[doi:10.1016/S1067-2516(98)80066-5](https://doi.org/10.1016/S1067-2516%2898%2980066-5)
+, abstract, p.303, reported a 70 N/cm2 (700 kPa) peak plantar forefoot
+cut-point (sensitivity 70.0%, specificity 65.1%) with limited
+discrimination using EMED measurements. Other previously supplied values
+are withdrawn pending exact provenance.
 
 ## Usage
 

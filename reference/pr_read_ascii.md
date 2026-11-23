@@ -26,7 +26,11 @@ pr_read_ascii(
 - layout:
 
   A [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
-  object. If `NULL`, inferred from the header or sensor count.
+  object. If `NULL`, inferred from the header's `System` label or the
+  sensor count: `insole`, `platform` (standard size), `mat`, and
+  `saddle_mat` with 248 (horse) or 192 (bicycle) active sensors;
+  otherwise 99, 256, 1024 or 32 sensors select the insole, 16 x 16 mat,
+  32 x 32 mat or glove layout.
 
 - sampling_hz:
 
@@ -53,7 +57,7 @@ object.
 
 ## Numeric text
 
-Numeric text is qualified for nonzero magnitudes from `1e-290` to
+Numeric text is qualified for non-zero magnitudes from `1e-290` to
 `1e290`. Values outside this range, or inconsistent decimal conversions,
 are refused. CSV does not carry layout calibration or promise bit-exact
 doubles; provide the original layout, or use

@@ -27,6 +27,16 @@ pr_mask_symmetry(layout, axis = c("vertical", "horizontal"))
 A named list of two
 [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) objects.
 
+## Details
+
+When the split axis has an odd number of grid lines, the centre line is
+assigned to the second half (`right` or `posterior`), which then covers
+one line more than the first. Every predefined layout has an even number
+of rows and columns, so this only concerns custom layouts; use
+[`pr_mask_mirror_balance()`](https://cttir.github.io/pressR/reference/pr_mask_mirror_balance.md)
+for halves that are exact mirror images. Grids with a single line along
+the split axis cannot be divided and are refused.
+
 ## Examples
 
 ``` r

@@ -6,7 +6,7 @@
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![License:
+[![Licence:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -45,7 +45,7 @@ trial
 #> • Sampling: 50 Hz
 #> • Sensors: 248
 #> • Subject: "HORSE01"
-#> • Date: "2026-11-22"
+#> • Date: "2026-11-23"
 #> • Condition: "walk"
 ```
 
@@ -148,5 +148,8 @@ mean.
 
 ## Source
 
-Nyikos S, et al. (2005). *Pferdeheilkunde* 21:187-198, abstract p.187.
+Nyikos S, et al. (2005). Measurements of saddle pressure in conjunction
+with back problems in horses. *Pferdeheilkunde* 21:187-198, abstract
+p.187; six-mask scheme in Methods and Fig. 1, p.189.
+[doi:10.21836/PEM20050301](https://doi.org/10.21836/PEM20050301).
 [Original article](https://pferdeheilkunde.de/files/20050301.pdf).

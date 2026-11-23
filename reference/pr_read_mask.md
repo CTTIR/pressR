@@ -37,6 +37,14 @@ pr_read_mask(path, layout = NULL, name = "imported", verbose = TRUE)
 A [pr_mask](https://cttir.github.io/pressR/reference/pr_mask.md) object
 (if a layout is supplied) or a logical matrix.
 
+## Details
+
+Lines with fewer than two tokens, or in which at least a fifth of the
+tokens are non-numeric (such as a header), are skipped. The remaining
+matrix rows must consist of numbers only; a stray token inside the
+matrix is an error rather than a missing cell. Rows shorter than the
+widest row are padded with `0` (outside the region) at their end.
+
 ## Examples
 
 ``` r

@@ -1,8 +1,8 @@
 # Plot a Sensor Layout
 
-Visualizes a
+Visualises a
 [pr_layout](https://cttir.github.io/pressR/reference/pr_layout.md)
-showing active sensor positions and colored region masks (if any).
+showing active sensor positions and coloured region masks (if any).
 
 ## Usage
 
@@ -20,7 +20,7 @@ plot(x, show_regions = TRUE, show_ids = FALSE, ...)
 
 - show_regions:
 
-  Logical. If `TRUE` (default), draws region masks in colors. If
+  Logical. If `TRUE` (default), draws region masks in colours. If
   `FALSE`, shows only sensor positions.
 
 - show_ids:

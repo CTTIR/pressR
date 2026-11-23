@@ -24,8 +24,8 @@ pr_calc_seat_hotspot(trial, threshold = 4.7, duration_s = 0)
 
 - duration_s:
 
-  Numeric. Minimum sustained duration (s) above threshold for a hotspot
-  to be flagged. Default `0`.
+  Numeric. Non-negative minimum sustained duration (s) above threshold
+  for a hotspot to be flagged. Default `0`.
 
 ## Value
 

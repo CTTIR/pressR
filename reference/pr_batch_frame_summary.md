@@ -87,9 +87,10 @@ which is a different quantity from
 ## Memory
 
 The frame tables are built and discarded one at a time, so peak memory
-is one recording's frames, not the cohort's. That matters: 431
-recordings of 5.5 M frames total would need several gigabytes if every
-frame table were materialised first, to produce nine numbers each.
+is one recording's frames, not the cohort's. That matters: a few hundred
+recordings with millions of frames in total would need several gigabytes
+if every frame table were materialised first, to produce nine numbers
+each.
 
 ## See also
 

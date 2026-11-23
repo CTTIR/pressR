@@ -1,6 +1,6 @@
 # pressR: Pressure Distribution Analysis for Capacitive Sensor Systems
 
-Parse, analyze, and visualize pressure distribution data from capacitive
+Parse, analyse, and visualise pressure distribution data from capacitive
 sensor systems. Provides predefined sensor coordinate layouts for
 in-shoe pressure measurement, saddle pressure mapping (equine and
 bicycle), seating assessment, and barefoot pedography.
@@ -23,7 +23,7 @@ bicycle), seating assessment, and barefoot pedography.
   [`pr_calc_cop()`](https://cttir.github.io/pressR/reference/pr_calc_cop.md),
   [`pr_calc_regional()`](https://cttir.github.io/pressR/reference/pr_calc_regional.md)
 
-- Visualization:
+- Visualisation:
   [`pr_plot_heatmap()`](https://cttir.github.io/pressR/reference/pr_plot_heatmap.md),
   [`pr_plot_force_time()`](https://cttir.github.io/pressR/reference/pr_plot_force_time.md)
 

@@ -31,5 +31,5 @@ pti <- pr_calc_pti(trial)
 length(pti) == trial$n_sensors
 #> [1] TRUE
 max(pti)
-#> [1] 511.0623
+#> [1] 521.5876
 ```

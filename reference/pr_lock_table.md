@@ -104,12 +104,12 @@ Other provenance functions:
 design <- data.frame(
   ID = c("ID001", "ID001", "ID003"),
   Mode = c("MH", "MS", "MG"),
-  n_frames = c(23432L, 10662L, 8000L)
+  n_frames = c(12000L, 9000L, 8000L)
 )
 path <- tempfile(fileext = ".lock")
 lock <- pr_lock_table(design, path)
 lock$content
-#> [1] "1efdd17da2a4f8741ab4a22ba9696da3"
+#> [1] "7da244a008f8a81409c9e2e845a21421"
 
 # Locking is deterministic: the same table gives the same file.
 path2 <- tempfile(fileext = ".lock")

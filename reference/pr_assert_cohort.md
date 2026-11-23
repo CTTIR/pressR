@@ -81,11 +81,10 @@ design <- data.frame(
 pr_assert_cohort(design, n_units = 3, n_subjects = 2, subject_col = "ID")
 
 # A wrong expectation fails loudly:
-try(pr_assert_cohort(design, n_units = 431, label = "all recordings"))
-#> Error in pr_assert_cohort(design, n_units = 431, label = "all recordings") : 
-#>   Cohort assertion failed for "all recordings": expected 431 rows, found
-#> 3.
-#> ✖ 428 fewer than expected.
+try(pr_assert_cohort(design, n_units = 4, label = "all recordings"))
+#> Error in pr_assert_cohort(design, n_units = 4, label = "all recordings") : 
+#>   Cohort assertion failed for "all recordings": expected 4 rows, found 3.
+#> ✖ 1 fewer than expected.
 #> ℹ Either the expectation is stale or trials were dropped upstream; do not relax
 #>   the expectation without finding out which.
 ```

@@ -82,16 +82,16 @@ there, and the interior is bit-for-bit identical either way:
 - `edges = "na"` (default) leaves the ring `NA`. This is the honest
   answer: no gradient was computed for those cells.
 
-- `edges = "zero"` fills the ring with `0`. This reproduces the cohort
-  analysis, which wrote central differences for rows and columns
-  `2:(n-1)` into a zero-initialised matrix and never revisited the
-  border. On a 16x16 mat that makes 60 of 256 cells — nearly a quarter —
-  a **structural zero** rather than a measurement. Use it to reproduce
-  published numbers, but never average, rank or threshold over the whole
-  grid with it: the mean gradient is biased down by a factor of roughly
-  `196/256`, and "the lowest-gradient cells" will be the border, every
-  time. `edges = "na"` with `na.rm = TRUE` gives the interior mean the
-  zero-filled version was probably meant to be.
+- `edges = "zero"` fills the ring with `0`. This reproduces analyses
+  that write central differences for rows and columns `2:(n-1)` into a
+  zero-initialised matrix and never revisit the border. On a 16x16 mat
+  that makes 60 of 256 cells — nearly a quarter — a **structural zero**
+  rather than a measurement. Use it to reproduce such numbers, but never
+  average, rank or threshold over the whole grid with it: the mean
+  gradient is biased down by a factor of roughly `196/256`, and "the
+  lowest-gradient cells" will be the border, every time. `edges = "na"`
+  with `na.rm = TRUE` gives the interior mean the zero-filled version
+  was probably meant to be.
 
 Cells the layout marks inactive are `NA` in the grid, so a gradient that
 would have had to read one comes back `NA` under either setting.

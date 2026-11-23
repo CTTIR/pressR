@@ -25,3 +25,12 @@ plot(x, ...)
 ## Value
 
 A `ggplot2` object.
+
+## Examples
+
+``` r
+trial <- pr_example_trial("saddle_horse")
+plot(trial)
+
+plot(trial, type = "pti")
+```

@@ -30,6 +30,6 @@ pr_list_archive(zip)
 #> # A tibble: 1 × 3
 #>   path       size date               
 #>   <chr>     <int> <dttm>             
-#> 1 trial.csv    19 2026-11-22 08:17:12
+#> 1 trial.csv    19 2026-11-23 10:57:22
 unlink(c(src, zip), recursive = TRUE)
 ```

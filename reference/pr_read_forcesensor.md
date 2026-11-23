@@ -40,7 +40,7 @@ object with a minimal single-row layout (one sensor per force zone).
 
 ## Numeric text
 
-Numeric text is qualified for nonzero magnitudes from `1e-290` to
+Numeric text is qualified for non-zero magnitudes from `1e-290` to
 `1e290`. Values outside this range, or inconsistent decimal conversions,
 are refused. CSV does not carry layout calibration or promise bit-exact
 doubles; provide the original layout, or use

@@ -45,7 +45,7 @@ Predefined and custom sensor coordinate layouts
 - [`pr_dataset()`](https://cttir.github.io/pressR/reference/pr_dataset.md)
   : Create a Pressure Dataset
 - [`pr_cop()`](https://cttir.github.io/pressR/reference/pr_cop.md) :
-  Center of Pressure Object
+  Centre of Pressure Object
 - [`pr_mask()`](https://cttir.github.io/pressR/reference/pr_mask.md) :
   Create a Region Mask
 
@@ -73,7 +73,7 @@ Predefined and custom sensor coordinate layouts
 - [`pr_calc_contact_area()`](https://cttir.github.io/pressR/reference/pr_calc_contact_area.md)
   : Calculate Contact Area Per Frame
 - [`pr_calc_cop()`](https://cttir.github.io/pressR/reference/pr_calc_cop.md)
-  : Calculate Center of Pressure
+  : Calculate Centre of Pressure
 - [`pr_calc_loaded_rate()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_rate.md)
   : Calculate Fraction of Loaded Sensors Per Frame
 - [`pr_calc_pti()`](https://cttir.github.io/pressR/reference/pr_calc_pti.md)
@@ -90,9 +90,9 @@ Predefined and custom sensor coordinate layouts
 ## Trial Summary
 
 - [`pr_summary()`](https://cttir.github.io/pressR/reference/pr_summary.md)
-  : Summarize Trial Pressure Parameters
+  : Summarise Trial Pressure Parameters
 - [`pr_summary_long()`](https://cttir.github.io/pressR/reference/pr_summary_long.md)
-  : Summarize Measurements With Explicit Units and Availability
+  : Summarise Measurements With Explicit Units and Availability
 - [`pr_calc_symmetry_index()`](https://cttir.github.io/pressR/reference/pr_calc_symmetry_index.md)
   : Symmetry Index
 
@@ -106,7 +106,7 @@ Predefined and custom sensor coordinate layouts
 - [`pr_calc_gait_cycles()`](https://cttir.github.io/pressR/reference/pr_calc_gait_cycles.md)
   : Detect Gait Cycles from Foot Pressure Data
 - [`pr_calc_rollover()`](https://cttir.github.io/pressR/reference/pr_calc_rollover.md)
-  : Analyze COP Rollover Pattern
+  : Analyse COP Rollover Pattern
 - [`pr_calc_saddle_bridge()`](https://cttir.github.io/pressR/reference/pr_calc_saddle_bridge.md)
   : Detect Saddle Bridge Formation
 - [`pr_calc_saddle_slip()`](https://cttir.github.io/pressR/reference/pr_calc_saddle_slip.md)
@@ -123,7 +123,7 @@ Predefined and custom sensor coordinate layouts
 - [`pr_ref_wheelchair()`](https://cttir.github.io/pressR/reference/pr_ref_wheelchair.md)
   : Status of Legacy Seating Reference Values
 
-## Visualization
+## Visualisation
 
 - [`pr_plot_heatmap()`](https://cttir.github.io/pressR/reference/pr_plot_heatmap.md)
   : Plot Pressure Heatmap
@@ -136,7 +136,7 @@ Predefined and custom sensor coordinate layouts
 - [`pr_plot_pressure_time()`](https://cttir.github.io/pressR/reference/pr_plot_pressure_time.md)
   : Plot Peak and Mean Pressure vs Time
 - [`pr_plot_cop()`](https://cttir.github.io/pressR/reference/pr_plot_cop.md)
-  : Plot Center of Pressure Trajectory
+  : Plot Centre of Pressure Trajectory
 - [`pr_plot_cop_butterfly()`](https://cttir.github.io/pressR/reference/pr_plot_cop_butterfly.md)
   : COP Butterfly Plot Across Gait Cycles
 - [`pr_plot_contact_area()`](https://cttir.github.io/pressR/reference/pr_plot_contact_area.md)
@@ -249,7 +249,7 @@ each for the denominator distinction.
 - [`pr_calc_loaded_count()`](https://cttir.github.io/pressR/reference/pr_calc_loaded_count.md)
   : Loaded Cell Count Per Frame
 - [`pr_calc_cop_grid()`](https://cttir.github.io/pressR/reference/pr_calc_cop_grid.md)
-  : Center of Pressure in Grid Index Units
+  : Centre of Pressure in Grid Index Units
 - [`pr_calc_pci()`](https://cttir.github.io/pressR/reference/pr_calc_pci.md)
   : Peak/Mean Pressure Concentration Index
 - [`pr_ref_pci()`](https://cttir.github.io/pressR/reference/pr_ref_pci.md)
@@ -308,7 +308,7 @@ sensors that never unload between contacts.
 - [`pr_cop_shape()`](https://cttir.github.io/pressR/reference/pr_cop_shape.md)
   : Loop Geometry of a COP Trajectory
 - [`pr_temporal_profile()`](https://cttir.github.io/pressR/reference/pr_temporal_profile.md)
-  : Analyze Temporal Structure With an Explicit Reproducibility Profile
+  : Analyse Temporal Structure With an Explicit Reproducibility Profile
 - [`pr_lock_cycles()`](https://cttir.github.io/pressR/reference/pr_lock_cycles.md)
   : Bind Historical Cycles to Their Exact Measurements
 

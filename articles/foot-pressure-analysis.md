@@ -6,7 +6,7 @@
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![License:
+[![Licence:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -33,7 +33,7 @@ trial
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-11-22"
+#> • Date: "2026-11-23"
 #> • Condition: "walking"
 ```
 
@@ -64,7 +64,7 @@ pr_plot_force_time(trial, show_cycles = TRUE)
 ![Force vs time with stance phases
 shaded](foot-pressure-analysis_files/figure-html/unnamed-chunk-4-1.png)
 
-## Center of pressure and rollover
+## Centre of pressure and rollover
 
 ``` r
 
@@ -90,13 +90,13 @@ pr_calc_regional(trial)
 #> # A tibble: 7 × 6
 #>   region           mpp   mvp max_force contact_area pti_mean
 #>   <chr>          <dbl> <dbl>     <dbl>        <dbl>    <dbl>
-#> 1 heel            219.  15.0     349.          42       40.3
-#> 2 midfoot         643.  59.5    1234.          61.5    155. 
-#> 3 metatarsal_1    127.  23.0      41.7          6       65.1
-#> 4 metatarsal_2_3  215.  43.0     113.           9      126. 
-#> 5 metatarsal_4_5  135.  16.0      48.5          9       43.9
-#> 6 hallux          258.  29.4     118.           6       82.5
-#> 7 lesser_toes     190.  12.7      71.8         12       29.6
+#> 1 heel            219.  15.0      349.           42     40.3
+#> 2 midfoot         383.  23.6      382.           57     50.2
+#> 3 metatarsal_1    351.  71.8      146.            6    214. 
+#> 4 metatarsal_2_3  615. 157.       502.            9    470. 
+#> 5 metatarsal_4_5  384.  62.7      210.            9    187. 
+#> 6 hallux          372.  73.4      153.            6    216. 
+#> 7 lesser_toes     359.  53.1      203.           12    158.
 ```
 
 ## Plantar-pressure reference observations
@@ -158,6 +158,6 @@ shaded.](foot-pressure-analysis_files/figure-html/unnamed-chunk-11-1.png)
 panels[[4]]
 ```
 
-![Center of pressure trajectory in millimetres, colored by recording
+![Centre of pressure trajectory in millimetres, coloured by recording
 time in
 seconds.](foot-pressure-analysis_files/figure-html/unnamed-chunk-12-1.png)

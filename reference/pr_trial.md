@@ -30,7 +30,7 @@ pr_trial(pressure, time, layout, metadata = list(), sampling_hz = NULL)
 
   Named list of trial metadata. Expected (optional) fields:
   `subject_id`, `trial_id`, `date`, `condition`, `system`, `notes`.
-  Entries must have unique nonempty names; malformed metadata is
+  Entries must have unique non-empty names; malformed metadata is
   rejected rather than silently discarded. Stored trials are revalidated
   before scientific calculations, including their layout and timestamp
   extent.
@@ -57,6 +57,6 @@ print(trial)
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-11-22"
+#> • Date: "2026-11-23"
 #> • Condition: "walking"
 ```

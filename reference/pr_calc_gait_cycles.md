@@ -28,17 +28,20 @@ pr_calc_gait_cycles(
 
 - min_stance_ms:
 
-  Numeric. Minimum stance duration (ms). Shorter contacts are rejected.
-  Default `200`.
+  Numeric. Non-negative minimum stance duration (ms). Shorter contacts
+  are rejected. Default `200`.
 
 - min_swing_ms:
 
-  Numeric. Minimum swing duration (ms). Default `100`.
+  Numeric. Non-negative minimum swing duration (ms). Default `100`.
 
 ## Value
 
 A [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
-with one row per detected cycle.
+with one row per detected cycle and columns `cycle`,
+`heel_strike_frame`, `toe_off_frame`, `heel_strike_time` (s),
+`toe_off_time` (s), `stance_duration` (s), `start_frame` and
+`end_frame`.
 
 ## Examples
 

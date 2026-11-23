@@ -1,4 +1,4 @@
-# Center of Pressure Object
+# Centre of Pressure Object
 
 Construct a `pr_cop` object from x/y coordinates and time. Normally
 created by
@@ -15,11 +15,14 @@ pr_cop(x, y, time)
 
 - x:
 
-  Numeric vector of COP x-coordinates (mm).
+  Numeric vector of COP x-coordinates.
+  [`pr_calc_cop()`](https://cttir.github.io/pressR/reference/pr_calc_cop.md)
+  records the layout's coordinate unit in `coordinate_unit`; a directly
+  constructed object is labelled `"mm"`.
 
 - y:
 
-  Numeric vector of COP y-coordinates (mm).
+  Numeric vector of COP y-coordinates, in the same unit as `x`.
 
 - time:
 

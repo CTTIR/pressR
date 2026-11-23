@@ -6,7 +6,7 @@
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![License:
+[![Licence:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -18,7 +18,7 @@ library(pressR)
 
 ## What pressR does
 
-**pressR** parses, analyzes, and visualizes pressure distribution data
+**pressR** parses, analyses, and visualises pressure distribution data
 from capacitive sensor systems. It provides:
 
 - Predefined sensor layouts (in-shoe insoles, pressure platforms, saddle
@@ -26,7 +26,7 @@ from capacitive sensor systems. It provides:
 - Parsers for ASCII and CSV pressure data files,
 - A full analysis pipeline (per-frame metrics, trial summaries, regional
   analysis, gait-cycle detection, saddle-fit checks),
-- `ggplot2`-based visualization and composite reports,
+- `ggplot2`-based visualisation and composite reports,
 - An interactive Shiny application for data exploration.
 
 ## Load a layout
@@ -71,11 +71,11 @@ trial
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-11-22"
+#> • Date: "2026-11-23"
 #> • Condition: "walking"
 ```
 
-## Visualize
+## Visualise
 
 The default plot method draws a maximum-pressure picture (MPP):
 
@@ -97,7 +97,7 @@ pr_plot_force_time(trial, show_cycles = TRUE)
 ![Force vs time with gait cycles
 shaded](getting-started_files/figure-html/unnamed-chunk-5-1.png)
 
-## Summarize
+## Summarise
 
 [`pr_summary()`](https://cttir.github.io/pressR/reference/pr_summary.md)
 returns a single-row tibble containing the common biomechanical
@@ -109,7 +109,7 @@ pr_summary(trial)
 #> # A tibble: 1 × 14
 #>     mpp   mvp max_force mean_force max_contact_area mean_contact_area
 #>   <dbl> <dbl>     <dbl>      <dbl>            <dbl>             <dbl>
-#> 1  643.  43.0     1442.       290.             128.              61.1
+#> 1  615.  47.2     1544.       307.              129              59.9
 #> # ℹ 8 more variables: contact_time <dbl>, pti_max <dbl>, pti_mean <dbl>,
 #> #   impulse <dbl>, cop_path_length <dbl>, cop_velocity_mean <dbl>,
 #> #   cop_range_ap <dbl>, cop_range_ml <dbl>
@@ -126,13 +126,13 @@ pr_calc_regional(trial)
 #> # A tibble: 7 × 6
 #>   region           mpp   mvp max_force contact_area pti_mean
 #>   <chr>          <dbl> <dbl>     <dbl>        <dbl>    <dbl>
-#> 1 heel            219.  15.0     349.          42       40.3
-#> 2 midfoot         643.  59.5    1234.          61.5    155. 
-#> 3 metatarsal_1    127.  23.0      41.7          6       65.1
-#> 4 metatarsal_2_3  215.  43.0     113.           9      126. 
-#> 5 metatarsal_4_5  135.  16.0      48.5          9       43.9
-#> 6 hallux          258.  29.4     118.           6       82.5
-#> 7 lesser_toes     190.  12.7      71.8         12       29.6
+#> 1 heel            219.  15.0      349.           42     40.3
+#> 2 midfoot         383.  23.6      382.           57     50.2
+#> 3 metatarsal_1    351.  71.8      146.            6    214. 
+#> 4 metatarsal_2_3  615. 157.       502.            9    470. 
+#> 5 metatarsal_4_5  384.  62.7      210.            9    187. 
+#> 6 hallux          372.  73.4      153.            6    216. 
+#> 7 lesser_toes     359.  53.1      203.           12    158.
 ```
 
 ## Export

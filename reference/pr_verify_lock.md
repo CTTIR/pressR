@@ -67,21 +67,21 @@ Other provenance functions:
 design <- data.frame(
   ID = c("ID001", "ID001", "ID003"),
   Mode = c("MH", "MS", "MG"),
-  n_frames = c(23432L, 10662L, 8000L)
+  n_frames = c(12000L, 9000L, 8000L)
 )
 path <- tempfile(fileext = ".lock")
 pr_lock_table(design, path)
 
 pr_verify_lock(design, path)
-#> ✔ Lock verified: /tmp/RtmpAvtDYT/file19f15ae89908.lock matches `x` (3 rows x 3
-#>   columns, md5 "1efdd17d").
+#> ✔ Lock verified: /tmp/RtmpUp1IGq/file19ec4758b601.lock matches `x` (3 rows x 3
+#>   columns, md5 "7da244a0").
 
 # One edited value: same shape, same names, different content.
 edited <- design
-edited$n_frames[1] <- 23431L
+edited$n_frames[1] <- 11999L
 ok <- pr_verify_lock(edited, path)
-#> ✖ Lock mismatch for /tmp/RtmpAvtDYT/file19f15ae89908.lock.
-#> • Content: same shape and names, different values (md5 1efdd17d -> 76247d72).
+#> ✖ Lock mismatch for /tmp/RtmpUp1IGq/file19ec4758b601.lock.
+#> • Content: same shape and names, different values (md5 7da244a0 -> 275f51a2).
 #> ℹ Unchanged: rows, columns, and types.
 ok
 #> [1] FALSE
@@ -92,7 +92,7 @@ ok
 #> 1 rows     3                                3                             TRUE  
 #> 2 columns  ID, Mode, n_frames               ID, Mode, n_frames            TRUE  
 #> 3 types    character, character, integer    character, character, integer TRUE  
-#> 4 content  1efdd17da2a4f8741ab4a22ba9696da3 76247d720c7bb59cf880e663c2d6… FALSE 
+#> 4 content  7da244a008f8a81409c9e2e845a21421 275f51a271304144a7523e0f9dec… FALSE 
 attr(ok, "report")
 #> # A tibble: 4 × 4
 #>   property expected                         actual                        passed
@@ -100,7 +100,7 @@ attr(ok, "report")
 #> 1 rows     3                                3                             TRUE  
 #> 2 columns  ID, Mode, n_frames               ID, Mode, n_frames            TRUE  
 #> 3 types    character, character, integer    character, character, integer TRUE  
-#> 4 content  1efdd17da2a4f8741ab4a22ba9696da3 76247d720c7bb59cf880e663c2d6… FALSE 
+#> 4 content  7da244a008f8a81409c9e2e845a21421 275f51a271304144a7523e0f9dec… FALSE 
 
 unlink(path)
 ```

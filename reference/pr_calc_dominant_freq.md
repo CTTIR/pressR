@@ -51,7 +51,7 @@ happens on the exact frequency axis documented in
 [`pr_calc_spectrum()`](https://cttir.github.io/pressR/reference/pr_calc_spectrum.md).
 
 The result is the single largest bin, with no interpolation between
-bins, so its resolution is `fs / n_frames` — 0.058 Hz for a 869-frame
+bins, so its resolution is `fs / n_frames` — 0.05 Hz for a 1000-frame
 recording at 50 Hz. A recording with no oscillation still returns its
 largest in-band bin; read `peak_power` before trusting the frequency,
 and compare against

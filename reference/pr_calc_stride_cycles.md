@@ -107,16 +107,16 @@ long — information a renumbered column would hide.
 
 `peak_total` is the band-passed amplitude at the cycle's opening peak,
 in the device's pressure unit. It is an excursion above the local
-baseline, not a raw frame total: on the reference recording the frame
-totals run 383-434 kPa while `peak_total` runs 2.5-13.8 kPa.
+baseline, not a raw frame total, and so usually far smaller than the
+totals it is computed from.
 
 ## Reproducibility
 
 The corrected detector treats differences below floating-point
 resolution as ties and chooses the first sample of a plateau
 deterministically. Historical strict-maximum detection can select
-different cycles after rounding differences around 1e-13. The former
-claim of exact agreement across all study recordings has been withdrawn.
+different cycles after rounding differences around 1e-13, so exact
+agreement with cycle tables from the historical detector is not claimed.
 Use
 [`pr_temporal_profile()`](https://cttir.github.io/pressR/reference/pr_temporal_profile.md)
 to distinguish corrected analysis, the historical method, and verified

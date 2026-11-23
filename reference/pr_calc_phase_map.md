@@ -82,18 +82,11 @@ Cycles shorter than `min_frames` frames are skipped: too few frames make
 the phase bins mostly empty, and an empty bin contributes nothing rather
 than a zero. A bin no cycle ever reached comes back `NA`.
 
-## Agreement with the source study
+## Comparing with untrimmed phase maps
 
-The study's phase maps used the plain mean across cycles (`trim = 0`).
-On the reference recording `ID052_K_K_KG00_MS`, and on the same 14
-cycles, this function at `trim = 0` reproduces all 2,560 of its values
-with a correlation of 0.99998, a mean absolute difference of 0.007 kPa
-and a maximum of 0.12 kPa, on values ranging up to 6.9 kPa. Close, but
-not exact: the residual difference has not been traced to any documented
-step, so treat the two as equivalent in aggregate rather than
-interchangeable cell by cell. At the default `trim = 0.1` the same
-comparison gives 0.011 kPa mean and 0.18 kPa maximum, the extra
-difference being the trimming itself.
+Phase maps built with the plain mean across cycles correspond to
+`trim = 0`. Use that setting to compare with them; the default
+`trim = 0.1` differs from them by the trimming itself.
 
 ## See also
 
