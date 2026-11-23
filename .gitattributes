@@ -1,0 +1,3 @@
+# Test fixtures are compared byte for byte with what the package writes,
+# so their line endings must not be converted on checkout.
+tests/testthat/fixtures/** -text
