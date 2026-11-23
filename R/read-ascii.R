@@ -40,7 +40,10 @@
 #'
 #' @param path Character. Path to the ASCII file (`.asc`, `.txt`).
 #' @param layout A [pr_layout] object. If `NULL`, inferred from the
-#'   header or sensor count.
+#'   header's `System` label or the sensor count: `insole`, `platform`
+#'   (standard size), `mat`, and `saddle_mat` with 248 (horse) or 192
+#'   (bicycle) active sensors; otherwise 99, 256, 1024 or 32 sensors select
+#'   the insole, 16 x 16 mat, 32 x 32 mat or glove layout.
 #' @param sampling_hz Numeric. Sampling rate (Hz). If `NULL`, taken from
 #'   the header or defaulted to 50.
 #' @param separator Character. Column separator. `"auto"` (default)
@@ -127,6 +130,13 @@ pr_read_ascii <- function(path, layout = NULL, sampling_hz = NULL,
         insole = pr_layout_insole(),
         platform = pr_layout_platform("st"),
         mat = .layout_from_n_sensors(n_sensors) %||% pr_layout_mat("16"),
+        # Both predefined saddle mats share this label; the active-sensor
+        # count tells them apart, and any other count stays undecided.
+        saddle_mat = if (n_sensors == 248L) {
+          pr_layout_saddle("horse")
+        } else if (n_sensors == 192L) {
+          pr_layout_saddle("bicycle")
+        },
         .layout_from_n_sensors(n_sensors)
       )
     }

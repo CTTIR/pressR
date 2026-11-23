@@ -17,7 +17,10 @@ pr_read_ascii(
 \item{path}{Character. Path to the ASCII file (\code{.asc}, \code{.txt}).}
 
 \item{layout}{A \link{pr_layout} object. If \code{NULL}, inferred from the
-header or sensor count.}
+header's \code{System} label or the sensor count: \code{insole}, \code{platform}
+(standard size), \code{mat}, and \code{saddle_mat} with 248 (horse) or 192
+(bicycle) active sensors; otherwise 99, 256, 1024 or 32 sensors select
+the insole, 16 x 16 mat, 32 x 32 mat or glove layout.}
 
 \item{sampling_hz}{Numeric. Sampling rate (Hz). If \code{NULL}, taken from
 the header or defaulted to 50.}

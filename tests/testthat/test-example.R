@@ -63,3 +63,15 @@ test_that("the synthetic insole loads the forefoot in the metatarsal regions", {
   heel <- reg$mpp[reg$region == "heel"]
   expect_true(heel > 0 && heel < max(reg$mpp))
 })
+
+test_that("every written sample file reads back without an explicit layout", {
+  for (type in c("insole", "saddle", "platform")) {
+    path <- pr_example_files(type)
+    tr <- pr_read_auto(path, verbose = FALSE)
+    expect_s3_class(tr, "pr_trial")
+  }
+  # The saddle sample used to fail: 248 sensors matched no inferred layout.
+  saddle <- pr_read_auto(pr_example_files("saddle"), verbose = FALSE)
+  expect_equal(saddle$layout$name, "saddle_horse")
+  expect_equal(saddle$n_sensors, 248L)
+})
