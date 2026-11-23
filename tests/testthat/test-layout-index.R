@@ -275,8 +275,8 @@ test_that("single hot channel 9 lands at grid (row 1, col 8), the left panel", {
 })
 
 test_that("aggregate statistics are blind to the permutation", {
-  # This is why the negative control above exists: every summary the study
-  # reports is invariant under column permutation.
+  # This is why the negative control above exists: every whole-mat summary
+  # is invariant under column permutation.
   lay <- pr_layout_saddle_novel()
   set.seed(11)
   raw <- matrix(stats::runif(3 * 256, 0, 60), nrow = 3)

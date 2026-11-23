@@ -65,12 +65,12 @@ there, and the interior is bit-for-bit identical either way:
 \itemize{
 \item \code{edges = "na"} (default) leaves the ring \code{NA}. This is the honest
 answer: no gradient was computed for those cells.
-\item \code{edges = "zero"} fills the ring with \code{0}. This reproduces the cohort
-analysis, which wrote central differences for rows and columns
-\code{2:(n-1)} into a zero-initialised matrix and never revisited the
+\item \code{edges = "zero"} fills the ring with \code{0}. This reproduces analyses
+that write central differences for rows and columns
+\code{2:(n-1)} into a zero-initialised matrix and never revisit the
 border. On a 16x16 mat that makes 60 of 256 cells — nearly a quarter —
 a \strong{structural zero} rather than a measurement. Use it to reproduce
-published numbers, but never average, rank or threshold over the whole
+such numbers, but never average, rank or threshold over the whole
 grid with it: the mean gradient is biased down by a factor of roughly
 \code{196/256}, and "the lowest-gradient cells" will be the border, every
 time. \code{edges = "na"} with \code{na.rm = TRUE} gives the interior mean the

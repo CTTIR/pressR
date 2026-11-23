@@ -16,8 +16,9 @@
 #
 # Neither is detectable from one recording -- a cell that reads zero for ten
 # minutes may simply have had nothing on it. It takes the whole cohort:
-# a cell that is zero in 97% of frames across 431 independent recordings,
-# with 431 different horses, saddles and riders on the mat, is broken.
+# a cell that is zero in nearly every frame across hundreds of independent
+# recordings, with different horses, saddles and riders on the mat, is
+# broken.
 # pr_sensor_quality() is that cohort-wide verdict, one row per sensor.
 #
 # pr_calc_gradient() is the spatial counterpart of the same idea: how
@@ -34,9 +35,9 @@
 # ---------------------------------------------------------------------------
 
 # The cohort's fixed flag vocabulary, in precedence order: a sensor that
-# qualifies for more than one flag gets the earliest. The strings are the
-# study's own labels and are reported verbatim, so a result table can be
-# compared row-for-row against the published one.
+# qualifies for more than one flag gets the earliest. The strings are kept
+# verbatim from earlier cohort tables, so a result table can be compared
+# row-for-row against them.
 .sq_flags <- c(
   dead      = "Dead (>95% zero)",
   saturated = "Saturated (>60 kPa)",
@@ -141,8 +142,8 @@
 #' * `mean_across_files` — mean over recordings of the per-recording mean.
 #' * `sd_across_files` — mean over recordings of the *within-recording*
 #'   standard deviation, i.e. how much this cell typically moves during a
-#'   trial. Despite the name (which is the cohort's own, kept so the table
-#'   can be compared column-for-column with the published one) this is
+#'   trial. Despite the name (kept from earlier cohort tables, so results
+#'   can be compared column-for-column) this is
 #'   **not** the standard deviation of the per-recording means. The two are
 #'   different quantities and they disagree substantially: the
 #'   between-recording spread mostly measures how differently the mat was
@@ -177,8 +178,8 @@
 #'    often enough to read as dead.
 #' 4. `"OK"` — none of the above.
 #'
-#' The label text is fixed cohort vocabulary and names the study's nominal
-#' 60 kPa cut; the comparison actually performed uses `saturation_kpa`.
+#' The label text is fixed cohort vocabulary and names a nominal 60 kPa
+#' cut; the comparison actually performed uses `saturation_kpa`.
 #'
 #' @section Trusting the ceiling:
 #' With `saturation_kpa = NULL` the cut-off is taken from
@@ -186,7 +187,7 @@
 #' Several built-in layouts carry a nominal range rather than a measured
 #' one: [pr_layout_saddle()] declares `c(0, 120)` for `"horse"` and
 #' [pr_layout()] defaults to `c(0, 600)`, while the Novel/Pliance saddle mat
-#' this cohort was recorded on saturates at **63.75 kPa** (255 x 0.25 kPa).
+#' saturates at **63.75 kPa** (255 x 0.25 kPa).
 #' [pr_layout_saddle_novel()] declares that correctly; the others do not,
 #' and a ceiling that is too high flags nothing at all. Pass
 #' `saturation_kpa` explicitly whenever the layout's own bound is not the
@@ -197,8 +198,8 @@
 #' @section Memory:
 #' Recordings are summarised one at a time into fixed-size accumulators, so
 #' peak memory is one recording's pressure matrix plus a handful of
-#' `n_sensors`-length vectors, not the cohort's. The study cohort is 431
-#' recordings and about 5.5 M frames; holding them all to produce nine
+#' `n_sensors`-length vectors, not the cohort's. A cohort of a few hundred
+#' recordings runs to millions of frames; holding them all to produce nine
 #' columns of 256 rows would cost several gigabytes.
 #'
 #' @param dataset A [pr_dataset] object, or a list of [pr_trial] objects.
@@ -270,8 +271,8 @@ pr_sensor_quality <- function(dataset, dead_pct_zero = 95,
   k <- nrow(coords)
 
   # Shape is checked for the whole cohort before a single recording is
-  # summarised: a mismatch found on trial 400 of 431 has already cost
-  # twenty minutes of parsing.
+  # summarised: a mismatch found near the end of a large cohort has already
+  # cost minutes of parsing.
   labels <- .sm_trial_labels(trials)
   n_frames <- vapply(trials, function(t) nrow(t$pressure), integer(1))
   if (any(n_frames == 0L)) {
@@ -369,12 +370,12 @@ pr_sensor_quality <- function(dataset, dead_pct_zero = 95,
 #'
 #' * `edges = "na"` (default) leaves the ring `NA`. This is the honest
 #'   answer: no gradient was computed for those cells.
-#' * `edges = "zero"` fills the ring with `0`. This reproduces the cohort
-#'   analysis, which wrote central differences for rows and columns
-#'   `2:(n-1)` into a zero-initialised matrix and never revisited the
+#' * `edges = "zero"` fills the ring with `0`. This reproduces analyses
+#'   that write central differences for rows and columns
+#'   `2:(n-1)` into a zero-initialised matrix and never revisit the
 #'   border. On a 16x16 mat that makes 60 of 256 cells — nearly a quarter —
 #'   a **structural zero** rather than a measurement. Use it to reproduce
-#'   published numbers, but never average, rank or threshold over the whole
+#'   such numbers, but never average, rank or threshold over the whole
 #'   grid with it: the mean gradient is biased down by a factor of roughly
 #'   `196/256`, and "the lowest-gradient cells" will be the border, every
 #'   time. `edges = "na"` with `na.rm = TRUE` gives the interior mean the

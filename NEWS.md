@@ -68,6 +68,11 @@ CRAN submission:
   `data-raw/synthetic_saddle.R` with invented header values. Its pressures
   are designed in a test helper, which is the ground truth for the reader,
   stride, symmetry, regional and sensor-quality tests.
+* The documentation of the cohort, provenance, symmetry, sensor-quality and
+  temporal functions describes them in general terms instead of quoting
+  figures from one data set, and the cohort and provenance tests use
+  synthetic designs. The two design checks that needed a local design file
+  now run on a synthetic cohort instead of being skipped.
 
 
 This is an explicitly versioned successor. Version 0.1.0 and its manuscript

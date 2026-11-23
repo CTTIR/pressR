@@ -61,15 +61,14 @@ recordings of the same length analysed the same way.
 The axis is built as \code{(0:(n \%/\% 2)) * fs / n}, which is the exact centre
 frequency of FFT bin \code{k} for both odd and even \code{n}.
 
-The study this function reproduces built it as
-\code{seq(0, fs / 2, length.out = length(power))} instead. For even \code{n} the
+A common alternative builds it as
+\code{seq(0, fs / 2, length.out = length(power))}. For even \code{n} the
 two agree exactly. For odd \code{n} they do not: that sequence has spacing
 \code{fs / (n - 1)} rather than \code{fs / n}, and it places its last value at
 \code{fs / 2}, which for odd \code{n} is not an FFT bin at all — the highest real
-bin is at \code{((n - 1) / 2) * fs / n}, just below Nyquist. On the 869-frame
-reference recording the error is a uniform stretch of \code{n / (n - 1)},
-about 0.12\%: the study reports a stride at 0.7488 Hz where the exact
-axis puts it at 0.7480 Hz. \code{power} is unaffected — only the labels move.
+bin is at \code{((n - 1) / 2) * fs / n}, just below Nyquist. The error is a
+uniform stretch of \code{n / (n - 1)}, about 0.1\% for a 1001-frame recording.
+\code{power} is unaffected — only the labels move.
 \strong{This function implements the exact axis.}
 }
 

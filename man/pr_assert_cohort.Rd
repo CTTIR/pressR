@@ -57,7 +57,7 @@ design <- data.frame(
 pr_assert_cohort(design, n_units = 3, n_subjects = 2, subject_col = "ID")
 
 # A wrong expectation fails loudly:
-try(pr_assert_cohort(design, n_units = 431, label = "all recordings"))
+try(pr_assert_cohort(design, n_units = 4, label = "all recordings"))
 }
 \seealso{
 Other cohort functions:

@@ -20,9 +20,9 @@
 #
 # Memory contract: pr_batch_frame_summary() is the only function here that
 # sees a whole cohort, and it never holds more than one trial's frame table
-# at a time. The real study is 431 recordings and 5.5 M frames; materialising
-# every frame table first would cost several gigabytes for nine numbers per
-# recording.
+# at a time. A cohort of a few hundred recordings runs to millions of
+# frames; materialising every frame table first would cost several gigabytes
+# for nine numbers per recording.
 #
 # Unit conventions follow R/frame-metrics.R exactly: pressure in the device's
 # own unit (kPa), COP in grid index units, no area conversion anywhere.
@@ -477,9 +477,10 @@ pr_profile_matrix <- function(dataset, statistic = "mean", threshold = 0) {
 #'
 #' @section Memory:
 #' The frame tables are built and discarded one at a time, so peak memory is
-#' one recording's frames, not the cohort's. That matters: 431 recordings of
-#' 5.5 M frames total would need several gigabytes if every frame table were
-#' materialised first, to produce nine numbers each.
+#' one recording's frames, not the cohort's. That matters: a few hundred
+#' recordings with millions of frames in total would need several gigabytes
+#' if every frame table were materialised first, to produce nine numbers
+#' each.
 #'
 #' @param dataset A [pr_dataset] object, or a list of [pr_trial] objects.
 #' @param threshold Numeric. Cells at or below this value count as unloaded;

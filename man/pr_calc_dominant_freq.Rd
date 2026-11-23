@@ -38,7 +38,7 @@ and sensor noise above it. Band edges are inclusive, and the search
 happens on the exact frequency axis documented in \code{\link[=pr_calc_spectrum]{pr_calc_spectrum()}}.
 
 The result is the single largest bin, with no interpolation between
-bins, so its resolution is \code{fs / n_frames} — 0.058 Hz for a 869-frame
+bins, so its resolution is \code{fs / n_frames} — 0.05 Hz for a 1000-frame
 recording at 50 Hz. A recording with no oscillation still returns its
 largest in-band bin; read \code{peak_power} before trusting the frequency,
 and compare against \code{\link[=pr_calc_stride_cycles]{pr_calc_stride_cycles()}}, which measures the same

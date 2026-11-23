@@ -70,7 +70,7 @@ skipped, because a silently unhashed column is worse than no lock at all.
 design <- data.frame(
   ID = c("ID001", "ID001", "ID003"),
   Mode = c("MH", "MS", "MG"),
-  n_frames = c(23432L, 10662L, 8000L)
+  n_frames = c(12000L, 9000L, 8000L)
 )
 path <- tempfile(fileext = ".lock")
 lock <- pr_lock_table(design, path)

@@ -6,7 +6,7 @@
 # thinks it is. The functions here turn a `pr_dataset` into that design table,
 # subset it by metadata, and — most importantly — assert the resulting counts
 # so that a silently dropped recording fails the pipeline instead of quietly
-# changing a published number.
+# changing a reported number.
 # ---------------------------------------------------------------------------
 
 # Internal: coerce a pr_dataset / list of trials to a plain list of trials.
@@ -206,8 +206,8 @@
 #' [pr_assert_cohort()].
 #'
 #' `duration_s` is the trial's `duration` field, i.e.
-#' `diff(range(time))`, so a 23432-frame recording at 50 Hz gives
-#' 468.62 s (not 468.64 s).
+#' `diff(range(time))`, so a 12000-frame recording at 50 Hz gives
+#' 239.98 s (not 240 s).
 #'
 #' @param dataset A [pr_dataset] object, or a list of [pr_trial] objects.
 #' @param fields Character vector of metadata field names to include, in
@@ -454,7 +454,7 @@ pr_dataset_filter <- function(dataset, f, label = NULL, n_units = NULL,
 #' pr_assert_cohort(design, n_units = 3, n_subjects = 2, subject_col = "ID")
 #'
 #' # A wrong expectation fails loudly:
-#' try(pr_assert_cohort(design, n_units = 431, label = "all recordings"))
+#' try(pr_assert_cohort(design, n_units = 4, label = "all recordings"))
 pr_assert_cohort <- function(x, n_units = NULL, n_subjects = NULL,
                              unit_col = NULL, subject_col = NULL,
                              label = NULL) {

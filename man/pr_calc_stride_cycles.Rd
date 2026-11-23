@@ -87,16 +87,16 @@ long — information a renumbered column would hide.
 
 \code{peak_total} is the band-passed amplitude at the cycle's opening peak, in
 the device's pressure unit. It is an excursion above the local baseline,
-not a raw frame total: on the reference recording the frame totals run
-383-434 kPa while \code{peak_total} runs 2.5-13.8 kPa.
+not a raw frame total, and so usually far smaller than the totals it is
+computed from.
 }
 \section{Reproducibility}{
 
 The corrected detector treats differences below floating-point resolution
 as ties and chooses the first sample of a plateau deterministically.
 Historical strict-maximum detection can select different cycles after
-rounding differences around 1e-13. The former claim of exact agreement
-across all study recordings has been withdrawn. Use \code{\link[=pr_temporal_profile]{pr_temporal_profile()}}
+rounding differences around 1e-13, so exact agreement with cycle tables
+from the historical detector is not claimed. Use \code{\link[=pr_temporal_profile]{pr_temporal_profile()}}
 to distinguish corrected analysis, the historical method, and verified
 replay of saved reference cycles.
 }

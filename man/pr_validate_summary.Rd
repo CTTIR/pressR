@@ -60,7 +60,7 @@ not die inside it.
 design <- data.frame(
   ID = c("ID001", "ID001", "ID003"),
   Mode = c("MH", "MS", "MG"),
-  n_frames = c(23432L, 10662L, 8000L)
+  n_frames = c(12000L, 9000L, 8000L)
 )
 
 res <- pr_validate_summary(
@@ -73,9 +73,8 @@ res <- pr_validate_summary(
 )
 res
 
-# A soft rule warns and is still reported. The real cohort is unbalanced
-# across Mode (92 / 169 / 170 recordings), which is worth knowing but is
-# not a reason to stop.
+# A soft rule warns and is still reported. A design that is unbalanced
+# across Mode is worth knowing about but is not a reason to stop.
 unbalanced <- rbind(design, design[2, ])
 res2 <- suppressWarnings(pr_validate_summary(
   unbalanced,

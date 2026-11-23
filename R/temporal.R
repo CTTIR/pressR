@@ -178,15 +178,14 @@
 #' The axis is built as `(0:(n %/% 2)) * fs / n`, which is the exact centre
 #' frequency of FFT bin `k` for both odd and even `n`.
 #'
-#' The study this function reproduces built it as
-#' `seq(0, fs / 2, length.out = length(power))` instead. For even `n` the
+#' A common alternative builds it as
+#' `seq(0, fs / 2, length.out = length(power))`. For even `n` the
 #' two agree exactly. For odd `n` they do not: that sequence has spacing
 #' `fs / (n - 1)` rather than `fs / n`, and it places its last value at
 #' `fs / 2`, which for odd `n` is not an FFT bin at all — the highest real
-#' bin is at `((n - 1) / 2) * fs / n`, just below Nyquist. On the 869-frame
-#' reference recording the error is a uniform stretch of `n / (n - 1)`,
-#' about 0.12%: the study reports a stride at 0.7488 Hz where the exact
-#' axis puts it at 0.7480 Hz. `power` is unaffected — only the labels move.
+#' bin is at `((n - 1) / 2) * fs / n`, just below Nyquist. The error is a
+#' uniform stretch of `n / (n - 1)`, about 0.1% for a 1001-frame recording.
+#' `power` is unaffected — only the labels move.
 #' **This function implements the exact axis.**
 #'
 #' @param trial A [pr_trial] object.
@@ -261,7 +260,7 @@ pr_calc_spectrum <- function(trial, signal = c("total", "mean", "peak"),
 #' happens on the exact frequency axis documented in [pr_calc_spectrum()].
 #'
 #' The result is the single largest bin, with no interpolation between
-#' bins, so its resolution is `fs / n_frames` — 0.058 Hz for a 869-frame
+#' bins, so its resolution is `fs / n_frames` — 0.05 Hz for a 1000-frame
 #' recording at 50 Hz. A recording with no oscillation still returns its
 #' largest in-band bin; read `peak_power` before trusting the frequency,
 #' and compare against [pr_calc_stride_cycles()], which measures the same
@@ -431,15 +430,15 @@ pr_calc_dominant_freq <- function(trial, band = c(0.3, 5), signal = "total",
 #'
 #' `peak_total` is the band-passed amplitude at the cycle's opening peak, in
 #' the device's pressure unit. It is an excursion above the local baseline,
-#' not a raw frame total: on the reference recording the frame totals run
-#' 383-434 kPa while `peak_total` runs 2.5-13.8 kPa.
+#' not a raw frame total, and so usually far smaller than the totals it is
+#' computed from.
 #'
 #' @section Reproducibility:
 #' The corrected detector treats differences below floating-point resolution
 #' as ties and chooses the first sample of a plateau deterministically.
 #' Historical strict-maximum detection can select different cycles after
-#' rounding differences around 1e-13. The former claim of exact agreement
-#' across all study recordings has been withdrawn. Use [pr_temporal_profile()]
+#' rounding differences around 1e-13, so exact agreement with cycle tables
+#' from the historical detector is not claimed. Use [pr_temporal_profile()]
 #' to distinguish corrected analysis, the historical method, and verified
 #' replay of saved reference cycles.
 #'
@@ -553,8 +552,8 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
   duration <- tv[to] - tv[from]
   # A plain floating-point comparison on the timestamp difference, which is
   # what makes an interval of nominally exactly min_period_s fall either
-  # side depending on how the timestamps round. That is the study's
-  # behaviour and is what reproduces its cycle numbering.
+  # side depending on how the timestamps round. That is the historical
+  # detector's behaviour and keeps its cycle numbering.
   keep <- !is.na(duration) & duration >= min_period_s &
     duration <= max_period_s
 
@@ -668,17 +667,10 @@ pr_calc_stride_cycles <- function(trial, signal = "total", lp_window = 11L,
 #' the phase bins mostly empty, and an empty bin contributes nothing rather
 #' than a zero. A bin no cycle ever reached comes back `NA`.
 #'
-#' @section Agreement with the source study:
-#' The study's phase maps used the plain mean across cycles (`trim = 0`).
-#' On the reference recording `ID052_K_K_KG00_MS`, and on the same 14
-#' cycles, this function at `trim = 0` reproduces all 2,560 of its values
-#' with a correlation of 0.99998, a mean absolute difference of 0.007 kPa
-#' and a maximum of 0.12 kPa, on values ranging up to 6.9 kPa. Close, but
-#' not exact: the residual difference has not been traced to any documented
-#' step, so treat the two as equivalent in aggregate rather than
-#' interchangeable cell by cell. At the default `trim = 0.1` the same
-#' comparison gives 0.011 kPa mean and 0.18 kPa maximum, the extra
-#' difference being the trimming itself.
+#' @section Comparing with untrimmed phase maps:
+#' Phase maps built with the plain mean across cycles correspond to
+#' `trim = 0`. Use that setting to compare with them; the default
+#' `trim = 0.1` differs from them by the trimming itself.
 #'
 #' @inheritParams pr_calc_spectrum
 #' @param cycles A cycle table from [pr_calc_stride_cycles()], or `NULL`

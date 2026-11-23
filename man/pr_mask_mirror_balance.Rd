@@ -38,11 +38,11 @@ The reason to want it is that an asymmetry index divides by the mean of
 the two sides. If the region of interest happens to contain more cells on
 one side — because a sensor died, or because a data-driven mask was built
 from a load pattern that is itself lopsided — then part of the resulting
-index measures the mask, not the horse. In the study cohort, dropping
-sensors that were flat for more than 95\% of every recording left 106 live
-cells on the left and 117 on the right; balancing to 106/106 moved the
-cohort median asymmetry from -30.5\% to -39.0\%, the second of which agrees
-with the whole-grid figure and the first of which does not.
+index measures the mask, not the horse. Dropping sensors that are flat in
+almost every recording, for example, can leave more live cells on one side
+than on the other; balancing restores mirror-image halves, so the index
+again compares like with like and can be set beside the whole-grid
+figure.
 
 Cells outside \code{layout$active} are never kept. When the axis has an odd
 number of lines the centre line reflects onto itself and belongs to

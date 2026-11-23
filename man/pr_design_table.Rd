@@ -29,8 +29,8 @@ the object you count, cross-tabulate, and assert against with
 }
 \details{
 \code{duration_s} is the trial's \code{duration} field, i.e.
-\code{diff(range(time))}, so a 23432-frame recording at 50 Hz gives
-468.62 s (not 468.64 s).
+\code{diff(range(time))}, so a 12000-frame recording at 50 Hz gives
+239.98 s (not 240 s).
 }
 \examples{
 layout <- pr_layout_mat("16")

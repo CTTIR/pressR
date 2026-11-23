@@ -50,8 +50,8 @@ built from those:
 \item \code{mean_across_files} — mean over recordings of the per-recording mean.
 \item \code{sd_across_files} — mean over recordings of the \emph{within-recording}
 standard deviation, i.e. how much this cell typically moves during a
-trial. Despite the name (which is the cohort's own, kept so the table
-can be compared column-for-column with the published one) this is
+trial. Despite the name (kept from earlier cohort tables, so results
+can be compared column-for-column) this is
 \strong{not} the standard deviation of the per-recording means. The two are
 different quantities and they disagree substantially: the
 between-recording spread mostly measures how differently the mat was
@@ -89,8 +89,8 @@ often enough to read as dead.
 \item \code{"OK"} — none of the above.
 }
 
-The label text is fixed cohort vocabulary and names the study's nominal
-60 kPa cut; the comparison actually performed uses \code{saturation_kpa}.
+The label text is fixed cohort vocabulary and names a nominal 60 kPa
+cut; the comparison actually performed uses \code{saturation_kpa}.
 }
 
 \section{Trusting the ceiling}{
@@ -100,7 +100,7 @@ With \code{saturation_kpa = NULL} the cut-off is taken from
 Several built-in layouts carry a nominal range rather than a measured
 one: \code{\link[=pr_layout_saddle]{pr_layout_saddle()}} declares \code{c(0, 120)} for \code{"horse"} and
 \code{\link[=pr_layout]{pr_layout()}} defaults to \code{c(0, 600)}, while the Novel/Pliance saddle mat
-this cohort was recorded on saturates at \strong{63.75 kPa} (255 x 0.25 kPa).
+saturates at \strong{63.75 kPa} (255 x 0.25 kPa).
 \code{\link[=pr_layout_saddle_novel]{pr_layout_saddle_novel()}} declares that correctly; the others do not,
 and a ceiling that is too high flags nothing at all. Pass
 \code{saturation_kpa} explicitly whenever the layout's own bound is not the
@@ -113,8 +113,8 @@ rather than a guess.
 
 Recordings are summarised one at a time into fixed-size accumulators, so
 peak memory is one recording's pressure matrix plus a handful of
-\code{n_sensors}-length vectors, not the cohort's. The study cohort is 431
-recordings and about 5.5 M frames; holding them all to produce nine
+\code{n_sensors}-length vectors, not the cohort's. A cohort of a few hundred
+recordings runs to millions of frames; holding them all to produce nine
 columns of 256 rows would cost several gigabytes.
 }
 

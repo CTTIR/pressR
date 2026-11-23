@@ -41,7 +41,7 @@ study_ds <- function() {
 
 # ---- pr_design_table ------------------------------------------------------
 
-test_that("pr_design_table reproduces the study design shape and values", {
+test_that("pr_design_table reproduces the design shape and values", {
   d <- pr_design_table(study_ds(),
     fields = c("ID", "Saddle", "Pad", "Weight", "Mode")
   )
@@ -56,7 +56,7 @@ test_that("pr_design_table reproduces the study design shape and values", {
   expect_equal(d$Mode, c("MH", "MS", "MS"))
   expect_equal(d$n_frames, c(4L, 6L, 11L))
   expect_type(d$n_frames, "integer")
-  # duration is diff(range(time)) = (n - 1) / 50, as in the study
+  # duration is diff(range(time)) = (n - 1) / 50
   expect_equal(d$duration_s, c(0.06, 0.10, 0.20))
   expect_equal(as.vector(table(d$Mode)), c(1L, 2L))
 })
@@ -163,7 +163,7 @@ test_that("pr_dataset_filter asserts unit and subject counts", {
   expect_error(
     pr_dataset_filter(study_ds(), ~ .x$Mode == "MS",
       label = "walk",
-      n_subjects = 19
+      n_subjects = 5
     ),
     class = "pr_cohort_assert_failed"
   )
@@ -173,15 +173,15 @@ test_that("pr_dataset_filter reports which expectation failed", {
   err <- tryCatch(
     pr_dataset_filter(study_ds(), ~ .x$Mode == "MS",
       label = "walk",
-      n_units = 170
+      n_units = 40
     ),
     pr_cohort_assert_failed = function(e) e
   )
-  expect_equal(err$expected, 170L)
+  expect_equal(err$expected, 40L)
   expect_equal(err$actual, 2L)
   expect_equal(err$label, "walk")
-  expect_match(conditionMessage(err), "170")
-  expect_match(conditionMessage(err), "168 fewer")
+  expect_match(conditionMessage(err), "40")
+  expect_match(conditionMessage(err), "38 fewer")
 })
 
 test_that("pr_dataset_filter can produce an empty cohort", {
@@ -247,16 +247,16 @@ test_that("pr_assert_cohort passes on a correct data frame expectation", {
 test_that("pr_assert_cohort fails loudly on a wrong expectation", {
   design <- data.frame(ID = c("ID001", "ID001", "ID002"))
   err <- tryCatch(
-    pr_assert_cohort(design, n_units = 431, label = "all recordings"),
+    pr_assert_cohort(design, n_units = 50, label = "all recordings"),
     pr_cohort_assert_failed = function(e) e
   )
   expect_s3_class(err, "pr_cohort_assert_failed")
   expect_equal(err$actual, 3L)
-  expect_equal(err$expected, 431L)
+  expect_equal(err$expected, 50L)
   expect_match(conditionMessage(err), "all recordings")
-  expect_match(conditionMessage(err), "expected 431")
+  expect_match(conditionMessage(err), "expected 50")
   expect_match(conditionMessage(err), "found 3")
-  expect_match(conditionMessage(err), "428 fewer")
+  expect_match(conditionMessage(err), "47 fewer")
 
   err2 <- tryCatch(
     pr_assert_cohort(design, n_subjects = 1, subject_col = "ID"),
@@ -430,42 +430,54 @@ test_that("pr_validate_dataset rejects bad input", {
   expect_error(pr_validate_dataset(study_ds(), strict = NA), "strict")
 })
 
-# ---- ground truth ---------------------------------------------------------
+# ---- a cohort-sized synthetic design ---------------------------------------
 
-# Path to the study's design.rds; set PRESSR_STUDY_DESIGN locally to run
-# this test, otherwise it is skipped.
-study_design_path <- Sys.getenv("PRESSR_STUDY_DESIGN")
+# Eight subjects with four weights each in modes M2 and M3; only the first
+# four subjects also have M1, and subject S08 misses one M3 recording. Frame
+# counts vary deterministically, so the totals below are known in advance.
+cohort_design <- function() {
+  d <- expand.grid(
+    Weight = c("W0", "W1", "W2", "W3"), Mode = c("M1", "M2", "M3"),
+    ID = sprintf("S%02d", 1:8), stringsAsFactors = FALSE
+  )[, c("ID", "Weight", "Mode")]
+  d <- d[d$Mode != "M1" | d$ID %in% sprintf("S%02d", 1:4), ]
+  d <- d[!(d$ID == "S08" & d$Weight == "W3" & d$Mode == "M3"), ]
+  rownames(d) <- NULL
+  d$n_frames <- 500L + 7L * seq_len(nrow(d))
+  d$duration_s <- (d$n_frames - 1) / 50
+  d
+}
 
-test_that("pr_assert_cohort agrees with the study's real design table", {
-  skip_if_not(file.exists(study_design_path), "study design.rds unavailable")
-  design <- as.data.frame(readRDS(study_design_path))
+test_that("pr_assert_cohort agrees with a cohort-sized design table", {
+  design <- cohort_design()
+  # 4 x 4 (M1) + 8 x 4 (M2) + 8 x 4 - 1 (M3) recordings of 8 subjects.
+  expect_equal(nrow(design), 79L)
 
   expect_invisible(
     pr_assert_cohort(design,
-      n_units = 431, n_subjects = 19,
+      n_units = 79, n_subjects = 8,
       subject_col = "ID", label = "all recordings"
     )
   )
-  expect_error(pr_assert_cohort(design, n_units = 430),
+  expect_error(pr_assert_cohort(design, n_units = 78),
     class = "pr_cohort_assert_failed"
   )
-  expect_error(pr_assert_cohort(design, n_subjects = 18, subject_col = "ID"),
+  expect_error(pr_assert_cohort(design, n_subjects = 7, subject_col = "ID"),
     class = "pr_cohort_assert_failed"
   )
 
-  ms <- design[design$Mode == "MS", ]
+  m3 <- design[design$Mode == "M3", ]
   expect_invisible(
-    pr_assert_cohort(ms, n_units = 170, n_subjects = 19, subject_col = "ID")
+    pr_assert_cohort(m3, n_units = 31, n_subjects = 8, subject_col = "ID")
   )
-  mg <- design[design$Mode == "MG", ]
+  m1 <- design[design$Mode == "M1", ]
   expect_invisible(
-    pr_assert_cohort(mg, n_units = 92, n_subjects = 8, subject_col = "ID")
+    pr_assert_cohort(m1, n_units = 16, n_subjects = 4, subject_col = "ID")
   )
 })
 
-test_that("pr_design_table rebuilds the study's design.rds exactly", {
-  skip_if_not(file.exists(study_design_path), "study design.rds unavailable")
-  design <- as.data.frame(readRDS(study_design_path))
+test_that("pr_design_table rebuilds a cohort-sized design exactly", {
+  design <- cohort_design()
   layout <- tiny_layout()
 
   trials <- lapply(seq_len(nrow(design)), function(i) {
@@ -474,33 +486,28 @@ test_that("pr_design_table rebuilds the study's design.rds exactly", {
       matrix(0, n, 1L),
       time = seq(0, design$duration_s[i], length.out = n),
       layout = layout,
-      metadata = as.list(design[i, c(
-        "ID", "Saddle", "Pad", "Weight",
-        "Mode"
-      )])
+      metadata = as.list(design[i, c("ID", "Weight", "Mode")])
     )
   })
-  ds <- pr_dataset(trials, name = "saddle cohort")
+  ds <- pr_dataset(trials, name = "synthetic cohort")
 
-  out <- pr_design_table(ds, fields = c(
-    "ID", "Saddle", "Pad", "Weight",
-    "Mode"
-  ))
-  expect_equal(dim(out), c(431L, 7L))
+  out <- pr_design_table(ds, fields = c("ID", "Weight", "Mode"))
+  expect_equal(dim(out), c(79L, 5L))
   expect_equal(as.data.frame(out), design, tolerance = 1e-8)
-  expect_equal(sum(out$n_frames), 5501590)
-  expect_equal(as.vector(table(out$Mode)), c(92L, 169L, 170L))
+  # 79 * 500 + 7 * (1 + ... + 79) frames.
+  expect_equal(sum(out$n_frames), 79 * 500 + 7 * 79 * 80 / 2)
+  expect_equal(as.vector(table(out$Mode)), c(16L, 32L, 31L))
   expect_invisible(
-    pr_assert_cohort(out, n_units = 431, n_subjects = 19, subject_col = "ID")
+    pr_assert_cohort(out, n_units = 79, n_subjects = 8, subject_col = "ID")
   )
 
-  walk <- pr_dataset_filter(ds, ~ .x$Mode == "MS",
-    label = "MS (walk)",
-    n_units = 170, n_subjects = 19
+  m3 <- pr_dataset_filter(ds, ~ .x$Mode == "M3",
+    label = "M3",
+    n_units = 31, n_subjects = 8
   )
-  expect_equal(length(walk), 170L)
+  expect_equal(length(m3), 31L)
   expect_error(
-    pr_dataset_filter(ds, ~ .x$Mode == "MS", n_units = 169),
+    pr_dataset_filter(ds, ~ .x$Mode == "M3", n_units = 32),
     class = "pr_cohort_assert_failed"
   )
   expect_equal(nrow(pr_validate_dataset(ds)), 0L)

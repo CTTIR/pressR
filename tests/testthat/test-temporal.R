@@ -81,14 +81,14 @@ test_that("pr_calc_spectrum builds the exact frequency axis for odd n", {
   # The highest bin sits just below Nyquist, not on it.
   expect_equal(spec$freq_Hz[51], 50 * fs / n)
   expect_lt(spec$freq_Hz[51], fs / 2)
-  # The study's axis, seq(0, fs/2, length.out = length(power)), is a uniform
-  # n / (n - 1) stretch of this one and lands on fs / 2.
-  study_axis <- seq(0, fs / 2, length.out = nrow(spec))
-  expect_equal(study_axis, spec$freq_Hz * n / (n - 1))
-  expect_false(isTRUE(all.equal(study_axis, spec$freq_Hz)))
+  # The alternative axis, seq(0, fs/2, length.out = length(power)), is a
+  # uniform n / (n - 1) stretch of this one and lands on fs / 2.
+  alt_axis <- seq(0, fs / 2, length.out = nrow(spec))
+  expect_equal(alt_axis, spec$freq_Hz * n / (n - 1))
+  expect_false(isTRUE(all.equal(alt_axis, spec$freq_Hz)))
 })
 
-test_that("pr_calc_spectrum axes agree with the study's for even n", {
+test_that("pr_calc_spectrum axes agree with the alternative for even n", {
   fs <- 50
   n <- 100L
   trial <- tp_trial(seq_len(n) / n, fs = fs)

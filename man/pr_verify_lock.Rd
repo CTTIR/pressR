@@ -41,7 +41,7 @@ those are not evidence that the data changed.
 design <- data.frame(
   ID = c("ID001", "ID001", "ID003"),
   Mode = c("MH", "MS", "MG"),
-  n_frames = c(23432L, 10662L, 8000L)
+  n_frames = c(12000L, 9000L, 8000L)
 )
 path <- tempfile(fileext = ".lock")
 pr_lock_table(design, path)
@@ -50,7 +50,7 @@ pr_verify_lock(design, path)
 
 # One edited value: same shape, same names, different content.
 edited <- design
-edited$n_frames[1] <- 23431L
+edited$n_frames[1] <- 11999L
 ok <- pr_verify_lock(edited, path)
 ok
 attr(ok, "report")

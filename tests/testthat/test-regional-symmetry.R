@@ -81,7 +81,7 @@ test_that("pr_mask_rowbands breaks = c(5, 11) reproduces the layout regions", {
   for (nm in names(got)) {
     expect_identical(got[[nm]]$matrix, layout$regions[[nm]], info = nm)
   }
-  # The study's convention puts the deep band in the middle: 5 / 6 / 5 rows.
+  # The default puts the deep band in the middle: 5 / 6 / 5 rows.
   expect_identical(
     vapply(got, function(m) m$n_sensors, integer(1)),
     c(cranial_left = 36L, cranial_right = 36L,

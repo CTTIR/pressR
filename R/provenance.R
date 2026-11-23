@@ -4,8 +4,8 @@
 # A cohort analysis is only reproducible if two claims hold: the table you
 # are analysing is byte-for-byte the table you analysed last time, and the
 # design it encodes is the design you think it is. Both claims are usually
-# made in prose ("431 recordings, 19 horses, fully crossed") and never
-# checked. The functions here make them executable:
+# made in prose ("so many recordings, so many subjects, fully crossed") and
+# never checked. The functions here make them executable:
 #
 #   pr_lock_table()        record what a table is
 #   pr_verify_lock()       assert it still is
@@ -334,7 +334,7 @@
 #' design <- data.frame(
 #'   ID = c("ID001", "ID001", "ID003"),
 #'   Mode = c("MH", "MS", "MG"),
-#'   n_frames = c(23432L, 10662L, 8000L)
+#'   n_frames = c(12000L, 9000L, 8000L)
 #' )
 #' path <- tempfile(fileext = ".lock")
 #' lock <- pr_lock_table(design, path)
@@ -423,7 +423,7 @@ pr_lock_table <- function(x, path, algo = "md5") {
 #' design <- data.frame(
 #'   ID = c("ID001", "ID001", "ID003"),
 #'   Mode = c("MH", "MS", "MG"),
-#'   n_frames = c(23432L, 10662L, 8000L)
+#'   n_frames = c(12000L, 9000L, 8000L)
 #' )
 #' path <- tempfile(fileext = ".lock")
 #' pr_lock_table(design, path)
@@ -432,7 +432,7 @@ pr_lock_table <- function(x, path, algo = "md5") {
 #'
 #' # One edited value: same shape, same names, different content.
 #' edited <- design
-#' edited$n_frames[1] <- 23431L
+#' edited$n_frames[1] <- 11999L
 #' ok <- pr_verify_lock(edited, path)
 #' ok
 #' attr(ok, "report")
@@ -650,7 +650,7 @@ pr_verify_lock <- function(x, path) {
 #' design <- data.frame(
 #'   ID = c("ID001", "ID001", "ID003"),
 #'   Mode = c("MH", "MS", "MG"),
-#'   n_frames = c(23432L, 10662L, 8000L)
+#'   n_frames = c(12000L, 9000L, 8000L)
 #' )
 #'
 #' res <- pr_validate_summary(
@@ -663,9 +663,8 @@ pr_verify_lock <- function(x, path) {
 #' )
 #' res
 #'
-#' # A soft rule warns and is still reported. The real cohort is unbalanced
-#' # across Mode (92 / 169 / 170 recordings), which is worth knowing but is
-#' # not a reason to stop.
+#' # A soft rule warns and is still reported. A design that is unbalanced
+#' # across Mode is worth knowing about but is not a reason to stop.
 #' unbalanced <- rbind(design, design[2, ])
 #' res2 <- suppressWarnings(pr_validate_summary(
 #'   unbalanced,

@@ -14,26 +14,27 @@ pv_tiny <- function() {
   )
 }
 
-# The 44 non-empty cells of the real cohort design
-# (data/tidy_data/design.rds: 431 rows, Saddle x Pad x Weight x Mode), with
-# their observed replicate counts. Committed as literals so CI, which has no
-# access to the study drive, still regression-tests against the real design's
-# structure rather than against an invented one.
+# A synthetic four-factor design (Saddle x Pad x Weight x Mode) given as its
+# 47 non-empty cells with their replicate counts. It has the structures the
+# design checks are for: Pad nested in Saddle (4 of 9 pairs never run), a
+# missing weight, unequal Mode totals, and cells above, at and below the
+# modal replicate count of 5.
 pv_design_cells <- c(
-  "K F KG00 MH 9",  "K F KG00 MS 9",  "K F KG40 MH 9",  "K F KG40 MS 9",
-  "K F KG60 MH 9",  "K F KG60 MS 9",  "K F KG80 MH 6",  "K F KG80 MS 6",
-  "K K KG00 MG 8",  "K K KG00 MH 19", "K K KG00 MS 19", "K K KG40 MG 8",
-  "K K KG40 MH 19", "K K KG40 MS 19", "K K KG60 MG 8",  "K K KG60 MH 19",
-  "K K KG60 MS 19", "K K KG80 MG 6",  "K K KG80 MH 11", "K K KG80 MS 11",
-  "S F KG00 MG 8",  "S F KG00 MH 9",  "S F KG00 MS 9",  "S F KG40 MG 8",
-  "S F KG40 MH 9",  "S F KG40 MS 9",  "S F KG60 MG 8",  "S F KG60 MH 9",
-  "S F KG60 MS 9",  "S F KG80 MG 8",  "S F KG80 MH 9",  "S F KG80 MS 9",
-  "W W KG00 MG 8",  "W W KG00 MH 8",  "W W KG00 MS 9",  "W W KG40 MG 8",
-  "W W KG40 MH 9",  "W W KG40 MS 9",  "W W KG60 MG 8",  "W W KG60 MH 9",
-  "W W KG60 MS 9",  "W W KG80 MG 6",  "W W KG80 MH 6",  "W W KG80 MS 6"
+  "A P W0 M1 5", "A P W0 M2 5", "A P W0 M3 5", "A P W1 M1 5",
+  "A P W1 M2 5", "A P W1 M3 5", "A P W2 M1 5", "A P W2 M2 5",
+  "A P W2 M3 5", "A Q W0 M1 8", "A Q W0 M2 8", "A Q W0 M3 8",
+  "A Q W1 M1 8", "A Q W1 M2 8", "A Q W1 M3 8", "A Q W2 M1 8",
+  "A Q W2 M2 8", "A Q W2 M3 8", "A Q W3 M1 8", "A Q W3 M2 8",
+  "A Q W3 M3 8", "B Q W0 M1 5", "B Q W0 M2 5", "B Q W0 M3 5",
+  "B Q W1 M1 5", "B Q W1 M2 5", "B Q W1 M3 5", "B Q W2 M1 5",
+  "B Q W2 M2 5", "B Q W2 M3 5", "B Q W3 M1 5", "B Q W3 M2 3",
+  "B Q W3 M3 5", "C P W0 M2 5", "C P W1 M2 5", "C R W0 M1 5",
+  "C R W0 M2 5", "C R W0 M3 4", "C R W1 M1 5", "C R W1 M2 5",
+  "C R W1 M3 4", "C R W2 M1 5", "C R W2 M2 5", "C R W2 M3 4",
+  "C R W3 M1 5", "C R W3 M2 5", "C R W3 M3 4"
 )
 
-# Expand those cells back into a 431-row design table.
+# Expand those cells back into a 265-row design table.
 pv_design <- function() {
   parts <- do.call(rbind, strsplit(pv_design_cells, " ", fixed = TRUE))
   n <- as.integer(parts[, 5])
@@ -138,12 +139,12 @@ test_that("re-locking an unchanged table is byte-identical (no timestamp)", {
   unlink(c(p1, p2))
 })
 
-test_that("pr_lock_table reproduces the real cohort design's shape", {
+test_that("pr_lock_table records a cohort-sized design's shape", {
   design <- pv_design()
-  expect_equal(nrow(design), 431L)
+  expect_equal(nrow(design), 265L)
 
   lock <- pr_lock_table(design, pv_lock_path())
-  expect_equal(lock$nrow, 431L)
+  expect_equal(lock$nrow, 265L)
   expect_equal(lock$columns[[1]], c("Saddle", "Pad", "Weight", "Mode"))
   expect_equal(lock$types[[1]], rep("character", 4))
   expect_equal(nchar(lock$content), 32L)
@@ -178,7 +179,7 @@ test_that("pr_verify_lock passes an unchanged table", {
   rep <- attr(res, "report")
   expect_equal(rep$property, c("rows", "columns", "types", "content"))
   expect_true(all(rep$passed))
-  expect_equal(rep$expected[1], "431")
+  expect_equal(rep$expected[1], "265")
   unlink(path)
 })
 
@@ -205,8 +206,8 @@ test_that("a dropped row is reported as a row-count change", {
   expect_false(as.logical(res))
   rep <- attr(res, "report")
   expect_equal(rep$passed, c(FALSE, TRUE, TRUE, FALSE))
-  expect_equal(rep$expected[1], "431")
-  expect_equal(rep$actual[1], "430")
+  expect_equal(rep$expected[1], "265")
+  expect_equal(rep$actual[1], "264")
 })
 
 test_that("a pure rename changes columns but not content", {
@@ -278,14 +279,14 @@ test_that("pr_validate_summary returns one row per rule with hard first", {
   res <- pr_validate_summary(
     x,
     hard = list(
-      rows_431 = function(d) nrow(d) == 431L,
-      mode_known = function(d) all(d$Mode %in% c("MG", "MH", "MS"))
+      rows_265 = function(d) nrow(d) == 265L,
+      mode_known = function(d) all(d$Mode %in% c("M1", "M2", "M3"))
     ),
-    soft = list(saddle_known = function(d) d$Saddle %in% c("K", "S", "W")),
+    soft = list(saddle_known = function(d) d$Saddle %in% c("A", "B", "C")),
     label = "design"
   )
 
-  expect_equal(res$rule, c("rows_431", "mode_known", "saddle_known"))
+  expect_equal(res$rule, c("rows_265", "mode_known", "saddle_known"))
   expect_equal(res$level, c("hard", "hard", "soft"))
   expect_equal(res$passed, c(TRUE, TRUE, TRUE))
   expect_true(all(is.na(res$message)))
@@ -298,7 +299,7 @@ test_that("a hard failure aborts and carries the full result table", {
       x,
       hard = list(
         rows_100 = function(d) nrow(d) == 100L,
-        mode_known = function(d) all(d$Mode %in% c("MG", "MH", "MS"))
+        mode_known = function(d) all(d$Mode %in% c("M1", "M2", "M3"))
       ),
       label = "design"
     ),
@@ -332,10 +333,10 @@ test_that("a soft failure warns and still returns the table", {
     ),
     class = "pr_validate_soft_failed"
   )
-  # These are the real cohort's mode counts.
+  # The synthetic design's Mode totals: 87, 95 and 83 recordings.
   expect_equal(res$passed, FALSE)
   expect_equal(res$message,
-               "Mode counts differ: MG=92, MH=169, MS=170")
+               "Mode counts differ: M1=87, M2=95, M3=83")
 })
 
 test_that("both rule return contracts work, and per-row rules count", {
@@ -395,15 +396,15 @@ test_that("pr_validate_summary handles the empty case and bad input", {
 
 # pr_factor_contract --------------------------------------------------------
 
-test_that("pr_factor_contract passes on the real design's level sets", {
+test_that("pr_factor_contract passes on the design's level sets", {
   design <- pv_design()
   out <- pr_factor_contract(
     design,
     list(
-      Saddle = c("K", "S", "W"),
-      Pad = c("F", "K", "W"),
-      Weight = c("KG00", "KG40", "KG60", "KG80"),
-      Mode = c("MG", "MH", "MS")
+      Saddle = c("A", "B", "C"),
+      Pad = c("P", "Q", "R"),
+      Weight = c("W0", "W1", "W2", "W3"),
+      Mode = c("M1", "M2", "M3")
     )
   )
   expect_identical(out, design)
@@ -414,25 +415,25 @@ test_that("an unexpected level aborts naming the column, value and rows", {
   design$ID <- sprintf("ID%03d", seq_len(nrow(design)))
 
   cnd <- tryCatch(
-    pr_factor_contract(design, list(Mode = c("MG", "MH")), id_cols = "ID"),
+    pr_factor_contract(design, list(Mode = c("M1", "M2")), id_cols = "ID"),
     error = function(e) e
   )
   expect_s3_class(cnd, "pr_factor_contract_failed")
-  expect_match(conditionMessage(cnd), "unexpected level \"MS\"")
+  expect_match(conditionMessage(cnd), "unexpected level \"M3\"")
 
   probs <- cnd$problems
   expect_equal(probs$column, "Mode")
   expect_equal(probs$issue, "unexpected_level")
-  expect_equal(probs$value, "MS")
-  # 170 MS recordings, exactly as in the real cohort.
-  expect_equal(probs$n_rows, 170L)
+  expect_equal(probs$value, "M3")
+  # Every M3 recording of the design.
+  expect_equal(probs$n_rows, 83L)
   expect_match(probs$ids, "^ID")
 })
 
 test_that("a level that never appears is a violation too", {
   design <- pv_design()
   cnd <- tryCatch(
-    pr_factor_contract(design, list(Mode = c("MG", "MH", "MS", "MX"))),
+    pr_factor_contract(design, list(Mode = c("M1", "M2", "M3", "MX"))),
     error = function(e) e
   )
   expect_s3_class(cnd, "pr_factor_contract_failed")
@@ -488,12 +489,12 @@ test_that("pr_factor_contract rejects bad input", {
   expect_error(pr_factor_contract(x, list(c("a", "b"))), "must be named")
   expect_error(pr_factor_contract(x, list(Nope = "a")), "not in")
   expect_error(
-    pr_factor_contract(x, list(Mode = c("MG", "MH", "MS")),
+    pr_factor_contract(x, list(Mode = c("M1", "M2", "M3")),
                        id_cols = "Nope"),
     "not in"
   )
   expect_error(
-    pr_factor_contract(x, list(Mode = c("MG", "MG", "MH", "MS"))),
+    pr_factor_contract(x, list(Mode = c("M1", "M1", "M2", "M3"))),
     "repeat"
   )
   expect_error(pr_factor_contract(x, list(Mode = character(0))),
@@ -503,25 +504,30 @@ test_that("pr_factor_contract rejects bad input", {
 
 # pr_design_gaps ------------------------------------------------------------
 
-test_that("pr_design_gaps reproduces the real cohort's design gaps", {
+test_that("pr_design_gaps finds the gaps of a nested design", {
   design <- pv_design()
   gaps <- pr_design_gaps(design, c("Saddle", "Pad", "Weight", "Mode"))
 
-  # 3 saddles x 3 pads x 4 weights x 3 modes = 108 cells; only 44 were run.
+  # 3 saddles x 3 pads x 4 weights x 3 modes = 108 cells; 47 were run, with
+  # a modal replicate count of 5.
   expect_equal(nrow(gaps), 108L)
-  expect_equal(sum(gaps$n), 431L)
-  expect_equal(unique(gaps$expected), 9L)
+  expect_equal(sum(gaps$n), 265L)
+  expect_equal(unique(gaps$expected), 5L)
   expect_equal(as.integer(table(gaps$status)[
     c("missing", "ok", "over", "under")
-  ]), c(64L, 19L, 8L, 17L))
+  ]), c(61L, 30L, 12L, 5L))
 
-  # The over-represented cells are all the K saddle with the K pad -- the
-  # combination every horse was measured on.
+  # The over-represented cells are all saddle A with pad Q, the
+  # combination the design repeats eight times.
   over <- gaps[gaps$status == "over", ]
-  expect_equal(unique(over$Saddle), "K")
-  expect_equal(unique(over$Pad), "K")
-  expect_equal(over$n, c(19L, 19L, 19L, 19L, 19L, 19L, 11L, 11L))
-  expect_equal(over$delta, over$n - 9L)
+  expect_equal(unique(over$Saddle), "A")
+  expect_equal(unique(over$Pad), "Q")
+  expect_equal(over$n, rep(8L, 12))
+  expect_equal(over$delta, over$n - 5L)
+  # The thin cells: one B/Q cell with 3 and the four C/R cells of mode M3.
+  under <- gaps[gaps$status == "under", ]
+  expect_equal(under$n, c(3L, 4L, 4L, 4L, 4L))
+  expect_equal(unique(under$Mode[under$Saddle == "C"]), "M3")
 })
 
 test_that("pr_design_gaps exposes the Saddle/Pad nesting", {
@@ -529,14 +535,15 @@ test_that("pr_design_gaps exposes the Saddle/Pad nesting", {
   gaps <- pr_design_gaps(design, c("Saddle", "Pad"))
 
   expect_equal(nrow(gaps), 9L)
-  expect_equal(gaps$Saddle, rep(c("K", "S", "W"), each = 3))
-  expect_equal(gaps$Pad, rep(c("F", "K", "W"), times = 3))
-  # Pad is nested inside Saddle: S was only ever run with F, W only with W.
-  expect_equal(gaps$n, c(66L, 166L, 0L, 104L, 0L, 0L, 0L, 0L, 95L))
-  expect_equal(sum(gaps$status == "missing"), 5L)
+  expect_equal(gaps$Saddle, rep(c("A", "B", "C"), each = 3))
+  expect_equal(gaps$Pad, rep(c("P", "Q", "R"), times = 3))
+  # Pad is nested inside Saddle: B was only ever run with Q, and C never
+  # with Q.
+  expect_equal(gaps$n, c(45L, 96L, 0L, 0L, 58L, 0L, 10L, 0L, 56L))
+  expect_equal(sum(gaps$status == "missing"), 4L)
   expect_equal(
     gaps$status[gaps$n == 0L],
-    rep("missing", 5)
+    rep("missing", 4)
   )
 })
 
@@ -545,7 +552,7 @@ test_that("a genuinely crossed pair shows no missing cell", {
   gaps <- pr_design_gaps(design, c("Saddle", "Mode"))
   expect_equal(nrow(gaps), 9L)
   expect_equal(sum(gaps$status == "missing"), 0L)
-  expect_equal(sum(gaps$n), 431L)
+  expect_equal(sum(gaps$n), 265L)
 })
 
 test_that("expected can be given explicitly", {

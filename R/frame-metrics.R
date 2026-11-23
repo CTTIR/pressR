@@ -257,8 +257,8 @@ pr_calc_cop_grid <- function(trial, threshold = 0, eps = 1e-12) {
 #' one `max.col()`, and a single matrix product carrying both COP axes.
 #' There is no per-frame R loop, because cohort-scale inputs run to millions
 #' of frames. Measured on a 200,000 x 256 matrix (R 4.6.1, one core):
-#' about 145,000 frames per second, i.e. roughly 70 s for a 5.5 M-frame
-#' cohort, against 73-83 s for the equivalent `vapply()` over rows. The
+#' about 145,000 frames per second, somewhat faster than the equivalent
+#' `vapply()` over rows. The
 #' default `threshold = 0` also skips masking the matrix entirely when no
 #' reading is negative, which saves a full copy of the pressure data.
 #'
