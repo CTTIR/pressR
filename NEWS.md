@@ -54,6 +54,8 @@ CRAN submission:
 * The app no longer prints a stray `NULL` before a recording is loaded, and
   its on-screen tables show six significant digits; downloads and reports
   keep full precision.
+* The saddle report scales its composite figure to the text width; in PDF
+  reports the right-hand panels were previously cut off at the page edge.
 
 
 This is an explicitly versioned successor. Version 0.1.0 and its manuscript
