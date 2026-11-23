@@ -49,6 +49,6 @@ pr_extract_archive(zip, members = "trial.csv", destination = dest)
 #> # A tibble: 1 × 6
 #>   path                        relative_path bytes role  sha256 duplicate_content
 #>   <chr>                       <chr>         <dbl> <chr> <chr>  <lgl>            
-#> 1 /tmp/RtmpUp1IGq/pressr-ext… trial.csv        19 meas… 8f54c… FALSE            
+#> 1 /tmp/Rtmpn9J004/pressr-ext… trial.csv        19 meas… 8f54c… FALSE            
 unlink(c(src, dest, zip), recursive = TRUE)
 ```
