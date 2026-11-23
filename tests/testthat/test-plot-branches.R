@@ -129,8 +129,9 @@ test_that("region overlays draw only region boundaries", {
   expect_equal(nrow(segs), 8L)
   pitch <- 25.4
   co <- layout$coords_mm[cols$block, ]
-  expect_equal(range(c(segs$x, segs$xend)), range(co$x_mm) + c(-1, 1) * pitch / 2)
-  expect_equal(range(c(segs$y, segs$yend)), range(co$y_mm) + c(-1, 1) * pitch / 2)
+  half <- c(-1, 1) * pitch / 2
+  expect_equal(range(c(segs$x, segs$xend)), range(co$x_mm) + half)
+  expect_equal(range(c(segs$y, segs$yend)), range(co$y_mm) + half)
   # The overlay is one segment layer, not one outlined tile per sensor.
   tr <- pr_example_trial("platform")
   masks <- pr_mask_symmetry(tr$layout)
@@ -146,4 +147,51 @@ test_that("composite reports keep their panel order", {
   expect_match(foot[[2]]$labels$title, "Regional")
   expect_match(foot[[3]]$labels$title, "force", ignore.case = TRUE)
   expect_match(foot[[4]]$labels$title, "Centre of pressure")
+})
+
+test_that("region outlines handle one-row, empty and transposed grids", {
+  co <- data.frame(sensor_id = 1:4, row = 1L, col = 1:4)
+  co$x_mm <- (co$col - 1) * 10
+  co$y_mm <- 0
+  strip <- pr_layout(1, 4, matrix(TRUE, 1, 4), co, name = "strip",
+    sensor_area_cm2 = 1
+  )
+  segs <- .region_outline_df(strip, list(pair = 1:2, none = integer()))
+  # Two cells in a row: six edges; the single row falls back to the tile.
+  expect_equal(nrow(segs), 6L)
+  expect_equal(unique(segs$region), "pair")
+  expect_equal(range(c(segs$y, segs$yend)), c(-5, 5))
+  expect_equal(range(c(segs$x, segs$xend)), c(-5, 15))
+  empty <- .region_outline_df(strip, list(none = integer()))
+  expect_equal(nrow(empty), 0L)
+  # Columns running along y are outlined on the y axis.
+  flipped <- co
+  flipped$x_mm <- 0
+  flipped$y_mm <- (co$col - 1) * 10
+  tall <- pr_layout(1, 4, matrix(TRUE, 1, 4), flipped, name = "tall",
+    sensor_area_cm2 = 1
+  )
+  segs <- .region_outline_df(tall, list(pair = 1:2))
+  expect_equal(range(c(segs$y, segs$yend)), c(-5, 15))
+  # A mask without sensors adds no outline layer.
+  tr <- pr_example_trial("saddle_horse")
+  grid <- c(tr$layout$grid_rows, tr$layout$grid_cols)
+  nothing <- list(none = matrix(FALSE, grid[1], grid[2]))
+  p <- pr_plot_heatmap_masked(tr, masks = nothing)
+  geoms <- vapply(p$layers, function(l) class(l$geom)[1], character(1))
+  expect_false("GeomSegment" %in% geoms)
+})
+
+test_that("force plots and foot reports state what is unavailable", {
+  novel <- pr_layout_saddle_novel()
+  pressure <- matrix(1, 5, novel$n_sensors)
+  tr <- pr_trial(pressure, seq(0, by = 0.02, length.out = 5), novel)
+  p <- pr_plot_force_time(tr)
+  expect_match(p$labels$title, "Total force")
+  layout <- pr_layout_platform("cl")
+  flat <- pr_trial(matrix(0, 5, layout$n_sensors),
+    seq(0, by = 0.02, length.out = 5), layout
+  )
+  expect_warning(report <- pr_plot_foot_report(flat))
+  expect_match(report[[2]]$labels$title, "No regions available")
 })

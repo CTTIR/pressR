@@ -75,3 +75,15 @@ test_that("every written sample file reads back without an explicit layout", {
   expect_equal(saddle$layout$name, "saddle_horse")
   expect_equal(saddle$n_sensors, 248L)
 })
+
+test_that("a saddle_mat header with 192 sensors selects the bicycle saddle", {
+  tr <- pr_example_trial("saddle_bicycle")
+  path <- withr::local_tempfile(fileext = ".asc")
+  writeLines(c("System:         saddle_mat", "Sampling Rate:  50 Hz", ""), path)
+  utils::write.table(round(tr$pressure[1:5, ], 2), path, append = TRUE,
+    sep = "\t", row.names = FALSE, col.names = FALSE, quote = FALSE
+  )
+  back <- pr_read_ascii(path, verbose = FALSE)
+  expect_equal(back$layout$name, "saddle_bicycle")
+  expect_equal(back$n_sensors, 192L)
+})

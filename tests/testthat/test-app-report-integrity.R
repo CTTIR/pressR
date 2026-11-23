@@ -126,8 +126,10 @@ test_that("actual PDF reports include the escaped-table dependency", {
 })
 
 test_that("the empty app state does not print a stray NULL", {
-  withr::local_options(list(pressR.preloaded_trial = NULL,
-    shiny.maxRequestSize = NULL, sass.cache = FALSE))
+  withr::local_options(list(
+    pressR.preloaded_trial = NULL, shiny.maxRequestSize = NULL,
+    sass.cache = FALSE
+  ))
   env <- new.env(parent = globalenv())
   sys.source(system.file("shiny", "pressR", "app.R", package = "pressR"), env)
   shiny::testServer(env$server, {
@@ -136,10 +138,12 @@ test_that("the empty app state does not print a stray NULL", {
   })
 })
 
-test_that("on-screen tables round floating-point residue but downloads do not", {
+test_that("on-screen tables round floating-point residue", {
   trial <- pr_example_trial("saddle_horse")
-  withr::local_options(list(pressR.preloaded_trial = trial,
-    shiny.maxRequestSize = NULL, sass.cache = FALSE))
+  withr::local_options(list(
+    pressR.preloaded_trial = trial, shiny.maxRequestSize = NULL,
+    sass.cache = FALSE
+  ))
   env <- new.env(parent = globalenv())
   sys.source(system.file("shiny", "pressR", "app.R", package = "pressR"), env)
   shiny::testServer(env$server, {

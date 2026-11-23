@@ -52,24 +52,26 @@ mask_grid_layout <- function(nr, nc) {
   pr_layout(nr, nc, matrix(TRUE, nr, nc), co, name = "grid")
 }
 
-test_that("pr_mask_saddle_6 regions never overlap and refuse undividable grids", {
+test_that("pr_mask_saddle_6 regions never overlap or come from tiny grids", {
   six <- pr_mask_saddle_6(pr_layout_saddle("horse"))
   cols <- unlist(lapply(six, `[[`, "sensor_cols"))
   expect_false(anyDuplicated(cols) > 0L)
   # 16 rows split 5 / 5 / 6, as documented.
-  rows <- vapply(six[c("cranial_left", "middle_left", "caudal_left")],
-    function(m) sum(rowSums(m$matrix) > 0), numeric(1))
+  thirds <- six[c("cranial_left", "middle_left", "caudal_left")]
+  rows <- vapply(thirds, function(m) sum(rowSums(m$matrix) > 0), numeric(1))
   expect_equal(unname(rows), c(5, 5, 6))
   # Two rows used to put row 1 into both the middle and the caudal region.
-  expect_error(pr_mask_saddle_6(mask_grid_layout(2, 4)), "at least 3 grid rows")
+  expect_error(pr_mask_saddle_6(mask_grid_layout(2, 4)), "3 grid rows")
   expect_error(pr_mask_saddle_6(mask_grid_layout(6, 1)), "2 grid columns")
   three <- pr_mask_saddle_6(mask_grid_layout(3, 2))
   expect_true(all(vapply(three, `[[`, integer(1), "n_sensors") == 1L))
 })
 
-test_that("pr_mask_symmetry refuses a single line and keeps the odd-centre rule", {
-  expect_error(pr_mask_symmetry(mask_grid_layout(3, 1)), "at least two grid columns")
-  expect_error(pr_mask_symmetry(mask_grid_layout(1, 4), "horizontal"), "at least two grid rows")
+test_that("pr_mask_symmetry refuses one grid line and keeps the odd rule", {
+  one_col <- mask_grid_layout(3, 1)
+  one_row <- mask_grid_layout(1, 4)
+  expect_error(pr_mask_symmetry(one_col), "two grid columns")
+  expect_error(pr_mask_symmetry(one_row, "horizontal"), "two grid rows")
   odd <- pr_mask_symmetry(mask_grid_layout(4, 3))
   expect_equal(c(odd$left$n_sensors, odd$right$n_sensors), c(4L, 8L))
 })

@@ -47,7 +47,7 @@ test_that("pr_calc_saddle_slip errors on non-left/right masks", {
   expect_error(pr_calc_saddle_slip(tr, masks = bad))
 })
 
-test_that("pr_calc_saddle_slip classifies a mean at the threshold consistently", {
+test_that("pr_calc_saddle_slip treats a mean at the threshold consistently", {
   tr <- pr_example_trial("saddle_horse")
   si <- pr_calc_saddle_slip(tr)$symmetry_index_mean
   at <- pr_calc_saddle_slip(tr, slip_threshold = abs(si))

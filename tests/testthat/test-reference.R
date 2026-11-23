@@ -24,7 +24,8 @@ test_that("unverified foot and seating cutoffs cannot become numeric overlays", 
 })
 test_that("verified observations cite their DOI and page", {
   saddle <- pr_ref_saddle()
-  expect_true(all(grepl("doi:10.21836/PEM20050301", saddle$source, fixed = TRUE)))
+  doi <- "doi:10.21836/PEM20050301"
+  expect_true(all(grepl(doi, saddle$source, fixed = TRUE)))
   expect_true(all(grepl("p.187", saddle$source, fixed = TRUE)))
   # The abstract states N/cm2; stored kPa values are ten times larger.
   expect_equal(saddle$threshold / 10, c(3.45, 3.03, 3.10, 1.32, 1.14, 1.00))
@@ -32,6 +33,8 @@ test_that("verified observations cite their DOI and page", {
   verified <- foot$source[foot$status == "verified_source"]
   expect_match(verified, "doi:10.1016/S1067-2516(98)80066-5", fixed = TRUE)
   expect_match(verified, "p.303", fixed = TRUE)
-  expect_match(pr_ref_saddle("werner2002")$source[1], "doi:10.21836/PEM20020201", fixed = TRUE)
-  expect_match(pr_ref_saddle("monkemoller2005")$source_url[1], "10.21836/PEM20050201", fixed = TRUE)
+  werner <- pr_ref_saddle("werner2002")$source[1]
+  expect_match(werner, "doi:10.21836/PEM20020201", fixed = TRUE)
+  moenkemoeller <- pr_ref_saddle("monkemoller2005")$source_url[1]
+  expect_match(moenkemoeller, "10.21836/PEM20050201", fixed = TRUE)
 })
