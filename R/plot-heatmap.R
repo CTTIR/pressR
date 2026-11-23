@@ -53,7 +53,8 @@
   coords <- layout$coords_mm
   tile <- .tile_size(layout)
   # Direction of increasing grid column and row in plot coordinates. Grids
-  # are axis-aligned, so each grid axis maps onto one plot axis.
+  # are axis-aligned, so columns run along one plot axis and rows along the
+  # other; a single grid line has no direction (slope 0).
   slope <- function(v, g) {
     if (length(unique(g)) < 2L) return(0)
     unname(stats::coef(stats::lm(v ~ g))[2])
@@ -62,12 +63,8 @@
   col_dy <- slope(coords$y_mm, coords$col)
   row_dx <- slope(coords$x_mm, coords$row)
   row_dy <- slope(coords$y_mm, coords$row)
-  col_on_x <- abs(col_dx) >= abs(col_dy)
-  row_on_x <- abs(row_dx) > abs(row_dy)
-  if (col_on_x == row_on_x) {
-    col_on_x <- TRUE
-    row_on_x <- FALSE
-  }
+  col_on_x <- abs(col_dx) + abs(row_dy) >= abs(col_dy) + abs(row_dx)
+  row_on_x <- !col_on_x
   sgn <- function(v) if (v < 0) -1 else 1
   col_step <- if (col_on_x) col_dx else col_dy
   row_step <- if (row_on_x) row_dx else row_dy
@@ -87,9 +84,9 @@
       list(dr = 0L, dc = 1L), list(dr = 0L, dc = -1L),
       list(dr = 1L, dc = 0L), list(dr = -1L, dc = 0L)
     )
+    # Every finite region has at least one open edge in each direction.
     segs <- lapply(pieces, function(step) {
       open <- !paste(d$row + step$dr, d$col + step$dc) %in% key
-      if (!any(open)) return(NULL)
       e <- d[open, , drop = FALSE]
       on_x <- if (step$dc != 0L) col_on_x else row_on_x
       dir <- if (step$dc != 0L) step$dc * col_sign else step$dr * row_sign
@@ -102,14 +99,15 @@
       }
     })
     segs <- do.call(rbind, segs)
-    if (is.null(segs)) return(NULL)
     segs$region <- nm
     segs
   })
   out <- do.call(rbind, out)
   if (is.null(out)) {
-    out <- data.frame(x = numeric(), xend = numeric(), y = numeric(),
-      yend = numeric(), region = character())
+    out <- data.frame(
+      x = numeric(), xend = numeric(), y = numeric(), yend = numeric(),
+      region = character()
+    )
   }
   out
 }
@@ -121,8 +119,10 @@
   segs$region <- factor(segs$region, levels = names(regions))
   p + ggplot2::geom_segment(
     data = segs,
-    ggplot2::aes(x = .data$x, y = .data$y, xend = .data$xend,
-      yend = .data$yend, colour = .data$region),
+    ggplot2::aes(
+      x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend,
+      colour = .data$region
+    ),
     linewidth = 0.7, lineend = "square", inherit.aes = FALSE
   ) + ggplot2::guides(colour = ggplot2::guide_legend(title = "Region"))
 }
@@ -214,7 +214,9 @@ pr_plot_heatmap <- function(trial, frame = NULL,
     ggplot2::theme_minimal(base_size = 11)
 
   if (show_regions && length(trial$layout$regions) > 0L) {
-    regions <- lapply(trial$layout$regions, .mask_to_cols, layout = trial$layout)
+    regions <- lapply(trial$layout$regions, .mask_to_cols,
+      layout = trial$layout
+    )
     p <- .add_region_outlines(p, trial$layout, regions)
   }
   p

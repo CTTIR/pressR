@@ -53,7 +53,7 @@
   m[18, 3:4] <- TRUE  # 2
 
   # Sum: 6+6+8+8+7+6+5+5+5+5+5+5+5+7+7+4+3+2 = 99
-  if (sum(m) != 99L) cli::cli_abort("Internal insole mask must have 99 sensors.", .internal = TRUE)
+  if (sum(m) != 99L) cli::cli_abort("Bad insole mask.", .internal = TRUE)
   m
 }
 
@@ -386,7 +386,7 @@ pr_layout_seat <- function(type = c("wheelchair", "car", "office")) {
   m[5, 4:9] <- TRUE
   m[6, 4:9] <- TRUE
   # Total 5+4+5+6+6+6 = 32
-  if (sum(m) != 32L) cli::cli_abort("Internal glove mask must have 32 sensors.", .internal = TRUE)
+  if (sum(m) != 32L) cli::cli_abort("Bad glove mask.", .internal = TRUE)
   m
 }
 

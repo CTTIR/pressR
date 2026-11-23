@@ -108,7 +108,9 @@ pr_calc_saddle_slip <- function(trial, masks = NULL,
                                 slip_threshold = 15) {
   .validate_trial(trial)
   .tp_check_scalar(slip_threshold, "slip_threshold")
-  if (slip_threshold < 0) cli::cli_abort("{.arg slip_threshold} must be non-negative.")
+  if (slip_threshold < 0) {
+    cli::cli_abort("{.arg slip_threshold} must be non-negative.")
+  }
   if (is.null(masks)) masks <- pr_mask_symmetry(trial$layout, "vertical")
   reg <- pr_mask_apply(trial, masks)
 

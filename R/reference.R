@@ -24,7 +24,10 @@ pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller
       region = rep(c("cranial", "middle", "caudal"), 2),
       parameter = rep(c("mpp", "mvp"), each = 3), threshold = c(34.5, 30.3, 31, 13.2, 11.4, 10), unit = "kPa",
       interpretation = "Association observed in 26 horses at trot; not a validated diagnostic rule.",
-      source = "Nyikos et al. (2005), Pferdeheilkunde 21:187-198, doi:10.21836/PEM20050301, abstract p.187.",
+      source = paste(
+        "Nyikos et al. (2005), Pferdeheilkunde 21:187-198,",
+        "doi:10.21836/PEM20050301, abstract p.187."
+      ),
       source_url = "https://pferdeheilkunde.de/files/20050301.pdf", status = "verified_source",
       species = "equine", gait = "trot", region_scheme = "nyikos_six_masks"
     ))
@@ -37,9 +40,18 @@ pr_ref_saddle <- function(source = c("nyikos2005", "vonpeinen2010", "monkemoller
     threshold = NA_real_, unit = "kPa",
     interpretation = if (source == "vonpeinen2010") "Withdrawn attribution: use Nyikos 2005 for the six source observations." else "Withdrawn: legacy region-specific values are not verified against an exact source table.",
     source = switch(source,
-      vonpeinen2010 = "von Peinen et al. (2010), Equine Veterinary Journal 42:650-653, doi:10.1111/j.2042-3306.2010.00191.x.",
-      monkemoller2005 = "Moenkemoeller et al. (2005), Pferdeheilkunde 21:102-114, doi:10.21836/PEM20050201.",
-      werner2002 = "Werner et al. (2002), Pferdeheilkunde 18:125-140, doi:10.21836/PEM20020201."
+      vonpeinen2010 = paste(
+        "von Peinen et al. (2010), Equine Veterinary Journal 42:650-653,",
+        "doi:10.1111/j.2042-3306.2010.00191.x."
+      ),
+      monkemoller2005 = paste(
+        "Moenkemoeller et al. (2005), Pferdeheilkunde 21:102-114,",
+        "doi:10.21836/PEM20050201."
+      ),
+      werner2002 = paste(
+        "Werner et al. (2002), Pferdeheilkunde 18:125-140,",
+        "doi:10.21836/PEM20020201."
+      )
     ),
     source_url = switch(source_id,
       vonpeinen2010 = "https://doi.org/10.1111/j.2042-3306.2010.00191.x",

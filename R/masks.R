@@ -92,8 +92,9 @@ pr_mask_symmetry <- function(layout, axis = c("vertical", "horizontal")) {
   n_lines <- if (axis == "vertical") layout$grid_cols else layout$grid_rows
   if (n_lines < 2L) {
     # With one line the first half would be empty and every index -200%.
+    lines <- if (axis == "vertical") "columns" else "rows"
     cli::cli_abort(
-      "A {axis} split needs at least two grid {if (axis == 'vertical') 'columns' else 'rows'}, not {n_lines}."
+      "A {axis} split needs at least two grid {lines}, not {n_lines}."
     )
   }
   if (axis == "vertical") {
@@ -143,8 +144,10 @@ pr_mask_saddle_6 <- function(layout) {
   nc <- layout$grid_cols
   if (nr < 3L || nc < 2L) {
     cli::cli_abort(c(
-      "The six-region saddle mask needs at least 3 grid rows and 2 grid columns.",
-      "x" = "The layout grid is {nr} x {nc}; its thirds and halves would overlap or be empty."
+      "The six-region saddle mask needs at least 3 grid rows and 2 grid
+       columns.",
+      "x" = "The layout grid is {nr} x {nc}; its thirds and halves would
+             overlap or be empty."
     ))
   }
 

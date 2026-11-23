@@ -21,7 +21,10 @@ pr_interpolate <- function(trial, factor = 2L) {
   factor <- as.integer(factor)
   if (factor < 1L) cli::cli_abort("{.arg factor} must be a positive integer.")
   if (trial$n_frames == 0L) {
-    cli::cli_abort("{.arg trial} has no frames, so there is no maximum pressure picture to interpolate.")
+    cli::cli_abort(paste(
+      "{.arg trial} has no frames, so there is no maximum pressure picture",
+      "to interpolate."
+    ))
   }
 
   layout <- trial$layout

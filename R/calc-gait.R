@@ -26,7 +26,9 @@ pr_calc_gait_cycles <- function(trial, force_threshold = 20,
   .tp_check_scalar(min_stance_ms, "min_stance_ms")
   .tp_check_scalar(min_swing_ms, "min_swing_ms")
   if (min_stance_ms < 0 || min_swing_ms < 0) {
-    cli::cli_abort("{.arg min_stance_ms} and {.arg min_swing_ms} must be non-negative.")
+    cli::cli_abort(
+      "{.arg min_stance_ms} and {.arg min_swing_ms} must be non-negative."
+    )
   }
   f <- pr_calc_force(trial)
   if (length(f) && !any(is.finite(f))) cli::cli_abort("Force-based gait detection requires a calibrated force measurement; use pressure stride analysis for an uncalibrated saddle mat.")

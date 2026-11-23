@@ -57,12 +57,14 @@ pr_read_mask <- function(path, layout = NULL, name = "imported",
       c(x, rep("0", maxc - length(x)))
     })
   }
-  mat <- do.call(rbind, lapply(data_lines, function(x) suppressWarnings(as.numeric(x))))
+  mat <- do.call(rbind, lapply(data_lines, function(x) {
+    suppressWarnings(as.numeric(x))
+  }))
   if (anyNA(mat)) {
-    bad <- which(rowSums(is.na(mat)) > 0L)
+    bad <- paste(which(rowSums(is.na(mat)) > 0L), collapse = ", ")
     cli::cli_abort(c(
       "Mask rows must contain numbers only.",
-      "x" = "Non-numeric value in matrix row(s) {paste(bad, collapse = ', ')} of {.path {path}}."
+      "x" = "Non-numeric value in matrix row(s) {bad} of {.path {path}}."
     ))
   }
   mask_mat <- mat != 0
