@@ -111,6 +111,11 @@ pr_calc_saddle_slip <- function(trial, masks = NULL,
   if (slip_threshold < 0) {
     cli::cli_abort("{.arg slip_threshold} must be non-negative.")
   }
+  if (trial$n_frames == 0L) {
+    cli::cli_abort(
+      "{.arg trial} has no frames, so there is no loading to compare."
+    )
+  }
   if (is.null(masks)) masks <- pr_mask_symmetry(trial$layout, "vertical")
   reg <- pr_mask_apply(trial, masks)
 

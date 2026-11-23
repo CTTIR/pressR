@@ -58,3 +58,15 @@ test_that("pr_calc_saddle_slip treats a mean at the threshold consistently", {
   expect_true(below$is_asymmetric)
   expect_equal(below$dominant_side, if (si > 0) "left" else "right")
 })
+
+test_that("pr_calc_saddle_slip refuses a recording without frames", {
+  layout <- pr_layout_saddle("horse")
+  empty <- pr_trial(matrix(numeric(0), 0, layout$n_sensors), numeric(0), layout)
+  # This used to fail inside the comparison with a bare missing-value error.
+  expect_error(pr_calc_saddle_slip(empty), "no frames")
+  # A recording with frames but no load stays balanced.
+  idle <- pr_trial(matrix(0, 3, layout$n_sensors), c(0, 0.02, 0.04), layout)
+  res <- pr_calc_saddle_slip(idle)
+  expect_equal(res$symmetry_index_mean, 0)
+  expect_equal(res$dominant_side, "balanced")
+})
