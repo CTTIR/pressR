@@ -4,6 +4,12 @@
 #' a binary region matrix. The expected format is a text matrix of 0/1
 #' (or non-zero) values, optionally preceded by a short header.
 #'
+#' Lines with fewer than two tokens, or in which at least a fifth of the
+#' tokens are non-numeric (such as a header), are skipped. The remaining
+#' matrix rows must consist of numbers only; a stray token inside the matrix
+#' is an error rather than a missing cell. Rows shorter than the widest row
+#' are padded with `0` (outside the region) at their end.
+#'
 #' @param path Character. Path to the mask file.
 #' @param layout A [pr_layout] object. Required if the mask dimensions
 #'   must be validated against a specific layout; otherwise, the mask is
@@ -51,7 +57,14 @@ pr_read_mask <- function(path, layout = NULL, name = "imported",
       c(x, rep("0", maxc - length(x)))
     })
   }
-  mat <- do.call(rbind, lapply(data_lines, as.numeric))
+  mat <- do.call(rbind, lapply(data_lines, function(x) suppressWarnings(as.numeric(x))))
+  if (anyNA(mat)) {
+    bad <- which(rowSums(is.na(mat)) > 0L)
+    cli::cli_abort(c(
+      "Mask rows must contain numbers only.",
+      "x" = "Non-numeric value in matrix row(s) {paste(bad, collapse = ', ')} of {.path {path}}."
+    ))
+  }
   mask_mat <- mat != 0
 
   if (verbose) {

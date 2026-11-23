@@ -27,6 +27,13 @@ Parses \code{.msa} / \code{.msr} / \code{.msp} mask files or any text file conta
 a binary region matrix. The expected format is a text matrix of 0/1
 (or non-zero) values, optionally preceded by a short header.
 }
+\details{
+Lines with fewer than two tokens, or in which at least a fifth of the
+tokens are non-numeric (such as a header), are skipped. The remaining
+matrix rows must consist of numbers only; a stray token inside the matrix
+is an error rather than a missing cell. Rows shorter than the widest row
+are padded with \code{0} (outside the region) at their end.
+}
 \examples{
 tmp <- tempfile(fileext = ".msa")
 writeLines(c(

@@ -191,3 +191,15 @@ test_that("pr_read_mask errors on layout dimension mismatch", {
     pr_read_mask(tmp, layout = pr_layout_saddle("horse"), verbose = FALSE)
   )
 })
+
+test_that("pr_read_mask refuses non-numeric tokens inside the matrix", {
+  tmp <- withr::local_tempfile(fileext = ".msa")
+  # Five of six tokens are numeric, so the row passes the header test; the
+  # stray token used to become a missing mask cell with a coercion warning.
+  writeLines(c("Mask file", "1 1 0 0 0 0", "1 1 x 0 0 0"), tmp)
+  expect_error(pr_read_mask(tmp, verbose = FALSE), "numbers only")
+  writeLines(c("Mask file", "1 1 0 0 0 0", "1 1 0 0 0 0"), tmp)
+  expect_no_warning(m <- pr_read_mask(tmp, verbose = FALSE))
+  expect_equal(dim(m), c(2L, 6L))
+  expect_false(anyNA(m))
+})
