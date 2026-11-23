@@ -2,14 +2,20 @@
 # Zones, symmetry and masked COP.
 #
 # Reference values are derived from the definitions in the test itself, never
-# by calling the function under test a second way. The real-data values come
-# from the committed 200-frame fixture; the same code run on the full
-# 869-frame recording reproduces the study's own zone_pressure table for
-# ID052_K_K_KG00_MS to ten decimal places (Cranial-Right 2.3169303797 /
-# 6.817894131 / 21, Middle-Left 0.2723017357 / 2.533371692 / 9, and so on).
+# by calling the function under test a second way. The recording-level checks
+# use the synthetic saddle export in fixtures/, whose expected values are
+# recomputed here from its designed pressures (helper-synthetic-saddle.R).
 # ---------------------------------------------------------------------------
 
-fixture <- function() test_path("fixtures", "ID052_K_K_KG00_MS.asc")
+fixture <- function() test_path("fixtures", "synthetic_saddle_MS.asc")
+
+# Time-averaged cell means of the synthetic recording as a 16 x 16 grid.
+rs_fixture_means <- function() {
+  matrix(colMeans(synthetic_saddle_grid()), 16, 16)
+}
+
+# Signed asymmetry of two means, (L - R) / mean(L, R) in percent.
+rs_asym <- function(l, r) (l - r) / (0.5 * (l + r)) * 100
 
 # A 4x4 identity-mapped layout: pressure column k is grid cell k in
 # column-major order.
@@ -245,33 +251,31 @@ test_that("pr_calc_regional_map's peak sits below pr_calc_regional's mpp", {
   expect_true(all(sensor_first$zone_peak_kPa < frame_first$mpp))
 })
 
-test_that("pr_calc_regional_map reproduces the study's zone table", {
+test_that("pr_calc_regional_map matches the fixture's zone table", {
   trial <- pr_read_pliance(fixture())
   masks <- pr_mask_rowbands(trial$layout, breaks = c(5, 11))
   z <- pr_calc_regional_map(trial, masks)
 
-  expect_equal(
-    z$zone_mean_kPa,
-    c(1.79965625, 2.34828125, 0.258177083333333, 3.10752604166667,
-      0, 2.280406250),
-    tolerance = 1e-9
+  # Independent recomputation from the designed cell means: bands of rows
+  # 1-5 / 6-11 / 12-16, left = columns 1-8.
+  v <- rs_fixture_means()
+  zones <- list(
+    cranial_left = v[1:5, 1:8], cranial_right = v[1:5, 9:16],
+    middle_left = v[6:11, 1:8], middle_right = v[6:11, 9:16],
+    caudal_left = v[12:16, 1:8], caudal_right = v[12:16, 9:16]
   )
-  expect_equal(
-    z$zone_peak_kPa,
-    c(6.31875, 6.82750, 2.43500, 6.41625, 0, 6.35375),
-    tolerance = 1e-9
+  expect_identical(z$zone, names(zones))
+  expect_equal(z$zone_mean_kPa, unname(vapply(zones, mean, numeric(1))))
+  expect_equal(z$zone_peak_kPa, unname(vapply(zones, max, numeric(1))))
+  expect_identical(
+    z$zone_loaded,
+    unname(vapply(zones, function(x) sum(x > 0), integer(1)))
   )
-  expect_identical(z$zone_loaded, c(19L, 19L, 7L, 31L, 0L, 23L))
-
-  # Independent recomputation straight from the pressure matrix.
-  v <- colMeans(trial$pressure)
-  co <- trial$layout$coords_mm
-  left <- co$col <= 8
-  band <- cut(co$row, c(0, 5, 11, 16), labels = FALSE)
-  want <- unlist(lapply(1:3, function(b) {
-    c(mean(v[band == b & left]), mean(v[band == b & !left]))
-  }))
-  expect_equal(z$zone_mean_kPa, unname(want))
+  # The design never loads the caudal left zone, and every other zone is
+  # loaded somewhere.
+  expect_identical(z$zone_loaded[5], 0L)
+  expect_equal(c(z$zone_mean_kPa[5], z$zone_peak_kPa[5]), c(0, 0))
+  expect_true(all(z$zone_loaded[-5] > 0L))
 })
 
 test_that("pr_calc_regional_map rejects unusable arguments", {
@@ -349,15 +353,25 @@ test_that("pr_calc_symmetry_map accepts a region of interest or two sides", {
 
 test_that("pr_calc_symmetry_map matches the fixture recording", {
   trial <- pr_read_pliance(fixture())
+  v <- rs_fixture_means()
+  left <- v[, 1:8]
+  right <- v[, 9:16]
+
   s <- pr_calc_symmetry_map(trial)
-  expect_equal(s$left_value, 0.659208984375, tolerance = 1e-12)
-  expect_equal(s$right_value, 2.611787109375, tolerance = 1e-12)
-  expect_equal(s$asymmetry_pct, -119.38737124944, tolerance = 1e-10)
+  expect_equal(s$left_value, mean(left))
+  expect_equal(s$right_value, mean(right))
+  expect_equal(s$asymmetry_pct, rs_asym(mean(left), mean(right)))
+  # The left panel's contact patch is designed smaller than the right's.
+  expect_lt(s$asymmetry_pct, -50)
 
   # Restricting to the loaded cells only is a far milder number: the left
   # side of this mat loses contact area, not intensity.
-  expect_equal(pr_calc_symmetry_map(trial, denominator = "loaded")$asymmetry_pct,
-               -34.1022616891, tolerance = 1e-9)
+  loaded <- pr_calc_symmetry_map(trial, denominator = "loaded")$asymmetry_pct
+  expect_equal(
+    loaded,
+    rs_asym(mean(left[left > 0]), mean(right[right > 0]))
+  )
+  expect_lt(abs(loaded), abs(s$asymmetry_pct) / 5)
 })
 
 test_that("pr_calc_symmetry_map rejects unusable masks", {
@@ -408,25 +422,39 @@ test_that("pr_symmetry_sensitivity's balance step is what equalises the sides", 
   expect_equal(bal$asymmetry_pct, (2 - 11 / 3) / (0.5 * (2 + 11 / 3)) * 100)
 })
 
-test_that("pr_symmetry_sensitivity balances a real lopsided mask", {
+test_that("pr_symmetry_sensitivity balances a lopsided recorded mask", {
   trial <- pr_read_pliance(fixture())
   layout <- trial$layout
-  ever <- matrix(FALSE, 16, 16)
-  co <- layout$coords_mm
-  ever[cbind(co$row, co$col)] <- colMeans(trial$pressure) > 0
+  v <- rs_fixture_means()
+  ever <- v > 0
 
+  # By design 22 left and 65 right cells ever carry load.
   raw <- pr_symmetry_sensitivity(trial, list(loaded = ever), balance = FALSE)
-  expect_identical(c(raw$n_left, raw$n_right), c(26L, 73L))
-  expect_equal(raw$asymmetry_pct, -34.1022616891, tolerance = 1e-9)
+  expect_identical(c(raw$n_left, raw$n_right), c(22L, 65L))
+  expect_identical(
+    c(raw$n_left, raw$n_right),
+    c(sum(ever[, 1:8]), sum(ever[, 9:16]))
+  )
+  expect_equal(
+    raw$asymmetry_pct,
+    rs_asym(mean(v[, 1:8][ever[, 1:8]]), mean(v[, 9:16][ever[, 9:16]]))
+  )
 
+  # Balancing keeps a cell only when its mirror cell (column 17 - c) is in
+  # the mask too.
+  mirrored <- ever & ever[, 16:1]
   bal <- pr_symmetry_sensitivity(trial, list(loaded = ever))
-  expect_identical(c(bal$n_left, bal$n_right), c(19L, 19L))
-  expect_equal(bal$asymmetry_pct, -43.5053834388, tolerance = 1e-9)
+  expect_identical(c(bal$n_left, bal$n_right), c(22L, 22L))
+  expect_identical(bal$n_left, sum(mirrored[, 1:8]))
+  expect_equal(
+    bal$asymmetry_pct,
+    rs_asym(mean(v[, 1:8][mirrored[, 1:8]]), mean(v[, 9:16][mirrored[, 9:16]]))
+  )
 
   # The whole-mat scheme is symmetric already and is unmoved by balancing.
   whole <- pr_symmetry_sensitivity(trial, list(mat = layout$active))
   expect_identical(c(whole$n_left, whole$n_right), c(128L, 128L))
-  expect_equal(whole$asymmetry_pct, -119.38737124944, tolerance = 1e-10)
+  expect_equal(whole$asymmetry_pct, rs_asym(mean(v[, 1:8]), mean(v[, 9:16])))
 })
 
 test_that("pr_symmetry_sensitivity rejects a family it cannot label", {
@@ -513,7 +541,7 @@ test_that("pr_calc_cop_masked refuses to invent millimetres", {
                "should be one of")
 })
 
-test_that("pr_calc_cop_masked stays inside each region on real data", {
+test_that("pr_calc_cop_masked stays inside each region of a recording", {
   trial <- pr_read_pliance(fixture())
   masks <- pr_mask_rowbands(trial$layout, breaks = c(5, 11))
   cops <- pr_calc_cop_masked(trial, masks)
@@ -532,8 +560,20 @@ test_that("pr_calc_cop_masked stays inside each region on real data", {
   # The caudal left zone never loads in this recording.
   expect_true(all(is.na(cops$caudal_left$x)))
 
-  expect_equal(cols[["cranial_left"]], 5.2304162309, tolerance = 1e-9)
-  expect_equal(rows[["middle_right"]], 8.4653894730, tolerance = 1e-9)
+  # Per-frame pressure-weighted centroids in grid units, averaged over the
+  # frames in which the zone carries load.
+  truth <- synthetic_saddle_grid()
+  grid_row <- rep(1:16, times = 16)
+  grid_col <- rep(1:16, each = 16)
+  zone_cop <- function(in_zone, coord) {
+    p <- truth[, in_zone, drop = FALSE]
+    w <- rowSums(p)
+    mean((p %*% coord[in_zone])[w > 0] / w[w > 0])
+  }
+  cranial_left <- grid_row <= 5 & grid_col <= 8
+  middle_right <- grid_row >= 6 & grid_row <= 11 & grid_col >= 9
+  expect_equal(cols[["cranial_left"]], zone_cop(cranial_left, grid_col))
+  expect_equal(rows[["middle_right"]], zone_cop(middle_right, grid_row))
 })
 
 test_that("pr_calc_cop_masked rejects unusable arguments", {

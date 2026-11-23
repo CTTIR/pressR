@@ -35,7 +35,7 @@ tp_trial_mat <- function(P, fs = 50, layout = tp_layout()) {
 }
 
 tp_fixture <- function() {
-  pr_read_pliance(test_path("fixtures", "ID052_K_K_KG00_MS.asc"),
+  pr_read_pliance(test_path("fixtures", "synthetic_saddle_MS.asc"),
                   layout = pr_layout_saddle_novel())
 }
 
@@ -210,20 +210,29 @@ test_that("pr_calc_stride_cycles segments a clean 1 Hz oscillation", {
   expect_equal(cycles$start_s, (cycles$start_idx - 1) / fs)
 })
 
-test_that("pr_calc_stride_cycles reproduces the study on the reference file", {
+test_that("pr_calc_stride_cycles recovers the fixture's designed strides", {
   cycles <- pr_calc_stride_cycles(tp_fixture())
 
-  # Ground truth for ID052_K_K_KG00_MS, first cycle, from the study's
-  # strides.rds. The fixture is the first 200 frames of that recording, so
-  # only the first cycle is unaffected by the truncated baseline window.
-  expect_equal(cycles$cycle[1], 1L)
-  expect_equal(cycles$start_idx[1], 3L)
-  expect_equal(cycles$end_idx[1], 38L)
-  expect_equal(cycles$start_s[1], 0.06)
-  expect_equal(cycles$end_s[1], 0.76)
-  expect_equal(cycles$duration_s[1], 0.70)
-  expect_equal(cycles$peak_total[1], 4.25)
-  expect_equal(cycles$stride_freq[1], 1 / 0.70)
+  # The synthetic recording's load peaks every 45 frames (0.90 s at 50 Hz),
+  # first at frame 3, so each cycle runs from one designed peak to the next.
+  peaks <- synthetic_saddle_peaks()
+  expect_equal(peaks, c(3, 48, 93, 138, 183))
+  expect_identical(cycles$cycle, seq_len(length(peaks) - 1L))
+  expect_identical(cycles$start_idx, as.integer(peaks[-length(peaks)]))
+  expect_identical(cycles$end_idx, as.integer(peaks[-1]))
+  # The export stamps frame i at i * 0.02 s.
+  expect_equal(cycles$start_s, peaks[-length(peaks)] * 0.02)
+  expect_equal(cycles$end_s, peaks[-1] * 0.02)
+  expect_equal(cycles$duration_s, rep(0.90, 4))
+  expect_equal(cycles$stride_freq, rep(1 / 0.90, 4))
+
+  # The first peak sits inside the unsmoothed ends: the moving average
+  # leaves frames 1-5 as recorded, and the running median's end rule takes
+  # the median of frames 1-5 as frame 3's baseline. Frames 2 and 4 are
+  # equal by design, so the band-passed peak is total[3] - total[2].
+  total <- rowSums(synthetic_saddle_grid())
+  expect_equal(total[2], total[4])
+  expect_equal(cycles$peak_total[1], total[3] - total[2])
 })
 
 test_that("pr_calc_stride_cycles gives 'mean' the same cuts as 'total'", {
@@ -494,17 +503,19 @@ test_that("pr_cop_shape drops incomplete coordinate pairs", {
   expect_equal(shape$closure_dist, 5)
 })
 
-test_that("pr_cop_shape works on a real stride's centre of pressure", {
+test_that("pr_cop_shape works on a recorded stride's centre of pressure", {
   trial <- tp_fixture()
   cop <- pr_calc_cop_grid(trial)
   cycles <- pr_calc_stride_cycles(trial)
   seg <- cop[cycles$start_idx[1]:cycles$end_idx[1], ]
 
   shape <- pr_cop_shape(seg)
-  expect_equal(shape$n_points, 36L)       # frames 3:38 inclusive
+  expect_equal(shape$n_points, 46L)       # frames 3:48 inclusive
   # The COP stays inside the 16 x 16 grid, so no distance can exceed its
   # diagonal.
   expect_lt(shape$closure_dist, sqrt(2) * 15)
+  # Two cells settle in over the recording, so a stride does not return
+  # exactly to where it started.
   expect_true(shape$closure_ratio > 0 && shape$closure_ratio < 1)
 })
 

@@ -604,9 +604,10 @@ test_that("pr_design_gaps rejects bad input", {
 
 # Integration with the reader ------------------------------------------------
 
-test_that("a design table from a real recording locks and verifies", {
-  path <- test_path("fixtures", "ID052_K_K_KG00_MS.asc")
-  skip_if_not(file.exists(path))
+test_that("a design table from a Pliance recording locks and verifies", {
+  # The synthetic export, under a file name that encodes the design factors.
+  path <- file.path(withr::local_tempdir(), "SYN01_A_B_KG00_MS.asc")
+  file.copy(test_path("fixtures", "synthetic_saddle_MS.asc"), path)
 
   trial <- pr_read_pliance(path)
   design <- pr_design_table(pr_dataset(list(trial)))
@@ -620,7 +621,7 @@ test_that("a design table from a real recording locks and verifies", {
   expect_true("n_frames" %in% lock$columns[[1]])
   expect_true(as.logical(suppressMessages(pr_verify_lock(design, lock_path))))
 
-  # The truncated fixture is 200 frames at 50 Hz.
+  # The fixture is 200 frames at 50 Hz.
   expect_equal(design$n_frames, 200L)
 
   res <- pr_validate_summary(
@@ -629,19 +630,19 @@ test_that("a design table from a real recording locks and verifies", {
       frames_positive = function(d) d$n_frames > 0,
       unit_kpa = function(d) all(d$pressure_unit == "kPa")
     ),
-    label = "ID052 fixture"
+    label = "synthetic fixture"
   )
   expect_true(all(res$passed))
 
   # The filename encodes the design factors; contract them against the
-  # cohort's real level sets.
+  # declared level sets.
   meta <- pr_meta_from_filename(
     basename(path), c("ID", "Saddle", "Pad", "Weight", "Mode")
   )
   expect_identical(
     pr_factor_contract(
       meta,
-      list(Saddle = "K", Pad = "K", Weight = "KG00", Mode = "MS"),
+      list(Saddle = "A", Pad = "B", Weight = "KG00", Mode = "MS"),
       id_cols = "ID"
     ),
     meta

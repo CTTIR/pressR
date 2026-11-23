@@ -26,3 +26,4 @@
 ^planning$
 ^\.git$
 (^|/)Rplots\.pdf$
+^data-raw$

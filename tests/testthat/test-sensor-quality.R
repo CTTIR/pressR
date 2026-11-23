@@ -67,9 +67,12 @@ sq_ref_gradient <- function(M, edge = NA_real_) {
 }
 
 sq_fixture_trial <- function() {
-  pr_read_pliance(test_path("fixtures", "ID052_K_K_KG00_MS.asc"),
+  pr_read_pliance(test_path("fixtures", "synthetic_saddle_MS.asc"),
                   layout = pr_layout_saddle_novel())
 }
+
+# Column-major grid position of cell (row, col) on the 16 x 16 saddle mat.
+sq_cell <- function(row, col) (col - 1L) * 16L + row
 
 # ---- pr_sensor_quality: values ---------------------------------------------
 
@@ -233,24 +236,37 @@ test_that("pr_sensor_quality reproduces the fixture recording's own stats", {
     pr_sensor_quality(list(trial), saturation_kpa = 63.75)$flag
   )
 
-  # This fixture is the first 200 frames of the recording -- the mat is
-  # still being loaded, nothing anywhere reaches 8 kPa, and most of the
-  # grid has never been touched.
+  # Nothing in this recording reaches 8 kPa, and most of the grid is never
+  # touched. The flags follow the documented order: dead, then saturated,
+  # then low variance.
   expect_equal(max(q$max_across_files), 7)
   expect_identical(sum(q$flag == "Saturated (>60 kPa)"), 0L)
+  pct_zero <- 100 * colMeans(P == 0)
+  spread <- apply(P, 2, stats::sd)
+  want <- ifelse(pct_zero > 95, "Dead (>95% zero)",
+    ifelse(spread < 0.1, "Low variance", "OK")
+  )
+  expect_identical(q$flag, unname(want))
+  expect_true(all(c("Dead (>95% zero)", "Low variance", "OK") %in% q$flag))
+  # The designed stuck cells, constant at 2.75 kPa, are the low-variance
+  # ones.
   expect_identical(
-    as.integer(table(q$flag)[c("Dead (>95% zero)", "Low variance", "OK")]),
-    c(158L, 16L, 82L)
+    which(q$flag == "Low variance"),
+    sort(sq_cell(c(2L, 2L, 7L, 10L), c(13L, 14L, 16L, 3L)))
   )
 
-  # Drop the cut-off into the range the excerpt does reach and exactly the
-  # cells at or above it are flagged, minus those already called dead.
+  # Drop the cut-off into the range the recording does reach and exactly
+  # the cells at or above it are flagged, minus those already called dead.
   q6 <- pr_sensor_quality(list(trial), saturation_kpa = 6)
   expect_identical(
     which(q6$flag == "Saturated (>60 kPa)"),
     which(q$max_across_files >= 6 & q$pct_zero_mean <= 95)
   )
   expect_gt(length(which(q6$flag == "Saturated (>60 kPa)")), 0L)
+  # The transient 6.5 kPa contact in two frames stays dead, not saturated.
+  transient <- sq_cell(14L, 15L)
+  expect_equal(q$max_across_files[transient], 6.5)
+  expect_identical(q6$flag[transient], "Dead (>95% zero)")
 })
 
 test_that("pr_sensor_quality reports on the grid, not the device channel", {
@@ -441,7 +457,7 @@ test_that("pr_calc_gradient refuses to interpolate across inactive cells", {
   expect_identical(sum(is.na(g$gradient)), 2L)
 })
 
-test_that("pr_calc_gradient reproduces the study's zero-filled convention", {
+test_that("pr_calc_gradient zero-fills the edges of a recorded map", {
   trial <- sq_fixture_trial()
 
   gz <- pr_calc_gradient(trial, edges = "zero")
@@ -451,20 +467,24 @@ test_that("pr_calc_gradient reproduces the study's zero-filled convention", {
   ring <- gz$row %in% c(1L, 16L) | gz$col %in% c(1L, 16L)
   expect_identical(sum(ring), 60L)
   expect_equal(gz$gradient[ring], rep(0, 60))
-  # 59 interior cells are flat in this excerpt, so a zero gradient is not
-  # by itself evidence of an edge cell -- which is the whole objection to
-  # the zero-filling convention.
-  expect_identical(sum(gz$gradient[!ring] == 0), 59L)
-  expect_equal(max(gz$gradient), 3.9382393, tolerance = 1e-7)
-  expect_identical(c(gz$row[which.max(gz$gradient)],
-                     gz$col[which.max(gz$gradient)]), c(4L, 7L))
-
-  # Against an explicit loop over the mean map, cell for cell.
-  mean_map <- pr_sensor_map(trial, "mean")
-  M <- matrix(0, 16, 16)
-  M[cbind(mean_map$row, mean_map$col)] <- mean_map$value
+  # Against an explicit loop over the designed mean map, cell for cell.
+  M <- matrix(colMeans(synthetic_saddle_grid()), 16, 16)
   ref <- sq_ref_gradient(M, edge = 0)
   expect_equal(gz$gradient, as.numeric(ref[cbind(gz$row, gz$col)]))
+
+  # Interior cells in the never-loaded caudal left zone are flat, so a zero
+  # gradient is not by itself evidence of an edge cell -- which is the whole
+  # objection to the zero-filling convention.
+  interior <- ref[2:15, 2:15]
+  expect_identical(sum(gz$gradient[!ring] == 0), sum(interior == 0))
+  expect_gt(sum(interior == 0), 0L)
+  expect_identical(ref[14, 4], 0)
+  expect_equal(max(gz$gradient), max(ref))
+  top <- which(ref == max(ref), arr.ind = TRUE)
+  expect_identical(
+    c(gz$row[which.max(gz$gradient)], gz$col[which.max(gz$gradient)]),
+    as.integer(top[1, ])
+  )
 
   # The default reports the ring honestly, and biases the whole-grid mean
   # of the zero-filled version down by exactly 196/256.

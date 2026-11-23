@@ -1,17 +1,15 @@
 # ---------------------------------------------------------------------------
-# Ingest layer. The fixture is the first 200 data frames of a real
-# Novel/Pliance saddle recording (ID052_K_K_KG00_MS.asc): latin-1, 7 header
-# lines, 257 named columns plus a phantom column from the trailing tab.
-#
-# The reference values below were computed from the same 200 frames with an
-# independent parser and, for the full 869-frame recording, agree to the last
-# printed digit with the study's own `file_summary.rds`.
+# Ingest layer. The fixture is a synthetic 200-frame Novel/Pliance saddle
+# export (synthetic_saddle_MS.asc): latin-1, 7 header lines, 257 named columns
+# plus a phantom column from the trailing tab. Its pressures are designed in
+# helper-synthetic-saddle.R, which is the ground truth for the reference
+# values below; they never come from the reader under test.
 # ---------------------------------------------------------------------------
 
-fixture <- function() test_path("fixtures", "ID052_K_K_KG00_MS.asc")
+fixture <- function() test_path("fixtures", "synthetic_saddle_MS.asc")
 
-# The study's per-frame definitions, on whole-grid terms.
-study_metrics <- function(p) {
+# Per-frame definitions on whole-grid terms, written out independently.
+grid_metrics <- function(p) {
   n_cells <- ncol(p)
   side <- sqrt(n_cells)
   grid_row <- rep(seq_len(side), times = side) # column-major
@@ -65,16 +63,16 @@ square_layout <- function() {
 
 # ---- pr_meta_from_filename ------------------------------------------------
 
-test_that("pr_meta_from_filename splits a study file name into its cells", {
+test_that("pr_meta_from_filename splits a structured file name into cells", {
   fields <- c("ID", "Saddle", "Pad", "Weight", "Mode")
-  out <- pr_meta_from_filename("raw/52_Bea/ID052_K_K_KG00_MS.asc", fields)
+  out <- pr_meta_from_filename("raw/01_demo/SYN01_A_B_KG00_MS.asc", fields)
 
   expect_s3_class(out, "tbl_df")
   expect_equal(nrow(out), 1L)
   expect_equal(names(out), fields)
-  expect_equal(out$ID, "ID052")
-  expect_equal(out$Saddle, "K")
-  expect_equal(out$Pad, "K")
+  expect_equal(out$ID, "SYN01")
+  expect_equal(out$Saddle, "A")
+  expect_equal(out$Pad, "B")
   expect_equal(out$Weight, "KG00")
   expect_equal(out$Mode, "MS")
 })
@@ -82,7 +80,7 @@ test_that("pr_meta_from_filename splits a study file name into its cells", {
 test_that("pr_meta_from_filename rejects names with the wrong part count", {
   fields <- c("ID", "Saddle", "Pad", "Weight", "Mode")
 
-  # A repeat take carries a sixth part; the study excludes exactly these.
+  # A repeat take carries a sixth part and is excluded.
   expect_null(pr_meta_from_filename("ID003_K_K_KG60_MH_R01.asc", fields))
   # Too few parts.
   expect_null(pr_meta_from_filename("ID003_K_K.asc", fields))
@@ -136,9 +134,18 @@ test_that("pr_meta_from_filename validates its arguments", {
 })
 
 
-# ---- pr_read_pliance: the real fixture ------------------------------------
+# ---- pr_read_pliance: the synthetic export --------------------------------
 
-test_that("pr_read_pliance reads the real export into a 200x256 trial", {
+test_that("the committed fixture is the one the helper writes", {
+  path <- withr::local_tempfile(fileext = ".asc")
+  write_synthetic_saddle(path)
+  expect_identical(
+    readBin(path, "raw", file.size(path)),
+    readBin(fixture(), "raw", file.size(fixture()))
+  )
+})
+
+test_that("pr_read_pliance reads the export into a 200x256 trial", {
   trial <- pr_read_pliance(fixture())
 
   expect_s3_class(trial, "pr_trial")
@@ -150,7 +157,7 @@ test_that("pr_read_pliance reads the real export into a 200x256 trial", {
   expect_equal(trial$layout$n_sensors, 256L)
   expect_false(anyNA(trial$pressure))
   expect_true(all(trial$pressure >= 0))
-  # Real hardware ceiling is 255 * 0.25 kPa.
+  # The mat's hardware ceiling is 255 * 0.25 kPa.
   expect_lte(max(trial$pressure), 63.75)
 })
 
@@ -167,29 +174,43 @@ test_that("pr_read_pliance uses the recorded time column", {
   expect_false(isTRUE(all.equal(trial$time[1], 0)))
 })
 
-test_that("pr_read_pliance reproduces the study's frame statistics", {
+test_that("pr_read_pliance returns the designed pressures cell for cell", {
   trial <- pr_read_pliance(fixture())
-  got <- study_metrics(trial$pressure)
+  truth <- synthetic_saddle_grid()
 
-  expect_equal(got$mean_kPa_avg, 1.6354980469, tolerance = 1e-9)
-  expect_equal(got$mean_kPa_sd, 0.0272013729, tolerance = 1e-8)
+  # Every frame and every grid cell, after the channel permutation.
+  expect_identical(unname(trial$pressure), truth)
+
+  got <- grid_metrics(trial$pressure)
+  expect_equal(got, grid_metrics(truth))
+  # The design's largest reading is the right cranial pressure point at the
+  # top of each stride, 7 kPa.
   expect_equal(got$peak_kPa_max, 7)
-  expect_equal(got$peak_kPa_avg, 6.8275, tolerance = 1e-9)
-  expect_equal(got$total_kPa_avg, 418.6875, tolerance = 1e-9)
-  expect_equal(got$loaded_avg, 93.305, tolerance = 1e-9)
-
-  # PCI, as the study defines it.
-  expect_equal(got$peak_kPa_avg / got$mean_kPa_avg, 4.1745693, tolerance = 1e-6)
+  expect_equal(
+    apply(trial$pressure, 1L, max)[synthetic_saddle_peaks()],
+    rep(7, length(synthetic_saddle_peaks()))
+  )
+  # Peak-to-mean concentration (PCI) on whole-grid terms.
+  expect_equal(
+    got$peak_kPa_avg / got$mean_kPa_avg,
+    mean(apply(truth, 1L, max)) / mean(rowMeans(truth))
+  )
 })
 
 test_that("pr_read_pliance places channels so the grid COP is correct", {
   trial <- pr_read_pliance(fixture())
-  got <- study_metrics(trial$pressure)
+  got <- grid_metrics(trial$pressure)
 
-  # These two depend on nothing but the channel permutation: read the raw
-  # columns in device order and they come out as 4.94 / 7.46 instead.
-  expect_equal(got$cop_row_mean, 7.4563498472, tolerance = 1e-8)
-  expect_equal(got$cop_col_mean, 9.9747067535, tolerance = 1e-8)
+  # These two depend on nothing but the channel permutation: the columns in
+  # device order put the same frames elsewhere on the grid.
+  want <- grid_metrics(synthetic_saddle_grid())
+  expect_equal(got$cop_row_mean, want$cop_row_mean)
+  expect_equal(got$cop_col_mean, want$cop_col_mean)
+  cells <- synthetic_saddle_channel_cell(1:256)
+  in_device_order <- (cells[, "col"] - 1L) * 16L + cells[, "row"]
+  device <- synthetic_saddle_grid()[, in_device_order]
+  unmapped <- grid_metrics(device)
+  expect_false(isTRUE(all.equal(unmapped$cop_col_mean, want$cop_col_mean)))
   expect_equal(trial$metadata$channel_order_from, "layout")
 
   # pr_calc_cop() reads layout coords positionally against pressure columns;
@@ -205,10 +226,10 @@ test_that("pr_read_pliance extracts the Pliance header block", {
   expect_equal(md$pressure_unit, "kPa")
   expect_equal(md$sampling_hz_header, 50)
   expect_equal(md$frame_period_s, 0.02)
-  expect_equal(md$date, "16.02.23 13.22")
-  expect_equal(md$source_name, "gelb_S2155_024_60kPa_PXF542_10.mat")
-  expect_equal(md$calibration, "s2155_024_60kpa_t013")
-  expect_equal(md$trial_id, "ID052_K_K_KG00_MS")
+  expect_equal(md$date, "01.01.00 00.00")
+  expect_equal(md$source_name, "synthetic_saddle_example.mat")
+  expect_equal(md$calibration, "synthetic_calibration")
+  expect_equal(md$trial_id, "synthetic_saddle_MS")
   expect_equal(md$n_frames_raw, 200L)
   expect_equal(md$n_frames_dropped, 0L)
 })
@@ -218,13 +239,13 @@ test_that("pr_read_pliance lets the caller override header values", {
   trial <- pr_read_pliance(fixture(),
     sampling_hz = 50,
     metadata = list(
-      subject_id = "ID052",
-      condition = "K_K_KG00_MS"
+      subject_id = "SYN01",
+      condition = "A_B_KG00_MS"
     )
   )
   expect_equal(trial$sampling_hz, 50)
-  expect_equal(trial$metadata$subject_id, "ID052")
-  expect_equal(trial$metadata$condition, "K_K_KG00_MS")
+  expect_equal(trial$metadata$subject_id, "SYN01")
+  expect_equal(trial$metadata$condition, "A_B_KG00_MS")
   # The recorded timestamps are untouched by the override.
   expect_equal(trial$time[1], 0.02)
 })
@@ -540,9 +561,9 @@ test_that("pr_read_dir validates its arguments", {
   expect_error(pr_read_dir(dir, quiet = NA), "TRUE")
 })
 
-test_that("pr_read_dir reads the real export end to end", {
+test_that("pr_read_dir reads a Pliance export end to end", {
   dir <- withr::local_tempdir()
-  file.copy(fixture(), file.path(dir, "ID052_K_K_KG00_MS.asc"))
+  file.copy(fixture(), file.path(dir, "SYN01_A_B_KG00_MS.asc"))
 
   ds <- pr_read_dir(dir,
     meta_fields = c("ID", "Saddle", "Pad", "Weight", "Mode"),
@@ -554,9 +575,7 @@ test_that("pr_read_dir reads the real export end to end", {
   expect_equal(trial$n_frames, 200L)
   expect_equal(trial$n_sensors, 256L)
   expect_equal(trial$metadata$Mode, "MS")
-  expect_equal(trial$metadata$subject_id, "ID052")
-  expect_equal(trial$metadata$condition, "K_K_KG00_MS")
-  expect_equal(study_metrics(trial$pressure)$cop_col_mean, 9.9747067535,
-    tolerance = 1e-8
-  )
+  expect_equal(trial$metadata$subject_id, "SYN01")
+  expect_equal(trial$metadata$condition, "A_B_KG00_MS")
+  expect_identical(unname(trial$pressure), synthetic_saddle_grid())
 })

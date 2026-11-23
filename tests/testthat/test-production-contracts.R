@@ -1,5 +1,5 @@
 test_that("automatic Pliance dispatch preserves measured data and timing", {
-  path <- test_path("fixtures", "ID052_K_K_KG00_MS.asc")
+  path <- test_path("fixtures", "synthetic_saddle_MS.asc")
   expected <- pr_read_pliance(path)
   actual <- pr_read_auto(path, verbose = FALSE)
   expect_equal(actual$pressure, expected$pressure)
@@ -11,7 +11,7 @@ test_that("automatic Pliance dispatch preserves measured data and timing", {
 })
 
 test_that("unknown scale remains visible and explicitly unavailable", {
-  tr <- pr_read_pliance(test_path("fixtures", "ID052_K_K_KG00_MS.asc"))
+  tr <- pr_read_pliance(test_path("fixtures", "synthetic_saddle_MS.asc"))
   tiles <- ggplot2::ggplot_build(pr_plot_heatmap(tr))$data[[1L]]
   expect_true(all(is.finite(tiles$xmin) & is.finite(tiles$xmax)))
   expect_true(all(is.na(pr_calc_force(tr))))

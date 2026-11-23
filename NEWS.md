@@ -63,6 +63,11 @@ CRAN submission:
   keep full precision.
 * The saddle report scales its composite figure to the text width; in PDF
   reports the right-hand panels were previously cut off at the page edge.
+* The tests read a synthetic Novel/Pliance saddle export,
+  `tests/testthat/fixtures/synthetic_saddle_MS.asc`, written by
+  `data-raw/synthetic_saddle.R` with invented header values. Its pressures
+  are designed in a test helper, which is the ground truth for the reader,
+  stride, symmetry, regional and sensor-quality tests.
 
 
 This is an explicitly versioned successor. Version 0.1.0 and its manuscript

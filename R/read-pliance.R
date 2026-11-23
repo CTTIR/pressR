@@ -122,8 +122,8 @@
 #' Split Metadata Fields Out of a File Name
 #'
 #' Many measurement archives encode a recording's design cells in its file
-#' name, e.g. `ID052_K_K_KG00_MS.asc` for subject `ID052`, saddle `K`,
-#' pad `K`, weight `KG00`, mode `MS`. This splits such a base name into a
+#' name, e.g. `SYN01_A_B_KG00_MS.asc` for subject `SYN01`, saddle `A`,
+#' pad `B`, weight `KG00`, mode `MS`. This splits such a base name into a
 #' one-row tibble of named fields.
 #'
 #' A name matches only when it splits into *exactly* `length(fields)`
@@ -148,7 +148,7 @@
 #' @export
 #' @examples
 #' fields <- c("ID", "Saddle", "Pad", "Weight", "Mode")
-#' pr_meta_from_filename("ID052_K_K_KG00_MS.asc", fields)
+#' pr_meta_from_filename("SYN01_A_B_KG00_MS.asc", fields)
 #'
 #' # A repeat take carries a sixth part, so it does not match:
 #' pr_meta_from_filename("ID003_K_K_KG60_MH_R01.asc", fields)

@@ -31,8 +31,8 @@ or \code{NULL} (see \code{on_fail}).
 }
 \description{
 Many measurement archives encode a recording's design cells in its file
-name, e.g. \code{ID052_K_K_KG00_MS.asc} for subject \code{ID052}, saddle \code{K},
-pad \code{K}, weight \code{KG00}, mode \code{MS}. This splits such a base name into a
+name, e.g. \code{SYN01_A_B_KG00_MS.asc} for subject \code{SYN01}, saddle \code{A},
+pad \code{B}, weight \code{KG00}, mode \code{MS}. This splits such a base name into a
 one-row tibble of named fields.
 }
 \details{
@@ -44,7 +44,7 @@ them.
 }
 \examples{
 fields <- c("ID", "Saddle", "Pad", "Weight", "Mode")
-pr_meta_from_filename("ID052_K_K_KG00_MS.asc", fields)
+pr_meta_from_filename("SYN01_A_B_KG00_MS.asc", fields)
 
 # A repeat take carries a sixth part, so it does not match:
 pr_meta_from_filename("ID003_K_K_KG60_MH_R01.asc", fields)
