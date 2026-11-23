@@ -124,3 +124,14 @@ test_that("actual PDF reports include the escaped-table dependency", {
   expect_identical(rawToChar(readBin(path, "raw", 4L)), "%PDF")
   expect_gt(file.info(path)$size, 1000)
 })
+
+test_that("the empty app state does not print a stray NULL", {
+  withr::local_options(list(pressR.preloaded_trial = NULL,
+    shiny.maxRequestSize = NULL, sass.cache = FALSE))
+  env <- new.env(parent = globalenv())
+  sys.source(system.file("shiny", "pressR", "app.R", package = "pressR"), env)
+  shiny::testServer(env$server, {
+    expect_match(output$trial_info, "No trial loaded", fixed = TRUE)
+    expect_false(grepl("NULL", output$trial_info, fixed = TRUE))
+  })
+})

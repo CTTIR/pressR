@@ -264,7 +264,7 @@ server <- function(input, output, session) {
     tr <- trial_rv()
     if (is.null(tr)) {
       cat("No trial loaded. Upload a file or load an example.")
-      return()
+      return(invisible(NULL))
     }
     provenance <- pressR::pr_report_info(tr)
     filename <- provenance$value[provenance$field == "recording"]
