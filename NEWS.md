@@ -39,6 +39,14 @@ CRAN submission:
 * Recordings without frames no longer produce warnings in
   `pr_calc_seat_hotspot()` and `pr_calc_regional()`; `pr_interpolate()`
   explains that there is nothing to interpolate.
+* Region overlays on pressure maps are drawn as region boundaries instead of
+  one outlined tile per sensor, which hid the pressure picture on platforms
+  and seat mats. `pr_plot_foot_report()` gives the regional bar chart and the
+  force curve the full width (panel order unchanged), and the composite
+  reports place their map legends side by side so they no longer overlap
+  panel titles.
+* The synthetic insole example loads the forefoot in the layout's metatarsal
+  rows; its peak previously fell into the midfoot region.
 
 
 This is an explicitly versioned successor. Version 0.1.0 and its manuscript
