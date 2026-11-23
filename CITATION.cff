@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it as below.
 type: software
-title: 'pressR: Pressure distribution analysis for capacitive sensor systems'
+title: 'pressR: Pressure Distribution Analysis for Capacitive Sensor Systems'
 version: 0.3.0
 doi: 10.5281/zenodo.21889954
 authors:
 - family-names: Heller
-  given-names: Raban
+  given-names: R.
   orcid: https://orcid.org/0000-0001-8006-9742
 repository-code: https://github.com/CTTIR/pressR
 license: MIT

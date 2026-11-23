@@ -1,11 +1,11 @@
 {
   "upload_type": "software",
-  "title": "pressR: Pressure distribution analysis for capacitive sensor systems",
+  "title": "pressR: Pressure Distribution Analysis for Capacitive Sensor Systems",
   "version": "0.3.0",
   "description": "<p>pressR parses, analyses and visualises pressure distribution recordings from capacitive sensor mats and insoles. It ships predefined sensor coordinate layouts for in-shoe pressure measurement, saddle pressure mapping for both equine and bicycle use, seating assessment and barefoot pedography, so that raw sensor grids can be interpreted anatomically. Analysis functions cover peak pressure, centre of pressure, pressure-time integrals, regional summaries using anatomical masks, symmetry indices and gait cycle detection. An interactive application supports data exploration and report generation. It is intended for biomechanics, rehabilitation and ergonomics researchers working with pressure-sensing hardware.</p>",
   "creators": [
     {
-      "name": "Heller, Raban",
+      "name": "Heller, R.",
       "orcid": "0000-0001-8006-9742"
     }
   ],

@@ -165,10 +165,20 @@ MIT
 
 ## Citation
 
-Use `citation("pressR")` for the installed version. Record the package version and
-source commit with each analysis. The previously advertised Zenodo identifier is
-a draft identifier that does not currently resolve; it is not presented as a
-published release DOI.
+To cite pressR in publications, please use `citation("pressR")`:
+
+```bibtex
+@Manual{,
+  title = {pressR: Pressure Distribution Analysis for Capacitive Sensor Systems},
+  author = {R. Heller},
+  year = {2026},
+  note = {R package version 0.3.0},
+  url = {https://github.com/CTTIR/pressR},
+}
+```
+
+Record the package version and source commit with each analysis. The Zenodo DOI
+shown above is reserved and resolves once the record is published.
 
 ## Use of LLM tools
 
