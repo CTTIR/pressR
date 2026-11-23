@@ -18,7 +18,8 @@ pr_plot_heatmap_masked(
 \item{trial}{A \link{pr_trial} object.}
 
 \item{masks}{Named list of \link{pr_mask} objects or logical matrices.
-If \code{NULL}, uses layout regions.}
+If \code{NULL}, uses layout regions. An empty list draws the heatmap without
+outlines.}
 
 \item{frame}{Integer. Frame number to display. If \code{NULL} (default),
 shows the summary picture specified by \code{type}.}

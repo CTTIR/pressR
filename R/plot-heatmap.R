@@ -116,7 +116,8 @@
 .add_region_outlines <- function(p, layout, regions) {
   segs <- .region_outline_df(layout, regions)
   if (!nrow(segs)) return(p)
-  segs$region <- factor(segs$region, levels = names(regions))
+  # Masks that share a name share one legend entry and colour.
+  segs$region <- factor(segs$region, levels = unique(names(regions)))
   p + ggplot2::geom_segment(
     data = segs,
     ggplot2::aes(
@@ -229,7 +230,8 @@ pr_plot_heatmap <- function(trial, frame = NULL,
 #'
 #' @inheritParams pr_plot_heatmap
 #' @param masks Named list of [pr_mask] objects or logical matrices.
-#'   If `NULL`, uses layout regions.
+#'   If `NULL`, uses layout regions. An empty list draws the heatmap without
+#'   outlines.
 #' @return A `ggplot2` object.
 #' @export
 #' @examples
@@ -247,11 +249,14 @@ pr_plot_heatmap_masked <- function(trial, masks = NULL, frame = NULL,
       palette = palette, range = range, title = title
     ))
   }
-  # If user-supplied masks: just draw the regular heatmap plus geom_tile layers
+  # User-supplied masks: the regular heatmap plus the outline of each region.
   p <- pr_plot_heatmap(trial,
     frame = frame, type = type,
     palette = palette, range = range, title = title
   )
+  # An empty list, such as the default masks of a layout without regions,
+  # has nothing to outline.
+  if (!length(masks)) return(p)
   if (is.null(names(masks)) || any(!nzchar(names(masks)))) {
     cli::cli_abort("{.arg masks} must be a named list.")
   }

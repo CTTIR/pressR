@@ -141,6 +141,29 @@ test_that("region overlays draw only region boundaries", {
   expect_error(pr_plot_heatmap_masked(tr, masks = unname(masks)), "named list")
 })
 
+test_that("masked heatmaps accept empty and repeated-name mask lists", {
+  # A layout without default regions yields an empty mask list; it draws
+  # the plain heatmap instead of failing as an unnamed list.
+  layout <- pr_layout_platform("cl")
+  pressure <- matrix(seq_len(3 * layout$n_sensors) %% 7, 3, layout$n_sensors)
+  tr <- pr_trial(pressure, c(0, 0.02, 0.04), layout)
+  expect_length(pr_mask_default(layout), 0L)
+  for (masks in list(list(), pr_mask_default(layout))) {
+    p <- pr_plot_heatmap_masked(tr, masks = masks)
+    geoms <- vapply(p$layers, function(l) class(l$geom)[1], character(1))
+    expect_false("GeomSegment" %in% geoms)
+    expect_no_error(ggplot2::ggplot_build(p))
+  }
+  # Masks sharing a name share one legend entry instead of failing.
+  sym <- pr_mask_symmetry(layout)
+  same <- list(side = sym$left, side = sym$right)
+  p <- pr_plot_heatmap_masked(tr, masks = same)
+  built <- ggplot2::ggplot_build(p)
+  segs <- built$plot$layers[[length(built$plot$layers)]]$data
+  expect_identical(levels(segs$region), "side")
+  expect_gt(nrow(segs), 4L)
+})
+
 test_that("composite reports keep their panel order", {
   foot <- pr_plot_foot_report(pr_example_trial("insole"))
   expect_match(foot[[1]]$labels$title, "Maximum Pressure Picture")
