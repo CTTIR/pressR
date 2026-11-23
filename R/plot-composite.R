@@ -2,6 +2,17 @@
 # Composite report-style plots.
 # ---------------------------------------------------------------------------
 
+# Internal: a map panel with its fill and region legends side by side, so the
+# legend column stays within the panel height of a 2 x 2 composite.
+.compact_map_legends <- function(p) {
+  p + ggplot2::theme(
+    legend.box = "horizontal",
+    legend.key.size = ggplot2::unit(0.9, "lines"),
+    legend.title = ggplot2::element_text(size = 9),
+    legend.text = ggplot2::element_text(size = 8)
+  )
+}
+
 #' Saddle Fit Report Panel
 #'
 #' Composite figure for equine saddle analysis: MPP heatmap, 6-region
@@ -21,10 +32,10 @@ pr_plot_saddle_report <- function(trial, thresholds = NULL, masks = NULL) {
   if (is.null(masks)) masks <- pr_mask_saddle_6(trial$layout)
   reg <- pr_calc_regional(trial, masks)
 
-  p_hm <- pr_plot_heatmap_masked(trial,
+  p_hm <- .compact_map_legends(pr_plot_heatmap_masked(trial,
     masks = masks,
     title = "MPP with selected regions"
-  )
+  ))
   p_bar <- pr_plot_regional_bar(reg, "mpp", thresholds)
   p_cop <- pr_plot_cop(trial)
   p_sym <- pr_plot_symmetry(trial, "peak_pressure")
@@ -63,11 +74,11 @@ pr_plot_foot_report <- function(trial, masks = NULL) {
     masks <- pr_mask_default(trial$layout)
   }
 
-  p_hm <- if (length(masks) == 0L) {
+  p_hm <- .compact_map_legends(if (length(masks) == 0L) {
     pr_plot_heatmap(trial)
   } else {
     pr_plot_heatmap_masked(trial, masks = masks)
-  }
+  })
   p_bar <- if (length(masks) == 0L) {
     ggplot2::ggplot() +
       ggplot2::theme_void() +
@@ -80,6 +91,12 @@ pr_plot_foot_report <- function(trial, masks = NULL) {
   p_force <- pr_plot_force_time(trial, show_cycles = TRUE)
   p_cop <- pr_plot_cop(trial)
 
-  patchwork::wrap_plots(p_hm, p_bar, p_force, p_cop, ncol = 2) +
+  # The two maps share the first row, where their fixed aspect ratio costs the
+  # least width; the bar chart and the force curve each span the full width
+  # below, so region names and time labels stay legible. The panels keep
+  # their order (map, bars, force, COP) for `panels[[i]]`.
+  patchwork::wrap_plots(p_hm, p_bar, p_force, p_cop,
+    design = "AD\nBB\nCC", heights = c(2.2, 1, 1)
+  ) +
     patchwork::plot_annotation(title = "Foot pressure report")
 }

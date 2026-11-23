@@ -120,7 +120,8 @@ pr_plot_cop <- function(trial, show_layout = TRUE,
     p <- p + ggplot2::geom_point(
       data = trial$layout$coords_mm,
       ggplot2::aes(x = .data$x_mm, y = .data$y_mm),
-      colour = "grey85", size = 0.7
+      # Dense grids (platforms, seat mats) would merge into a solid grey block.
+      colour = "grey85", size = if (trial$layout$n_sensors > 400L) 0.2 else 0.7
     )
   }
   if (color_by == "time") {

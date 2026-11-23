@@ -42,6 +42,91 @@
   )
 }
 
+# Internal: outline segments of named regions.
+#
+# Each region is drawn as the boundary of its cells: a cell edge is kept only
+# where the neighbouring grid cell does not belong to the same region. Drawing
+# one outlined tile per sensor instead hides the pressure picture on
+# high-resolution layouts, where the outlines fill the whole tile.
+# `regions` is a named list of active-sensor column indices.
+.region_outline_df <- function(layout, regions) {
+  coords <- layout$coords_mm
+  tile <- .tile_size(layout)
+  # Direction of increasing grid column and row in plot coordinates. Grids
+  # are axis-aligned, so each grid axis maps onto one plot axis.
+  slope <- function(v, g) {
+    if (length(unique(g)) < 2L) return(0)
+    unname(stats::coef(stats::lm(v ~ g))[2])
+  }
+  col_dx <- slope(coords$x_mm, coords$col)
+  col_dy <- slope(coords$y_mm, coords$col)
+  row_dx <- slope(coords$x_mm, coords$row)
+  row_dy <- slope(coords$y_mm, coords$row)
+  col_on_x <- abs(col_dx) >= abs(col_dy)
+  row_on_x <- abs(row_dx) > abs(row_dy)
+  if (col_on_x == row_on_x) {
+    col_on_x <- TRUE
+    row_on_x <- FALSE
+  }
+  sgn <- function(v) if (v < 0) -1 else 1
+  col_step <- if (col_on_x) col_dx else col_dy
+  row_step <- if (row_on_x) row_dx else row_dy
+  col_sign <- sgn(col_step)
+  row_sign <- sgn(row_step)
+  # Edges lie halfway between neighbouring cell centres (half the grid pitch);
+  # a single line along an axis falls back to half the drawn tile.
+  pitch <- function(step) if (abs(step) > 0) abs(step) else tile
+  half_x <- pitch(if (col_on_x) col_step else row_step) / 2
+  half_y <- pitch(if (col_on_x) row_step else col_step) / 2
+  out <- lapply(names(regions), function(nm) {
+    cols <- regions[[nm]]
+    if (!length(cols)) return(NULL)
+    d <- coords[cols, , drop = FALSE]
+    key <- paste(d$row, d$col)
+    pieces <- list(
+      list(dr = 0L, dc = 1L), list(dr = 0L, dc = -1L),
+      list(dr = 1L, dc = 0L), list(dr = -1L, dc = 0L)
+    )
+    segs <- lapply(pieces, function(step) {
+      open <- !paste(d$row + step$dr, d$col + step$dc) %in% key
+      if (!any(open)) return(NULL)
+      e <- d[open, , drop = FALSE]
+      on_x <- if (step$dc != 0L) col_on_x else row_on_x
+      dir <- if (step$dc != 0L) step$dc * col_sign else step$dr * row_sign
+      if (on_x) {
+        x <- e$x_mm + dir * half_x
+        data.frame(x = x, xend = x, y = e$y_mm - half_y, yend = e$y_mm + half_y)
+      } else {
+        y <- e$y_mm + dir * half_y
+        data.frame(x = e$x_mm - half_x, xend = e$x_mm + half_x, y = y, yend = y)
+      }
+    })
+    segs <- do.call(rbind, segs)
+    if (is.null(segs)) return(NULL)
+    segs$region <- nm
+    segs
+  })
+  out <- do.call(rbind, out)
+  if (is.null(out)) {
+    out <- data.frame(x = numeric(), xend = numeric(), y = numeric(),
+      yend = numeric(), region = character())
+  }
+  out
+}
+
+# Internal: add region outlines to a heatmap.
+.add_region_outlines <- function(p, layout, regions) {
+  segs <- .region_outline_df(layout, regions)
+  if (!nrow(segs)) return(p)
+  segs$region <- factor(segs$region, levels = names(regions))
+  p + ggplot2::geom_segment(
+    data = segs,
+    ggplot2::aes(x = .data$x, y = .data$y, xend = .data$xend,
+      yend = .data$yend, colour = .data$region),
+    linewidth = 0.7, lineend = "square", inherit.aes = FALSE
+  ) + ggplot2::guides(colour = ggplot2::guide_legend(title = "Region"))
+}
+
 #' Plot Pressure Heatmap
 #'
 #' Displays a 2D heatmap for a single frame or a summary image
@@ -129,14 +214,8 @@ pr_plot_heatmap <- function(trial, frame = NULL,
     ggplot2::theme_minimal(base_size = 11)
 
   if (show_regions && length(trial$layout$regions) > 0L) {
-    reg_df <- .regions_to_df(trial$layout)
-    p <- p + ggplot2::geom_tile(
-      data = reg_df,
-      ggplot2::aes(x = .data$x_mm, y = .data$y_mm, colour = .data$region),
-      width = tile_w, height = tile_h,
-      fill = NA, linewidth = 0.4, alpha = 0.8,
-      inherit.aes = FALSE
-    ) + ggplot2::guides(colour = ggplot2::guide_legend(title = "Region"))
+    regions <- lapply(trial$layout$regions, .mask_to_cols, layout = trial$layout)
+    p <- .add_region_outlines(p, trial$layout, regions)
   }
   p
 }
@@ -171,20 +250,11 @@ pr_plot_heatmap_masked <- function(trial, masks = NULL, frame = NULL,
     frame = frame, type = type,
     palette = palette, range = range, title = title
   )
-  tile_w <- .tile_size(trial$layout)
-  coords <- trial$layout$coords_mm
-  for (nm in names(masks)) {
-    cols <- .mask_to_cols(masks[[nm]], trial$layout)
-    if (length(cols) == 0L) next
-    d <- coords[cols, , drop = FALSE]
-    d$region <- nm
-    p <- p + ggplot2::geom_tile(
-      data = d, ggplot2::aes(x = .data$x_mm, y = .data$y_mm, colour = .data$region),
-      width = tile_w, height = tile_w, fill = NA, linewidth = 0.4,
-      inherit.aes = FALSE
-    )
+  if (is.null(names(masks)) || any(!nzchar(names(masks)))) {
+    cli::cli_abort("{.arg masks} must be a named list.")
   }
-  p
+  regions <- lapply(masks, .mask_to_cols, layout = trial$layout)
+  .add_region_outlines(p, trial$layout, regions)
 }
 
 #' Interactive 3D Pressure Surface

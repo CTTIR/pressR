@@ -118,3 +118,32 @@ test_that("pr_plot_3d accepts a frame and alternate palette", {
   p <- pr_plot_3d(pr_example_trial("custom"), frame = 1, palette = "jet")
   expect_s3_class(p, "plotly")
 })
+
+test_that("region overlays draw only region boundaries", {
+  layout <- pr_layout_mat("16")
+  block <- matrix(FALSE, 16, 16)
+  block[1:2, 1:2] <- TRUE
+  cols <- list(block = .mask_to_cols(block, layout))
+  segs <- .region_outline_df(layout, cols)
+  # A 2 x 2 block has a perimeter of eight cell edges and no interior edges.
+  expect_equal(nrow(segs), 8L)
+  pitch <- 25.4
+  co <- layout$coords_mm[cols$block, ]
+  expect_equal(range(c(segs$x, segs$xend)), range(co$x_mm) + c(-1, 1) * pitch / 2)
+  expect_equal(range(c(segs$y, segs$yend)), range(co$y_mm) + c(-1, 1) * pitch / 2)
+  # The overlay is one segment layer, not one outlined tile per sensor.
+  tr <- pr_example_trial("platform")
+  masks <- pr_mask_symmetry(tr$layout)
+  p <- pr_plot_heatmap_masked(tr, masks = masks)
+  geoms <- vapply(p$layers, function(l) class(l$geom)[1], character(1))
+  expect_equal(sum(geoms == "GeomSegment"), 1L)
+  expect_error(pr_plot_heatmap_masked(tr, masks = unname(masks)), "named list")
+})
+
+test_that("composite reports keep their panel order", {
+  foot <- pr_plot_foot_report(pr_example_trial("insole"))
+  expect_match(foot[[1]]$labels$title, "Maximum Pressure Picture")
+  expect_match(foot[[2]]$labels$title, "Regional")
+  expect_match(foot[[3]]$labels$title, "force", ignore.case = TRUE)
+  expect_match(foot[[4]]$labels$title, "Centre of pressure")
+})

@@ -40,7 +40,7 @@ pr_plot_regional_bar <- function(regional_data, parameter = "mpp",
       title = sprintf("Regional %s", parameter)
     ) +
     ggplot2::theme_minimal(base_size = 11) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, vjust = 1))
 
   if (!is.null(thresholds)) {
     required <- c("region", "parameter", "threshold", "unit")
@@ -227,5 +227,5 @@ pr_plot_comparison <- function(trial_a, trial_b,
       x = NULL, y = "Value", fill = NULL
     ) +
     ggplot2::theme_minimal(base_size = 11) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, vjust = 1))
 }
