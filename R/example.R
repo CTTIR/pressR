@@ -62,7 +62,9 @@ pr_example_trial <- function(type = c(
 
   y_range <- range(coords$y_mm)
   y_heel <- y_range[1]
-  y_met <- y_range[1] + 0.70 * diff(y_range)
+  # Metatarsal heads sit in grid rows 3-4 of the insole layout (its
+  # metatarsal regions), about 85% of the way from heel to toe.
+  y_met <- y_range[1] + 0.85 * diff(y_range)
   y_hal <- y_range[1] + 0.95 * diff(y_range)
   x_med <- stats::quantile(coords$x_mm, 0.30)
   x_lat <- stats::quantile(coords$x_mm, 0.70)

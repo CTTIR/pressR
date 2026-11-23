@@ -55,3 +55,11 @@ test_that("example insole summary is structurally stable", {
   expect_snapshot_value(names(s), style = "json2")
   expect_true(s$mpp > 0 && s$max_force > 0)
 })
+
+test_that("the synthetic insole loads the forefoot in the metatarsal regions", {
+  reg <- pr_calc_regional(pr_example_trial("insole", seed = 42))
+  # The forefoot peak used to fall into the layout's midfoot rows.
+  expect_match(reg$region[which.max(reg$mpp)], "^metatarsal_")
+  heel <- reg$mpp[reg$region == "heel"]
+  expect_true(heel > 0 && heel < max(reg$mpp))
+})
