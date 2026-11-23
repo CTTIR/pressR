@@ -46,3 +46,15 @@ test_that("pr_calc_saddle_slip errors on non-left/right masks", {
   bad <- pr_mask_saddle_6(tr$layout)  # named cranial_left etc, no 'left'
   expect_error(pr_calc_saddle_slip(tr, masks = bad))
 })
+
+test_that("pr_calc_saddle_slip classifies a mean at the threshold consistently", {
+  tr <- pr_example_trial("saddle_horse")
+  si <- pr_calc_saddle_slip(tr)$symmetry_index_mean
+  at <- pr_calc_saddle_slip(tr, slip_threshold = abs(si))
+  # Formerly dominant_side was a side while is_asymmetric was FALSE.
+  expect_false(at$is_asymmetric)
+  expect_equal(at$dominant_side, "balanced")
+  below <- pr_calc_saddle_slip(tr, slip_threshold = abs(si) / 2)
+  expect_true(below$is_asymmetric)
+  expect_equal(below$dominant_side, if (si > 0) "left" else "right")
+})

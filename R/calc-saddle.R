@@ -88,16 +88,27 @@ print.pr_saddle_bridge <- function(x, ...) {
 #' @param trial A [pr_trial] object.
 #' @param masks Named list of region masks. If `NULL`, auto-generated via
 #'   [pr_mask_symmetry()].
-#' @param slip_threshold Numeric. SI% above which asymmetry is flagged.
-#'   Default `15`.
+#' @param slip_threshold Numeric. Non-negative SI% above which asymmetry is
+#'   flagged. Default `15`.
 #'
-#' @return A list with class `pr_saddle_slip`.
+#' @return A list with class `pr_saddle_slip`:
+#'   - `symmetry_index_mean`: mean per-frame symmetry index (%),
+#'     `(L - R) / (0.5 * (L + R)) * 100`; positive values mean left dominance.
+#'     Frames without load on either side contribute `0`.
+#'   - `symmetry_index_max`: largest absolute per-frame symmetry index (%).
+#'   - `dominant_side`: `"left"` or `"right"` when the recording is flagged as
+#'     asymmetric, otherwise `"balanced"`.
+#'   - `is_asymmetric`: `TRUE` when `abs(symmetry_index_mean)` exceeds
+#'     `slip_threshold`.
+#'   - `si_timeseries`: the per-frame symmetry index (%).
 #' @export
 #' @examples
 #' pr_calc_saddle_slip(pr_example_trial("saddle_horse"))
 pr_calc_saddle_slip <- function(trial, masks = NULL,
                                 slip_threshold = 15) {
   .validate_trial(trial)
+  .tp_check_scalar(slip_threshold, "slip_threshold")
+  if (slip_threshold < 0) cli::cli_abort("{.arg slip_threshold} must be non-negative.")
   if (is.null(masks)) masks <- pr_mask_symmetry(trial$layout, "vertical")
   reg <- pr_mask_apply(trial, masks)
 
@@ -118,7 +129,10 @@ pr_calc_saddle_slip <- function(trial, masks = NULL,
   si_mean <- mean(si, na.rm = TRUE)
   si_max  <- max(abs(si), na.rm = TRUE)
 
-  dominant <- if (abs(si_mean) < slip_threshold) "balanced"
+  # One comparison decides both fields, so a mean exactly at the threshold
+  # is reported as balanced and not asymmetric, never half of each.
+  is_asymmetric <- abs(si_mean) > slip_threshold
+  dominant <- if (!is_asymmetric) "balanced"
               else if (si_mean > 0) "left" else "right"
 
   structure(
@@ -126,7 +140,7 @@ pr_calc_saddle_slip <- function(trial, masks = NULL,
       symmetry_index_mean = si_mean,
       symmetry_index_max  = si_max,
       dominant_side = dominant,
-      is_asymmetric = abs(si_mean) > slip_threshold,
+      is_asymmetric = is_asymmetric,
       si_timeseries = si
     ),
     class = "pr_saddle_slip"

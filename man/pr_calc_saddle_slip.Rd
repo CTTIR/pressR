@@ -12,11 +12,22 @@ pr_calc_saddle_slip(trial, masks = NULL, slip_threshold = 15)
 \item{masks}{Named list of region masks. If \code{NULL}, auto-generated via
 \code{\link[=pr_mask_symmetry]{pr_mask_symmetry()}}.}
 
-\item{slip_threshold}{Numeric. SI\% above which asymmetry is flagged.
-Default \code{15}.}
+\item{slip_threshold}{Numeric. Non-negative SI\% above which asymmetry is
+flagged. Default \code{15}.}
 }
 \value{
-A list with class \code{pr_saddle_slip}.
+A list with class \code{pr_saddle_slip}:
+\itemize{
+\item \code{symmetry_index_mean}: mean per-frame symmetry index (\%),
+\code{(L - R) / (0.5 * (L + R)) * 100}; positive values mean left dominance.
+Frames without load on either side contribute \code{0}.
+\item \code{symmetry_index_max}: largest absolute per-frame symmetry index (\%).
+\item \code{dominant_side}: \code{"left"} or \code{"right"} when the recording is flagged as
+asymmetric, otherwise \code{"balanced"}.
+\item \code{is_asymmetric}: \code{TRUE} when \code{abs(symmetry_index_mean)} exceeds
+\code{slip_threshold}.
+\item \code{si_timeseries}: the per-frame symmetry index (\%).
+}
 }
 \description{
 Analyzes left/right pressure asymmetry over time to detect saddle slip
