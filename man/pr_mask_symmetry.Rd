@@ -19,6 +19,14 @@ A named list of two \link{pr_mask} objects.
 Produces a two-element named list of \link{pr_mask} objects dividing the
 layout along the specified axis.
 }
+\details{
+When the split axis has an odd number of grid lines, the centre line is
+assigned to the second half (\code{right} or \code{posterior}), which then covers one
+line more than the first. Every predefined layout has an even number of
+rows and columns, so this only concerns custom layouts; use
+\code{\link[=pr_mask_mirror_balance]{pr_mask_mirror_balance()}} for halves that are exact mirror images. Grids
+with a single line along the split axis cannot be divided and are refused.
+}
 \examples{
 pr_mask_symmetry(pr_layout_saddle("horse"))
 }

@@ -68,6 +68,13 @@ pr_mask_apply <- function(trial, masks = NULL) {
 #' Produces a two-element named list of [pr_mask] objects dividing the
 #' layout along the specified axis.
 #'
+#' When the split axis has an odd number of grid lines, the centre line is
+#' assigned to the second half (`right` or `posterior`), which then covers one
+#' line more than the first. Every predefined layout has an even number of
+#' rows and columns, so this only concerns custom layouts; use
+#' [pr_mask_mirror_balance()] for halves that are exact mirror images. Grids
+#' with a single line along the split axis cannot be divided and are refused.
+#'
 #' @param layout A [pr_layout] object.
 #' @param axis Character. `"vertical"` (default, split columns into
 #'   left/right) or `"horizontal"` (split rows into anterior/posterior).
@@ -82,6 +89,13 @@ pr_mask_symmetry <- function(layout, axis = c("vertical", "horizontal")) {
   m1 <- matrix(FALSE, layout$grid_rows, layout$grid_cols)
   m2 <- matrix(FALSE, layout$grid_rows, layout$grid_cols)
 
+  n_lines <- if (axis == "vertical") layout$grid_cols else layout$grid_rows
+  if (n_lines < 2L) {
+    # With one line the first half would be empty and every index -200%.
+    cli::cli_abort(
+      "A {axis} split needs at least two grid {if (axis == 'vertical') 'columns' else 'rows'}, not {n_lines}."
+    )
+  }
   if (axis == "vertical") {
     split <- floor(layout$grid_cols / 2)
     m1[, seq_len(split)] <- TRUE
@@ -110,6 +124,12 @@ pr_mask_symmetry <- function(layout, axis = c("vertical", "horizontal")) {
 #' Fig. 1, p.189 (a cranial, middle and caudal third on each half of the
 #' mat), the scheme behind the observations in [pr_ref_saddle()].
 #'
+#' Rows are split with `floor(grid_rows / 3)` rows each for the cranial and
+#' middle thirds; any remainder goes to the caudal third (5 / 5 / 6 on the
+#' 16-row saddle mat). As in [pr_mask_symmetry()], an odd centre column goes
+#' to the right half. Layouts with fewer than three rows or two columns
+#' cannot be divided this way and are refused.
+#'
 #' @param layout A [pr_layout] object (typically one returned by
 #'   [pr_layout_saddle()] with `type = "horse"`).
 #'
@@ -121,6 +141,12 @@ pr_mask_saddle_6 <- function(layout) {
   .validate_layout(layout)
   nr <- layout$grid_rows
   nc <- layout$grid_cols
+  if (nr < 3L || nc < 2L) {
+    cli::cli_abort(c(
+      "The six-region saddle mask needs at least 3 grid rows and 2 grid columns.",
+      "x" = "The layout grid is {nr} x {nc}; its thirds and halves would overlap or be empty."
+    ))
+  }
 
   third <- floor(nr / 3)
   half  <- floor(nc / 2)
