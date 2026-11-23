@@ -1,4 +1,4 @@
-#' Summarize Measurements With Explicit Units and Availability
+#' Summarise Measurements With Explicit Units and Availability
 #' @param trial A [pr_trial] object.
 #' @return A long table with parameter, value, unit and status.
 #' @export

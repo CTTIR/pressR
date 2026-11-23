@@ -16,8 +16,8 @@ unavailable. Set 'seconds' or 'excel_days' only with source evidence.}
 A list with sheets, heart_rate, rr_intervals and a sheet manifest.
 }
 \description{
-Keeps every sheet as source cells and records row numbers for normalized
-observations. Recognizes Polar-style HR headers, including headers below
+Keeps every sheet as source cells and records row numbers for normalised
+observations. Recognises Polar-style HR headers, including headers below
 session metadata, and duration/offline RR exports. Unknown sheets remain
 available as attachments. No observations are silently removed or aligned.
 }

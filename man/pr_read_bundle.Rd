@@ -14,10 +14,10 @@ A validated \link{pr_trial} object.
 }
 \description{
 Only use bundles from trusted sources: the checksums establish integrity, not
-authenticity, and the metadata and measurements contain serialized R objects.
+authenticity, and the metadata and measurements contain serialised R objects.
 Version 2 preserves measurements exactly. Legacy version 1 bundles remain
 readable, but their decimal CSV cannot guarantee exact numeric/reference replay.
-Version 2 uses authoritative RDS measurements; the CSV is a nonbinding preview
+Version 2 uses authoritative RDS measurements; the CSV is a non-binding preview
 checked for integrity and structure, not used as a second measurement source.
 }
 \examples{

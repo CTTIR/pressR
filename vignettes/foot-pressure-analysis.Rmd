@@ -35,7 +35,7 @@ resource_files:
 [![R-CMD-check](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
@@ -72,7 +72,7 @@ cycles
 pr_plot_force_time(trial, show_cycles = TRUE)
 ```
 
-## Center of pressure and rollover
+## Centre of pressure and rollover
 
 ```{r, fig.alt="COP trajectory over time"}
 pr_plot_cop(trial)
@@ -118,6 +118,6 @@ panels[[2]]
 panels[[3]]
 ```
 
-```{r, fig.alt="Center of pressure trajectory in millimetres, colored by recording time in seconds.", fig.height=5}
+```{r, fig.alt="Centre of pressure trajectory in millimetres, coloured by recording time in seconds.", fig.height=5}
 panels[[4]]
 ```

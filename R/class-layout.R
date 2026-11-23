@@ -10,7 +10,7 @@
 #'   `TRUE` for cells that contain active sensors.
 #' @param coords_mm Data frame with columns `sensor_id` (integer),
 #'   `row` (integer), `col` (integer), `x_mm` (numeric), `y_mm` (numeric).
-#'   Physical coordinates of each active sensor in millimeters.
+#'   Physical coordinates of each active sensor in millimetres.
 #' @param regions Named list of logical matrices (same dims as `active`).
 #'   Each entry defines an anatomical or functional region.
 #' @param sensor_area_cm2 Numeric. Area of a single sensor cell in cm².
@@ -168,12 +168,12 @@ print.summary.pr_layout <- function(x, ...) {
 
 #' Plot a Sensor Layout
 #'
-#' Visualizes a [pr_layout] showing active sensor positions and colored
+#' Visualises a [pr_layout] showing active sensor positions and coloured
 #' region masks (if any).
 #'
 #' @param x A [pr_layout] object.
 #' @param show_regions Logical. If `TRUE` (default), draws region masks
-#'   in colors. If `FALSE`, shows only sensor positions.
+#'   in colours. If `FALSE`, shows only sensor positions.
 #' @param show_ids Logical. If `TRUE`, labels each sensor with its id.
 #'   Default `FALSE`.
 #' @param ... Not used.

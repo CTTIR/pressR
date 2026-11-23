@@ -86,7 +86,7 @@ reference:
       - pr_ref_saddle
       - pr_ref_diabetic_foot
       - pr_ref_wheelchair
-  - title: "Visualization"
+  - title: "Visualisation"
     contents:
       - pr_plot_heatmap
       - pr_plot_heatmap_masked

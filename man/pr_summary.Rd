@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc-summary.R
 \name{pr_summary}
 \alias{pr_summary}
-\title{Summarize Trial Pressure Parameters}
+\title{Summarise Trial Pressure Parameters}
 \usage{
 pr_summary(trial, threshold = 0)
 }

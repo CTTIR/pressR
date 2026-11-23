@@ -2,7 +2,7 @@
 % Please edit documentation in R/temporal-profiles.R
 \name{pr_temporal_profile}
 \alias{pr_temporal_profile}
-\title{Analyze Temporal Structure With an Explicit Reproducibility Profile}
+\title{Analyse Temporal Structure With an Explicit Reproducibility Profile}
 \usage{
 pr_temporal_profile(
   trial,

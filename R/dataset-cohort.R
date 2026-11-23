@@ -160,7 +160,7 @@
 }
 
 # Internal: the count assertion itself, with the message the whole layer
-# exists for. `what` is a singular noun phrase; cli pluralizes it against
+# exists for. `what` is a singular noun phrase; cli pluralises it against
 # the expected count.
 .cohort_assert_count <- function(actual, expected, what, label,
                                  values = NULL,

@@ -35,7 +35,7 @@ resource_files:
 [![R-CMD-check](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
@@ -55,7 +55,7 @@ library(pressR)
 
 ## What pressR does
 
-**pressR** parses, analyzes, and visualizes pressure distribution data
+**pressR** parses, analyses, and visualises pressure distribution data
 from capacitive sensor systems. It provides:
 
 * Predefined sensor layouts (in-shoe insoles, pressure platforms, saddle
@@ -63,7 +63,7 @@ from capacitive sensor systems. It provides:
 * Parsers for ASCII and CSV pressure data files,
 * A full analysis pipeline (per-frame metrics, trial summaries,
   regional analysis, gait-cycle detection, saddle-fit checks),
-* `ggplot2`-based visualization and composite reports,
+* `ggplot2`-based visualisation and composite reports,
 * An interactive Shiny application for data exploration.
 
 ## Load a layout
@@ -87,7 +87,7 @@ trial <- pr_example_trial("insole")
 trial
 ```
 
-## Visualize
+## Visualise
 
 The default plot method draws a maximum-pressure picture (MPP):
 
@@ -101,7 +101,7 @@ Time-domain curves are equally straightforward:
 pr_plot_force_time(trial, show_cycles = TRUE)
 ```
 
-## Summarize
+## Summarise
 
 `pr_summary()` returns a single-row tibble containing the common
 biomechanical parameters:

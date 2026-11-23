@@ -60,7 +60,7 @@ pr_export_csv <- function(trial, path,
 
 #' Generate an Analysis Report
 #'
-#' Renders a parameterized R Markdown template into an HTML or PDF report
+#' Renders a parameterised R Markdown template into an HTML or PDF report
 #' for a trial.
 #'
 #' @param trial A [pr_trial] object.

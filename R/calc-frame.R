@@ -2,7 +2,7 @@
 # Per-frame analysis functions.
 #
 # Each function operates on a pr_trial and returns a numeric vector of
-# length n_frames (or a list / pr_cop object for center-of-pressure).
+# length n_frames (or a list / pr_cop object for centre-of-pressure).
 #
 # Unit conventions:
 #   pressure:  kPa (= 1000 N/m^2)
@@ -118,7 +118,7 @@ pr_calc_loaded_rate <- function(trial, threshold = 0) {
   rowSums(trial$pressure > threshold) / n
 }
 
-#' Calculate Center of Pressure
+#' Calculate Centre of Pressure
 #'
 #' Computes the pressure-weighted centroid of active sensors for each
 #' frame. Frames with no loaded sensors return `NA` for x and y.

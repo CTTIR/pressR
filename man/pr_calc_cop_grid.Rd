@@ -2,7 +2,7 @@
 % Please edit documentation in R/frame-metrics.R
 \name{pr_calc_cop_grid}
 \alias{pr_calc_cop_grid}
-\title{Center of Pressure in Grid Index Units}
+\title{Centre of Pressure in Grid Index Units}
 \usage{
 pr_calc_cop_grid(trial, threshold = 0, eps = 1e-12)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/reporting.R
 \name{pr_summary_long}
 \alias{pr_summary_long}
-\title{Summarize Measurements With Explicit Units and Availability}
+\title{Summarise Measurements With Explicit Units and Availability}
 \usage{
 pr_summary_long(trial)
 }
@@ -13,7 +13,7 @@ pr_summary_long(trial)
 A long table with parameter, value, unit and status.
 }
 \description{
-Summarize Measurements With Explicit Units and Availability
+Summarise Measurements With Explicit Units and Availability
 }
 \examples{
 pr_summary_long(pr_example_trial("insole"))

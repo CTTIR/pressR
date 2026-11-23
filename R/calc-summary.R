@@ -2,7 +2,7 @@
 # Trial-level summary statistics.
 # ---------------------------------------------------------------------------
 
-#' Summarize Trial Pressure Parameters
+#' Summarise Trial Pressure Parameters
 #'
 #' Computes a comprehensive set of pressure distribution parameters for
 #' an entire trial. Returns a single-row tibble suitable for row-binding

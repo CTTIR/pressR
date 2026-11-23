@@ -13,7 +13,7 @@
 
 #' Launch the Interactive Pressure Data Explorer
 #'
-#' Opens a Shiny application for importing, analyzing, and visualizing
+#' Opens a Shiny application for importing, analysing, and visualising
 #' pressure measurement data. The app has seven tabs: Import, Heatmap,
 #' Regions, Dynamics, Temporal, Compare, and Report.
 #'

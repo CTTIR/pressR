@@ -219,7 +219,7 @@ pr_layout_mat <- function(size = c("16", "32")) {
 
 .saddle_horse_active <- function() {
   m <- matrix(TRUE, 16, 16)
-  # Withers cutout: rows 1-2, cols 7-10
+  # Withers cut-out: rows 1-2, cols 7-10
   m[1:2, 7:10] <- FALSE
   m
 }
@@ -418,7 +418,7 @@ pr_layout_glove <- function() {
   )
 }
 
-# ---------- catalog --------------------------------------------------------
+# ---------- catalogue --------------------------------------------------------
 
 #' List All Built-In Sensor Layouts
 #'

@@ -59,8 +59,8 @@ pr_inventory <- function(path, hash = TRUE) {
 
 #' Import a Study Workbook and Its HR/RR Series
 #'
-#' Keeps every sheet as source cells and records row numbers for normalized
-#' observations. Recognizes Polar-style HR headers, including headers below
+#' Keeps every sheet as source cells and records row numbers for normalised
+#' observations. Recognises Polar-style HR headers, including headers below
 #' session metadata, and duration/offline RR exports. Unknown sheets remain
 #' available as attachments. No observations are silently removed or aligned.
 #' @param path Excel workbook path.

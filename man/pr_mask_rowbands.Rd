@@ -53,7 +53,7 @@ Left and right are split at \code{floor(grid_cols / 2)}, matching
 masks come back in band-major order (\code{cranial_left}, \code{cranial_right},
 \code{middle_left}, ...); with \code{sides = FALSE} there is one full-width mask per
 band. Every mask is intersected with \code{layout$active}, so inactive cells
-(a withers cutout, say) never enter a band.
+(a withers cut-out, say) never enter a band.
 }
 \examples{
 layout <- pr_layout_saddle("horse")

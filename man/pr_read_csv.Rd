@@ -25,7 +25,7 @@ sensor count cannot be inferred. Declared long-format sensor IDs or wide
 measurements are aligned to its sensor order. Other wide column names
 retain positional order.}
 
-\item{time_col}{Character. Name of the time column. If \code{NULL}, the exported \code{time} column is recognized automatically;
+\item{time_col}{Character. Name of the time column. If \code{NULL}, the exported \code{time} column is recognised automatically;
 otherwise timestamps are generated from \code{sampling_hz}.}
 
 \item{sampling_hz}{Numeric. Used when timestamps are absent (default \code{100}).
@@ -43,7 +43,7 @@ sensor) or long (tidy) format.
 }
 \section{Numeric text}{
 
-Numeric text is qualified for nonzero magnitudes from \code{1e-290} to \code{1e290}.
+Numeric text is qualified for non-zero magnitudes from \code{1e-290} to \code{1e290}.
 Values outside this range, or inconsistent decimal conversions, are refused.
 CSV does not carry layout calibration or promise bit-exact doubles; provide
 the original layout, or use \code{\link[=pr_write_bundle]{pr_write_bundle()}} for a self-contained round trip.

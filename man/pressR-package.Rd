@@ -6,7 +6,7 @@
 \alias{pressR-package}
 \title{pressR: Pressure Distribution Analysis for Capacitive Sensor Systems}
 \description{
-Parse, analyze, and visualize pressure distribution data from capacitive
+Parse, analyse, and visualise pressure distribution data from capacitive
 sensor systems. Provides predefined sensor coordinate layouts for in-shoe
 pressure measurement, saddle pressure mapping (equine and bicycle), seating
 assessment, and barefoot pedography.
@@ -17,7 +17,7 @@ assessment, and barefoot pedography.
 \item Parsers: \code{\link[=pr_read_ascii]{pr_read_ascii()}}, \code{\link[=pr_read_csv]{pr_read_csv()}}, \code{\link[=pr_read_auto]{pr_read_auto()}}
 \item Layouts: \code{\link[=pr_layout]{pr_layout()}}, \code{\link[=pr_layout_insole]{pr_layout_insole()}}, \code{\link[=pr_layout_saddle]{pr_layout_saddle()}}, ...
 \item Analysis: \code{\link[=pr_summary]{pr_summary()}}, \code{\link[=pr_calc_cop]{pr_calc_cop()}}, \code{\link[=pr_calc_regional]{pr_calc_regional()}}
-\item Visualization: \code{\link[=pr_plot_heatmap]{pr_plot_heatmap()}}, \code{\link[=pr_plot_force_time]{pr_plot_force_time()}}
+\item Visualisation: \code{\link[=pr_plot_heatmap]{pr_plot_heatmap()}}, \code{\link[=pr_plot_force_time]{pr_plot_force_time()}}
 \item Shiny app: \code{\link[=pr_run_app]{pr_run_app()}}
 }
 }

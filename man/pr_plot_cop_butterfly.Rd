@@ -15,7 +15,7 @@ pr_plot_cop_butterfly(trial, cycles = NULL)
 A \code{ggplot2} object.
 }
 \description{
-Overlays COP trajectories from each detected stance phase, centered on
+Overlays COP trajectories from each detected stance phase, centred on
 heel strike.
 }
 \examples{

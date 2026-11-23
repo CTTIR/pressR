@@ -256,7 +256,7 @@
 #' masks come back in band-major order (`cranial_left`, `cranial_right`,
 #' `middle_left`, ...); with `sides = FALSE` there is one full-width mask per
 #' band. Every mask is intersected with `layout$active`, so inactive cells
-#' (a withers cutout, say) never enter a band.
+#' (a withers cut-out, say) never enter a band.
 #'
 #' @param layout A [pr_layout] object.
 #' @param breaks Numeric vector of `length(band_names) - 1` strictly

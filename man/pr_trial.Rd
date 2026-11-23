@@ -17,7 +17,7 @@ from recording start.}
 
 \item{metadata}{Named list of trial metadata. Expected (optional) fields:
 \code{subject_id}, \code{trial_id}, \code{date}, \code{condition}, \code{system}, \code{notes}.
-Entries must have unique nonempty names; malformed metadata is rejected
+Entries must have unique non-empty names; malformed metadata is rejected
 rather than silently discarded. Stored trials are revalidated before
 scientific calculations, including their layout and timestamp extent.}
 

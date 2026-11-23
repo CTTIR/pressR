@@ -60,7 +60,7 @@ pr_lock_cycles <- function(trial, cycles) {
   )
 }
 
-#' Analyze Temporal Structure With an Explicit Reproducibility Profile
+#' Analyse Temporal Structure With an Explicit Reproducibility Profile
 #'
 #' corrected uses measured sampling rate and deterministic plateau handling.
 #' legacy_method re-executes the historical fixed-50-Hz method; numerical

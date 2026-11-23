@@ -34,6 +34,7 @@ csv
 dataset's
 deterministically
 Diabetologia
+doi
 Downsample
 dplyr
 DT
@@ -56,6 +57,7 @@ hallux
 Hallux
 hotspot
 Hotspots
+HR
 Hz
 initialised
 ISBN
@@ -92,6 +94,7 @@ msp
 MSp
 msr
 MSr
+MVP
 neighbour
 neighbours
 neuropathy
@@ -102,15 +105,18 @@ NUL
 nyikos
 Nyikos
 Nyquist
+offs
 Ollama
 ollamar
 ORCID
 Pandoc
+parameterised
 Parsers
 Pathol
 PCI
 pedography
 Peinen
+PEM
 perineal
 Pferdeheilkunde
 Physiol
@@ -126,6 +132,7 @@ pre
 prepending
 pressR
 PTI
+PyTorch
 rds
 README
 readxl
@@ -133,6 +140,8 @@ Rehabil
 revalidated
 rmarkdown
 Rmd
+rollover
+Rollover
 roundtrip
 roxygen
 rr
@@ -157,10 +166,12 @@ summarised
 summarises
 Summarises
 summarising
+Surg
 symmetric
 synthesised
 synthesises
 testthat
+TeX
 th
 tibble
 TinyTeX
@@ -179,6 +190,7 @@ vLLM
 von
 Werner
 withr
+workflow's
 workflows
 yaml
 Zenodo

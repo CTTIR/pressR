@@ -88,7 +88,7 @@ pr_plot_pressure_time <- function(trial, show_cycles = FALSE) {
     ggplot2::theme_minimal(base_size = 11)
 }
 
-#' Plot Center of Pressure Trajectory
+#' Plot Centre of Pressure Trajectory
 #'
 #' @param trial A [pr_trial] object.
 #' @param show_layout Logical. Draw sensor grid in background. Default `TRUE`.
@@ -143,7 +143,7 @@ pr_plot_cop <- function(trial, show_layout = TRUE,
   p +
     ggplot2::coord_fixed() +
     ggplot2::labs(
-      title = "Center of pressure",
+      title = "Centre of pressure",
       x = sprintf("x (%s)", .coordinate_label(trial$layout)), y = sprintf("y (%s)", .coordinate_label(trial$layout))
     ) +
     ggplot2::theme_minimal(base_size = 11)
@@ -151,7 +151,7 @@ pr_plot_cop <- function(trial, show_layout = TRUE,
 
 #' COP Butterfly Plot Across Gait Cycles
 #'
-#' Overlays COP trajectories from each detected stance phase, centered on
+#' Overlays COP trajectories from each detected stance phase, centred on
 #' heel strike.
 #'
 #' @param trial A [pr_trial] object.

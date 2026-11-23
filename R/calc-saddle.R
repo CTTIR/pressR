@@ -82,7 +82,7 @@ print.pr_saddle_bridge <- function(x, ...) {
 
 #' Detect Saddle Slip / Asymmetric Loading
 #'
-#' Analyzes left/right pressure asymmetry over time to detect saddle slip
+#' Analyses left/right pressure asymmetry over time to detect saddle slip
 #' or systematic asymmetric loading.
 #'
 #' @param trial A [pr_trial] object.

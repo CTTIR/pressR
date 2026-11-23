@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc-gait.R
 \name{pr_calc_rollover}
 \alias{pr_calc_rollover}
-\title{Analyze COP Rollover Pattern}
+\title{Analyse COP Rollover Pattern}
 \usage{
 pr_calc_rollover(trial, cycles = NULL, n_points = 51L)
 }
@@ -21,7 +21,7 @@ A \link[tibble:tibble]{tibble::tibble} with columns \code{cycle}, \code{percent_
 the stated coordinate unit per second.
 }
 \description{
-Computes the center of pressure progression during the stance phase
+Computes the centre of pressure progression during the stance phase
 of each gait cycle, resampled to percent of stance (0-100).
 }
 \examples{

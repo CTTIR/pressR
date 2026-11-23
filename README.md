@@ -4,12 +4,12 @@
 [![R-CMD-check](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/pressR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/pressR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/pressR/)
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/pressR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/pressR?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889954.svg)](https://doi.org/10.5281/zenodo.21889954)
 <!-- badges: end -->
 
-**pressR** parses, analyzes, and visualizes pressure distribution data
+**pressR** parses, analyses, and visualises pressure distribution data
 from capacitive sensor systems. It ships with predefined layouts for
 in-shoe pressure measurement, saddle pressure mapping (equine and
 bicycle), seating assessment, and barefoot pedography, along with an
@@ -77,18 +77,18 @@ pr_run_app(trial)  # Opens the interactive explorer
   pressure platforms, generic sensor mats (16x16 / 32x32), horse and
   bicycle saddles, wheelchair / car / office seating, and glove sensors.
 * **Per-frame and per-trial analysis**: peak pressure, mean pressure,
-  force, contact area, pressure-time integral, center of pressure,
+  force, contact area, pressure-time integral, centre of pressure,
   symmetry index, gait cycle detection, and COP rollover pattern.
 * **Application-specific analysis**: saddle bridge and slip detection,
   wheelchair hotspot identification, plantar-pressure regional analysis.
 * **Traceable reference observations** with source, study context and status.
   Nyikos (2005) is the source of the six saddle observations; unsupported
   legacy thresholds are withdrawn. Overlays require explicit compatible context.
-* **Study assets**: lossless workbook cell retention with normalized HR/RR series,
+* **Study assets**: lossless workbook cell retention with normalised HR/RR series,
   image metadata registration, bounded archive extraction and explicit-key links.
 * **Interchange**: version 2 trial bundles preserve exact measurements and timing,
   layout, units, factor levels and metadata with SHA-256 integrity checks.
-* **Visualization**: 2D and 3D heatmaps, dynamics plots, regional bar
+* **Visualisation**: 2D and 3D heatmaps, dynamics plots, regional bar
   charts, composite report panels, and side-by-side trial comparison.
 * **Shiny app** (`pr_run_app()`) for interactive import, analysis, and
   export.
@@ -104,12 +104,12 @@ analysis <- pr_temporal_profile(trial, "corrected")
 ```
 
 New bundles store authoritative measurements in `measurements.rds` and provide
-`pressure.csv` as a nonbinding preview for inspection and exchange. Reading checks
+`pressure.csv` as a non-binding preview for inspection and exchange. Reading checks
 the preview's checksum and structure; analyses use the RDS values. Recreate the
 bundle to change measurements. This avoids decimal round-trip changes
 that can invalidate measurement-bound cycle references. Version 1 bundles remain
 readable, with their original decimal precision limits. Only read bundles from
-trusted sources: they contain serialized R objects, and checksums detect
+trusted sources: they contain serialised R objects, and checksums detect
 corruption without authenticating the sender.
 
 CSV and report exports refuse recorded source paths and symbolic-link targets.
@@ -118,11 +118,11 @@ reported replacement failure, or report the retained backup path if restoration
 fails. These guarantees do not cover process termination or simultaneous writers.
 
 Pliance detection uses the file header, including temporary upload paths. CSV
-round trips recognize exported timestamps and sensor identifiers. Incomplete or
+round trips recognise exported timestamps and sensor identifiers. Incomplete or
 malformed generic inputs are rejected instead of padded, truncated or zero-filled.
 Pliance missing-frame handling is explicit and recorded in metadata.
 
-Numeric text imports accept nonzero magnitudes from `1e-290` through `1e290`
+Numeric text imports accept non-zero magnitudes from `1e-290` through `1e290`
 and check for gross conversion errors. These checks add parsing time: one
 synthetic 10,000-frame, 256-sensor CSV took 6.59 seconds versus 0.72 seconds in
 the preserved baseline on the audit machine, with identical imported values.
@@ -159,7 +159,7 @@ set through `options(pressR.max_upload_bytes = ...)` before launching the app.
 * `vignette("saddle-pressure-analysis", package = "pressR")`
 * `vignette("foot-pressure-analysis", package = "pressR")`
 
-## License
+## Licence
 
 MIT
 

@@ -10,7 +10,7 @@
 #' @param layout A [pr_layout] object defining the sensor arrangement.
 #' @param metadata Named list of trial metadata. Expected (optional) fields:
 #'   `subject_id`, `trial_id`, `date`, `condition`, `system`, `notes`.
-#'   Entries must have unique nonempty names; malformed metadata is rejected
+#'   Entries must have unique non-empty names; malformed metadata is rejected
 #'   rather than silently discarded. Stored trials are revalidated before
 #'   scientific calculations, including their layout and timestamp extent.
 #' @param sampling_hz Numeric. Sampling rate in Hz. If `NULL`, computed

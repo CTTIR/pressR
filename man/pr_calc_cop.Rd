@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc-frame.R
 \name{pr_calc_cop}
 \alias{pr_calc_cop}
-\title{Calculate Center of Pressure}
+\title{Calculate Centre of Pressure}
 \usage{
 pr_calc_cop(trial, threshold = 0)
 }

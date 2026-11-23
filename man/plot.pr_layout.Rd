@@ -10,7 +10,7 @@
 \item{x}{A \link{pr_layout} object.}
 
 \item{show_regions}{Logical. If \code{TRUE} (default), draws region masks
-in colors. If \code{FALSE}, shows only sensor positions.}
+in colours. If \code{FALSE}, shows only sensor positions.}
 
 \item{show_ids}{Logical. If \code{TRUE}, labels each sensor with its id.
 Default \code{FALSE}.}
@@ -21,7 +21,7 @@ Default \code{FALSE}.}
 A \code{ggplot2} object.
 }
 \description{
-Visualizes a \link{pr_layout} showing active sensor positions and colored
+Visualises a \link{pr_layout} showing active sensor positions and coloured
 region masks (if any).
 }
 \examples{

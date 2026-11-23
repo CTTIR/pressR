@@ -124,7 +124,7 @@ ui <- bslib::page_navbar(
     "Temporal",
     shiny::selectInput("temporal_profile", "Analysis profile", c("corrected", "legacy_method")),
     shiny::helpText("Corrected uses measured sampling and stable peak handling. Legacy method uses the historical 50 Hz assumption and does not guarantee exact replay."),
-    shiny::actionButton("run_temporal", "Analyze temporal structure"),
+    shiny::actionButton("run_temporal", "Analyse temporal structure"),
     shiny::verbatimTextOutput("temporal_info"),
     DT::DTOutput("cycle_table")
   ),
@@ -388,7 +388,7 @@ server <- function(input, output, session) {
     tr <- trial_rv()
     unit <- if (is.null(tr)) NULL else tr$layout[["coords_units"]]
     if (is.null(unit)) unit <- "mm"
-    paste("Center of pressure trajectory in", unit, "coordinates, colored by recording time in seconds.")
+    paste("Centre of pressure trajectory in", unit, "coordinates, coloured by recording time in seconds.")
   })
 
   output$compare_plot <- shiny::renderPlot({
@@ -411,7 +411,7 @@ server <- function(input, output, session) {
   shiny::observeEvent(input$run_temporal, {
     tr <- shiny::req(trial_rv())
     temporal_result(NULL)
-    tryCatch(shiny::withProgress(message = "Analyzing temporal structure", value = .1, {
+    tryCatch(shiny::withProgress(message = "Analysing temporal structure", value = .1, {
       temporal_result(pressR::pr_temporal_profile(tr, input$temporal_profile))
       shiny::incProgress(.9)
     }), error = function(e) shiny::showNotification(conditionMessage(e), type = "error"))

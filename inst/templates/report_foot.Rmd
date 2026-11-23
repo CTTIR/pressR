@@ -50,9 +50,9 @@ panels[[2]]
 panels[[3]]
 ```
 
-## Center of pressure
+## Centre of pressure
 
-```{r, fig.alt="Center of pressure trajectory in the recorded coordinate units, colored by recording time."}
+```{r, fig.alt="Centre of pressure trajectory in the recorded coordinate units, coloured by recording time."}
 panels[[4]]
 ```
 

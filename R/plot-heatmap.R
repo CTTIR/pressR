@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Heatmap visualization functions.
+# Heatmap visualisation functions.
 # ---------------------------------------------------------------------------
 
 # Internal: build a tile-plot tibble from a pressure vector over a layout.

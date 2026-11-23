@@ -88,7 +88,7 @@ placed on the time axis. The counts land in
 
 \section{Numeric text}{
 
-Numeric text is qualified for nonzero magnitudes from \code{1e-290} to \code{1e290}.
+Numeric text is qualified for non-zero magnitudes from \code{1e-290} to \code{1e290}.
 Values outside this range, or inconsistent decimal conversions, are refused.
 CSV does not carry layout calibration or promise bit-exact doubles; provide
 the original layout, or use \code{\link[=pr_write_bundle]{pr_write_bundle()}} for a self-contained round trip.

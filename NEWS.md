@@ -6,27 +6,27 @@ CRAN submission:
 
 * The maintainer address is now raban.heller@uni-ulm.de, the documentation
   language is declared as American English (`Language: en-US`) and the
-  repository URLs use the canonical `CTTIR` organization name.
+  repository URLs use the canonical `CTTIR` organisation name.
 * The README and vignettes no longer show CRAN status and download badges,
   which pointed to pages that do not exist before acceptance.
 * Unused suggested packages ('gganimate', 'gifski', 'vdiffr', 'covr',
   'pkgdown') are no longer listed in Suggests.
 
-* Standardize the named v5 package logo across README, documentation pages
+* Standardise the named v5 package logo across README, documentation pages
   and available application headers, with matching light and dark artwork.
 
 
 This is an explicitly versioned successor. Version 0.1.0 and its manuscript
 contract remain preserved at commit 5f5b370 and in the baseline audit records.
 
-* Recognize Novel Pliance content through automatic import and temporary upload
+* Recognise Novel Pliance content through automatic import and temporary upload
   filenames; reject malformed numeric fields and contradictory sampling rates.
 * Make generic ASCII and CSV imports strict. Missing sensor values no longer become
   zero; mismatched widths are no longer padded or truncated. Exported timestamps
   and sensor IDs round-trip without default-rate substitution.
   Inferred layouts now align named wide columns and reject incompatible long-form
   sensor identities. Optional Pliance channel order uses exact field matching.
-* Refuse numeric text outside the supported nonzero magnitude range
+* Refuse numeric text outside the supported non-zero magnitude range
   `1e-290` to `1e290`, and conversions with gross disagreement or underflow.
   These checks prevent observed parser corruption at extreme values and cost
   additional import time; exact binary replay uses version 2 bundles.
@@ -122,7 +122,7 @@ contract remain preserved at commit 5f5b370 and in the baseline audit records.
 * `pr_ref_saddle()`, `pr_ref_diabetic_foot()`,
   `pr_ref_wheelchair()`.
 
-### Visualization
+### Visualisation
 
 * `pr_plot_heatmap()`, `pr_plot_heatmap_masked()`, `pr_plot_3d()`,
   `pr_plot_force_time()`, `pr_plot_pressure_time()`,

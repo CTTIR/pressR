@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-dynamics.R
 \name{pr_plot_cop}
 \alias{pr_plot_cop}
-\title{Plot Center of Pressure Trajectory}
+\title{Plot Centre of Pressure Trajectory}
 \usage{
 pr_plot_cop(trial, show_layout = TRUE, color_by = c("time", "velocity"))
 }
@@ -17,7 +17,7 @@ pr_plot_cop(trial, show_layout = TRUE, color_by = c("time", "velocity"))
 A \code{ggplot2} object.
 }
 \description{
-Plot Center of Pressure Trajectory
+Plot Centre of Pressure Trajectory
 }
 \examples{
 pr_plot_cop(pr_example_trial("saddle_horse"))

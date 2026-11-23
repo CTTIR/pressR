@@ -1,4 +1,4 @@
-#' Center of Pressure Object
+#' Centre of Pressure Object
 #'
 #' Construct a `pr_cop` object from x/y coordinates and time. Normally
 #' created by [pr_calc_cop()] rather than called directly.

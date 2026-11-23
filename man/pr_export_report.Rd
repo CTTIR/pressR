@@ -31,7 +31,7 @@ pr_export_report(
 Invisibly returns the generated file path.
 }
 \description{
-Renders a parameterized R Markdown template into an HTML or PDF report
+Renders a parameterised R Markdown template into an HTML or PDF report
 for a trial.
 }
 \details{

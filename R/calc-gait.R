@@ -98,9 +98,9 @@ pr_calc_gait_cycles <- function(trial, force_threshold = 20,
   )
 }
 
-#' Analyze COP Rollover Pattern
+#' Analyse COP Rollover Pattern
 #'
-#' Computes the center of pressure progression during the stance phase
+#' Computes the centre of pressure progression during the stance phase
 #' of each gait cycle, resampled to percent of stance (0-100).
 #'
 #' @param trial A [pr_trial] object.

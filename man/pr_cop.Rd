@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-cop.R
 \name{pr_cop}
 \alias{pr_cop}
-\title{Center of Pressure Object}
+\title{Centre of Pressure Object}
 \usage{
 pr_cop(x, y, time)
 }

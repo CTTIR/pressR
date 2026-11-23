@@ -29,7 +29,7 @@ pr_layout(
 
 \item{coords_mm}{Data frame with columns \code{sensor_id} (integer),
 \code{row} (integer), \code{col} (integer), \code{x_mm} (numeric), \code{y_mm} (numeric).
-Physical coordinates of each active sensor in millimeters.}
+Physical coordinates of each active sensor in millimetres.}
 
 \item{regions}{Named list of logical matrices (same dims as \code{active}).
 Each entry defines an anatomical or functional region.}

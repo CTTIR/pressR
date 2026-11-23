@@ -30,7 +30,7 @@ asymmetric, otherwise \code{"balanced"}.
 }
 }
 \description{
-Analyzes left/right pressure asymmetry over time to detect saddle slip
+Analyses left/right pressure asymmetry over time to detect saddle slip
 or systematic asymmetric loading.
 }
 \examples{
