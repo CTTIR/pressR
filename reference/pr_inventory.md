@@ -33,7 +33,7 @@ pr_inventory(src)
 #> # A tibble: 2 × 6
 #>   path                        relative_path bytes role  sha256 duplicate_content
 #>   <chr>                       <chr>         <dbl> <chr> <chr>  <lgl>            
-#> 1 /tmp/Rtmpn9J004/pressr-stu… notes.txt        12 meas… 9d647… FALSE            
-#> 2 /tmp/Rtmpn9J004/pressr-stu… trial.csv        12 meas… 59b2d… FALSE            
+#> 1 /tmp/RtmpDx17U1/pressr-stu… notes.txt        12 meas… 9d647… FALSE            
+#> 2 /tmp/RtmpDx17U1/pressr-stu… trial.csv        12 meas… 59b2d… FALSE            
 unlink(src, recursive = TRUE)
 ```

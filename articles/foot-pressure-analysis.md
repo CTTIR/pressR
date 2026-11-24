@@ -33,7 +33,7 @@ trial
 #> • Sampling: 50 Hz
 #> • Sensors: 99
 #> • Subject: "EX01"
-#> • Date: "2026-11-23"
+#> • Date: "2026-11-24"
 #> • Condition: "walking"
 ```
 

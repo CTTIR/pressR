@@ -1,5 +1,8 @@
 # pressR ![pressR hex logo](reference/figures/logo-with-name.png)
 
+Zenodo DOI reserved for the release: `10.5281/zenodo.21889954` (not yet
+published).
+
 **pressR** parses, analyses, and visualises pressure distribution data
 from capacitive sensor systems. It ships with predefined layouts for
 in-shoe pressure measurement, saddle pressure mapping (equine and
